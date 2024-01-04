@@ -1,6 +1,7 @@
 #ifndef GDX_TESTING_H
 #define GDX_TESTING_H
 
+
 #include <godot_cpp/classes/node.hpp>
 
 namespace godot{
@@ -14,6 +15,7 @@ private:
     String gdxtesting_gdxtesting;
 
 public:
+	 String get_hello_world();
     GdxTesting();
     ~GdxTesting();
 

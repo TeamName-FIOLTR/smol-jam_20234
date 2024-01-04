@@ -5,6 +5,11 @@ using namespace godot;
 
 void GdxTesting::_bind_methods(){
     ClassDB::bind_method(D_METHOD("gdxtesting"), &GdxTesting::gdxtesting);
+    ClassDB::bind_method(D_METHOD("get_hello_world"), &GdxTesting::get_hello_world);
+}
+
+String GdxTesting::get_hello_world() {
+	return String("it works");
 }
 
 GdxTesting::GdxTesting(){

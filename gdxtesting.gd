@@ -4,6 +4,7 @@ var thing : GdxTesting = GdxTesting.new()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print(thing.gdxtesting())
+	print(thing.get_hello_world())
 	pass # Replace with function body.
 
 
