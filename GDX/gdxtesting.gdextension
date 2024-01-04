@@ -6,3 +6,4 @@ compatibility_minimum = 4.2
 [libraries]
 
 windows.x86_64="res://GDX/bin/libgdxtesting.windows.template_debug.x86_64.dll"
+linux.x86_64="res://GDX/bin/libgdxtesting.linux.template_debug.x86_64.so"
