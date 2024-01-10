@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=3 uid="uid://o3apecno10q3"]
+
+[ext_resource type="PackedScene" uid="uid://bi1hunutm7wju" path="res://project_files/blender/charactyer mopdeing/RIGGINGUGH.blend" id="1_j1mu8"]
+
+[node name="elfthing2" type="Node3D"]
+
+[node name="RIGGINGUGH" parent="." instance=ExtResource("1_j1mu8")]
+
+[node name="Camera" parent="RIGGINGUGH" index="1"]
+transform = Transform3D(1, 0, 0, 0, 0.832515, -0.554003, 0, 0.554003, 0.832515, 0, 0.95, 3.19)
+
+[node name="Look Target" parent="RIGGINGUGH/Camera" index="0"]
+transform = Transform3D(0.685921, 1.49012e-08, -0.727676, -0.324013, 0.895396, -0.305421, 0.651558, 0.445271, 0.61417, 0.000805463, 0, 0)
+
+[node name="Skeleton3D" parent="RIGGINGUGH/Armature" index="0"]
+bones/1/position = Vector3(-1.8133e-05, 0.31654, 2.69249)
+bones/2/rotation = Quaternion(0.178366, 3.40061e-12, 4.2591e-08, 0.983964)
+bones/3/rotation = Quaternion(-0.0168323, -4.87633e-13, -4.04162e-09, 0.999858)
+bones/4/rotation = Quaternion(-0.169103, -0.146649, -0.819739, 0.527187)
+bones/5/rotation = Quaternion(0.0467074, 0.298909, -0.0632325, 0.951038)
+bones/6/rotation = Quaternion(0.598843, 6.66711e-05, -0.333197, 0.728263)
+bones/23/rotation = Quaternion(-0.0977165, 1.25883e-12, -2.33724e-08, 0.995214)
+bones/24/rotation = Quaternion(-0.330272, -3.76392e-15, -7.87429e-08, 0.943886)
+bones/25/rotation = Quaternion(0.133846, 0.523453, 0.814029, -0.213166)
+bones/26/rotation = Quaternion(0.172049, 0.511418, 0.796203, -0.273699)
+bones/27/rotation = Quaternion(-0.100234, 0.13854, 0.849403, 0.499274)
+bones/28/rotation = Quaternion(0.258942, -0.29311, 0.137721, 0.909983)
+bones/29/rotation = Quaternion(0.470504, -7.71769e-05, 0.261789, 0.84267)
+bones/46/rotation = Quaternion(0.853532, 0.0653182, 0.000808329, 0.516929)
+bones/46/scale = Vector3(1, 1.00001, 1.00003)
+bones/47/rotation = Quaternion(0.961864, -0.00145905, 0.10416, 0.252917)
+bones/47/scale = Vector3(0.999999, 0.999997, 1.00001)
+bones/48/rotation = Quaternion(-0.895445, 0.0568605, 0.0187931, 0.441126)
+bones/49/rotation = Quaternion(0.85341, -0.0652161, -0.000754051, 0.517143)
+bones/49/scale = Vector3(1, 1.00001, 1.00003)
+bones/50/rotation = Quaternion(0.961875, 0.00145879, -0.104162, 0.252871)
+bones/50/scale = Vector3(0.999999, 0.999997, 1.00001)
+bones/51/rotation = Quaternion(-0.918541, -0.0632851, -0.020987, 0.389663)
+bones/52/position = Vector3(0.0871909, 0.0745727, 2.6917)
+bones/53/position = Vector3(0.0871909, 0.147994, 3.25201)
+bones/54/position = Vector3(-0.0871768, 0.0746349, 2.6917)
+bones/55/position = Vector3(-0.0871909, 0.147994, 3.25201)
+bones/56/position = Vector3(0.272753, 0.362751, 2.90728)
+bones/57/position = Vector3(0.375566, 0.438004, 2.71349)
+bones/58/position = Vector3(-0.157125, 0.289379, 2.98829)
+bones/59/position = Vector3(-0.35084, 0.545192, 2.70318)
+
+[editable path="RIGGINGUGH"]

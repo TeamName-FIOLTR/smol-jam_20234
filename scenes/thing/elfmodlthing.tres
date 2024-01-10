@@ -1,0 +1,88 @@
+[gd_resource type="VisualShader" load_steps=8 format=3 uid="uid://b24xw78xkgemf"]
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_vxaeq"]
+constant = Color(0.796361, 0.485544, 0.140647, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_tfedp"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_d8n0d"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_b2xa1"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_ma7gp"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_ml2sm"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_uenu6"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.796361, 0.485544, 0.140647, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(163.98, 218.628)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_vxaeq")
+nodes/fragment/2/position = Vector2(160, 160)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_tfedp")
+nodes/fragment/3/position = Vector2(-60, 280)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_d8n0d")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_b2xa1")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_ma7gp")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_ml2sm")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_uenu6")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)

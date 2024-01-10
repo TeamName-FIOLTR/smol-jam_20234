@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://b672xa2hobstt"]
+
+[ext_resource type="PackedScene" uid="uid://bvlnsh7ys3p7k" path="res://assets/models/mainelfchracter/hat2ihope.glb" id="1_fl2ex"]
+
+[node name="hat2ihope" instance=ExtResource("1_fl2ex")]

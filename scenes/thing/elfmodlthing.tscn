@@ -1,0 +1,3086 @@
+[gd_scene load_steps=256 format=3 uid="uid://cqqumsrphtna8"]
+
+[ext_resource type="Script" path="res://scenes/thing/elfmodlthing.gd" id="1_fpa83"]
+[ext_resource type="PackedScene" uid="uid://c0x35rsb53shf" path="res://assets/models/mainelfchracter/RIGGINGUGH.glb" id="1_mgsyr"]
+[ext_resource type="Shader" uid="uid://b24xw78xkgemf" path="res://scenes/thing/elfmodlthing.tres" id="2_7hoqo"]
+[ext_resource type="PackedScene" uid="uid://b672xa2hobstt" path="res://scenes/thing/hat_2_ihope.tscn" id="2_s7dtr"]
+[ext_resource type="PackedScene" uid="uid://dr2q4555pdewq" path="res://assets/models/mainelfchracter/the hat.glb" id="2_skmy4"]
+[ext_resource type="Texture2D" uid="uid://sxk38i7kxut4" path="res://assets/models/mainelfchracter/Eye Texture Thing.png" id="3_ek4eo"]
+[ext_resource type="Texture2D" uid="uid://cxqfxnh658sso" path="res://assets/models/mainelfchracter/nose.png" id="4_gkdof"]
+[ext_resource type="Texture2D" uid="uid://ca6qiyuoo50eb" path="res://assets/models/mainelfchracter/Left Leggins Texture.png" id="4_och2y"]
+[ext_resource type="Texture2D" uid="uid://b33m46a12x50g" path="res://assets/models/mainelfchracter/Pants Texture.png" id="5_6fnky"]
+[ext_resource type="Texture2D" uid="uid://dmxan824te5ca" path="res://assets/models/mainelfchracter/Skirt Texture.png" id="6_q25oo"]
+[ext_resource type="PackedScene" uid="uid://dy581bdemm7ft" path="res://assets/models/mainelfchracter/cameragagin.glb" id="9_r10ef"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0mxmj"]
+render_priority = 0
+shader = ExtResource("2_7hoqo")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_nta7g"]
+constant = Color(0.749733, 0.45285, 0.124549, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_djub6"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_ipfs5"]
+texture = ExtResource("4_gkdof")
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id="VisualShaderNodeVectorDecompose_u1d6m"]
+
+[sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_e6xv6"]
+default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(1, 1, 1), 2, 0.5]
+op_type = 4
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_4ehyn"]
+constant = Color(0.51825, 0.305021, 0.0658751, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_no0iy"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_gveuh"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_u02oq"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_ifptj"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_8yjry"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShader" id="VisualShader_8odkm"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+uniform sampler2D tex_frg_4;
+
+
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.749733, 0.452850, 0.124549, 1.000000);
+
+
+// ColorConstant:7
+	vec4 n_out7p0 = vec4(0.518250, 0.305021, 0.065875, 1.000000);
+
+
+// Texture2D:4
+	vec4 n_out4p0 = texture(tex_frg_4, UV);
+
+
+// VectorDecompose:5
+	float n_out5p0 = vec3(n_out4p0.xyz).x;
+	float n_out5p1 = vec3(n_out4p0.xyz).y;
+	float n_out5p2 = vec3(n_out4p0.xyz).z;
+
+
+// Mix:6
+	vec3 n_out6p0 = mix(vec3(n_out2p0.xyz), vec3(n_out7p0.xyz), n_out5p0);
+
+
+// Output:0
+	ALBEDO = n_out6p0;
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(66.8512, -21.6146)
+nodes/fragment/0/position = Vector2(560, 120)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_nta7g")
+nodes/fragment/2/position = Vector2(160, 160)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_djub6")
+nodes/fragment/3/position = Vector2(-60, 280)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_ipfs5")
+nodes/fragment/4/position = Vector2(-120, 40)
+nodes/fragment/5/node = SubResource("VisualShaderNodeVectorDecompose_u1d6m")
+nodes/fragment/5/position = Vector2(140, 20)
+nodes/fragment/6/node = SubResource("VisualShaderNodeMix_e6xv6")
+nodes/fragment/6/position = Vector2(351.186, 77.711)
+nodes/fragment/7/node = SubResource("VisualShaderNodeColorConstant_4ehyn")
+nodes/fragment/7/position = Vector2(180, 220)
+nodes/fragment/connections = PackedInt32Array(4, 0, 5, 0, 5, 0, 6, 2, 2, 0, 6, 0, 7, 0, 6, 1, 6, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_no0iy")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_gveuh")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_u02oq")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_ifptj")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_8yjry")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_arhmt"]
+render_priority = 0
+shader = SubResource("VisualShader_8odkm")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_cekoe"]
+constant = Color(0.998351, 0.968026, 0.942509, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_2tmc1"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_f1ljq"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_jwmay"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_vg2q6"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_g8o15"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_eakbq"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShader" id="VisualShader_oxbbb"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.998351, 0.968026, 0.942509, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_cekoe")
+nodes/fragment/2/position = Vector2(160, 160)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_2tmc1")
+nodes/fragment/3/position = Vector2(-60, 280)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_f1ljq")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_jwmay")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_vg2q6")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_g8o15")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_eakbq")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_skj36"]
+render_priority = 0
+shader = SubResource("VisualShader_oxbbb")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_m8rt1"]
+constant = Color(0.968627, 0.670588, 0.388235, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_f6tu6"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_2gr77"]
+texture = ExtResource("3_ek4eo")
+
+[sub_resource type="VisualShaderNodeColorFunc" id="VisualShaderNodeColorFunc_ttn7x"]
+expanded_output_ports = [0]
+function = 2
+
+[sub_resource type="VisualShaderNodeColorFunc" id="VisualShaderNodeColorFunc_wkdla"]
+function = 1
+
+[sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_6kok1"]
+default_input_values = [0, 0.18, 1, 0.0, 2, 0.0]
+
+[sub_resource type="VisualShaderNodeColorFunc" id="VisualShaderNodeColorFunc_hsfj5"]
+expanded_output_ports = [0]
+function = 2
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_oxf8m"]
+constant = Color(0, 1, 0, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_2dg7c"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_eyj3j"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_co3oo"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_68o1k"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_l58gt"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShader" id="VisualShader_x3d7q"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+uniform sampler2D tex_frg_4;
+
+
+
+void fragment() {
+// ColorConstant:9
+	vec4 n_out9p0 = vec4(0.000000, 1.000000, 0.000000, 1.000000);
+
+
+	vec3 n_out8p0;
+// ColorFunc:8
+	{
+		vec3 c = vec3(n_out9p0.xyz);
+		vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+		vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+		vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+		float d = q.x - min(q.w, q.y);
+		float e = 1.0e-10;
+		n_out8p0 = vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+	}
+	float n_out8p1 = n_out8p0.r;
+
+
+// Texture2D:4
+	vec4 n_out4p0 = texture(tex_frg_4, UV);
+
+
+	vec3 n_out5p0;
+// ColorFunc:5
+	{
+		vec3 c = vec3(n_out4p0.xyz);
+		vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+		vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+		vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+		float d = q.x - min(q.w, q.y);
+		float e = 1.0e-10;
+		n_out5p0 = vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+	}
+	float n_out5p2 = n_out5p0.g;
+	float n_out5p3 = n_out5p0.b;
+
+
+// VectorCompose:7
+	vec3 n_out7p0 = vec3(n_out8p1, n_out5p2, n_out5p3);
+
+
+	vec3 n_out6p0;
+// ColorFunc:6
+	{
+		vec3 c = n_out7p0;
+		vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+		vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+		n_out6p0 = c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+	}
+
+
+// Output:0
+	ALBEDO = n_out6p0;
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(-177.792, -26.0087)
+nodes/fragment/0/position = Vector2(900, 200)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_m8rt1")
+nodes/fragment/2/position = Vector2(240, 380)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_f6tu6")
+nodes/fragment/3/position = Vector2(20, 440)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_2gr77")
+nodes/fragment/4/position = Vector2(-220, 80)
+nodes/fragment/5/node = SubResource("VisualShaderNodeColorFunc_ttn7x")
+nodes/fragment/5/position = Vector2(40, 260)
+nodes/fragment/6/node = SubResource("VisualShaderNodeColorFunc_wkdla")
+nodes/fragment/6/position = Vector2(540, 220)
+nodes/fragment/7/node = SubResource("VisualShaderNodeVectorCompose_6kok1")
+nodes/fragment/7/position = Vector2(360, 220)
+nodes/fragment/8/node = SubResource("VisualShaderNodeColorFunc_hsfj5")
+nodes/fragment/8/position = Vector2(-200, 320)
+nodes/fragment/9/node = SubResource("VisualShaderNodeColorConstant_oxf8m")
+nodes/fragment/9/position = Vector2(-360, 400)
+nodes/fragment/connections = PackedInt32Array(4, 0, 5, 0, 5, 2, 7, 1, 5, 3, 7, 2, 7, 0, 6, 0, 6, 0, 0, 0, 9, 0, 8, 0, 8, 1, 7, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_2dg7c")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_eyj3j")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_co3oo")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_68o1k")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_l58gt")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_udnby"]
+render_priority = 0
+shader = SubResource("VisualShader_x3d7q")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_5sssh"]
+constant = Color(0.968627, 0.670588, 0.388235, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_dbc4o"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_toder"]
+texture = ExtResource("3_ek4eo")
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_f2ugu"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_8ptwg"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_3q6s1"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_kuswr"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_obyxi"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShader" id="VisualShader_n21kb"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+uniform sampler2D tex_frg_4;
+
+
+
+void fragment() {
+// Texture2D:4
+	vec4 n_out4p0 = texture(tex_frg_4, UV);
+
+
+// Output:0
+	ALBEDO = vec3(n_out4p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(-177.951, 24.3769)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_5sssh")
+nodes/fragment/2/position = Vector2(140, 320)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_dbc4o")
+nodes/fragment/3/position = Vector2(-60, 280)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_toder")
+nodes/fragment/4/position = Vector2(-120, 100)
+nodes/fragment/connections = PackedInt32Array(4, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_f2ugu")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_8ptwg")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_3q6s1")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_kuswr")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_obyxi")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x5hbh"]
+render_priority = 0
+shader = SubResource("VisualShader_n21kb")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_tgjs5"]
+constant = Color(0.582031, 0.179611, 0.179611, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_07553"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_dij3v"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_cwpr0"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_n13pi"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_6d5fa"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_p30xd"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShader" id="VisualShader_hmcup"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.582031, 0.179611, 0.179611, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_tgjs5")
+nodes/fragment/2/position = Vector2(160, 160)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_07553")
+nodes/fragment/3/position = Vector2(-60, 280)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_dij3v")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_cwpr0")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_n13pi")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_6d5fa")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_p30xd")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oa32x"]
+render_priority = 0
+shader = SubResource("VisualShader_hmcup")
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id="VisualShaderNodeTransformVecMult_dqi7c"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id="VisualShaderNodeTransformVecMult_2qw6o"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeTransformFunc" id="VisualShaderNodeTransformFunc_ygobj"]
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id="VisualShaderNodeTransformVecMult_qbvn5"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_hl5bt"]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeVaryingGetter" id="VisualShaderNodeVaryingGetter_5pxcy"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_a1omp"]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_qjs18"]
+constant = Color(0, 0.435843, 5.77569e-07, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_0vnut"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_rk1ln"]
+input_name = "model_matrix"
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id="VisualShaderNodeVectorDecompose_1aml0"]
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_laf20"]
+function = 3
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_3flne"]
+default_input_values = [0, false, 1, Vector3(1, 1, 1), 2, Vector3(0, 0, 0)]
+op_type = 4
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_l6jjm"]
+constant = Color(1, 0, 0, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_bx372"]
+input_name = "inv_view_matrix"
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_1dw5f"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_s00ib"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_1kjtg"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_giwpx"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_71hup"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_0sswt"]
+input_name = "modelview_matrix"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_gij45"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShader" id="VisualShader_yrcys"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying mat4 matry;
+
+
+
+
+void vertex() {
+// Input:2
+	mat4 n_out2p0 = MODELVIEW_MATRIX;
+
+
+// VaryingSetter:3
+	matry = n_out2p0;
+
+
+}
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.000000, 0.435843, 0.000001, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(-247.588, 6.32266)
+varyings/matry = "0,7"
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_0sswt")
+nodes/vertex/2/position = Vector2(-240, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVaryingSetter_gij45")
+nodes/vertex/3/position = Vector2(161.484, 217.73)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)
+nodes/fragment/0/position = Vector2(680, 220)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_qjs18")
+nodes/fragment/2/position = Vector2(60, 380)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_0vnut")
+nodes/fragment/3/position = Vector2(-60, 280)
+nodes/fragment/4/node = SubResource("VisualShaderNodeInput_rk1ln")
+nodes/fragment/4/position = Vector2(-1180, 300)
+nodes/fragment/5/node = SubResource("VisualShaderNodeVectorDecompose_1aml0")
+nodes/fragment/5/position = Vector2(-140, 100)
+nodes/fragment/6/node = SubResource("VisualShaderNodeCompare_laf20")
+nodes/fragment/6/position = Vector2(164.439, 146.808)
+nodes/fragment/7/node = SubResource("VisualShaderNodeSwitch_3flne")
+nodes/fragment/7/position = Vector2(332.739, 185.308)
+nodes/fragment/8/node = SubResource("VisualShaderNodeColorConstant_l6jjm")
+nodes/fragment/8/position = Vector2(100, 480)
+nodes/fragment/9/node = SubResource("VisualShaderNodeInput_bx372")
+nodes/fragment/9/position = Vector2(-1100, 100)
+nodes/fragment/10/node = SubResource("VisualShaderNodeTransformVecMult_dqi7c")
+nodes/fragment/10/position = Vector2(-520, 260)
+nodes/fragment/11/node = SubResource("VisualShaderNodeTransformVecMult_2qw6o")
+nodes/fragment/11/position = Vector2(-600, 420)
+nodes/fragment/12/node = SubResource("VisualShaderNodeTransformFunc_ygobj")
+nodes/fragment/12/position = Vector2(-940, 240)
+nodes/fragment/13/node = SubResource("VisualShaderNodeTransformVecMult_qbvn5")
+nodes/fragment/13/position = Vector2(-700, 40)
+nodes/fragment/14/node = SubResource("VisualShaderNodeInput_hl5bt")
+nodes/fragment/14/position = Vector2(-1060, 20)
+nodes/fragment/15/node = SubResource("VisualShaderNodeVaryingGetter_5pxcy")
+nodes/fragment/15/position = Vector2(-1140, 220)
+nodes/fragment/16/node = SubResource("VisualShaderNodeInput_a1omp")
+nodes/fragment/16/position = Vector2(-440, 200)
+nodes/fragment/connections = PackedInt32Array(5, 0, 6, 0, 6, 0, 7, 0, 2, 0, 7, 1, 8, 0, 7, 2, 15, 0, 12, 0, 12, 0, 10, 0, 13, 0, 10, 1, 14, 0, 13, 1, 16, 0, 5, 0, 9, 0, 13, 0, 2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_1dw5f")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_s00ib")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_1kjtg")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_giwpx")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_71hup")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i8yb7"]
+render_priority = 0
+shader = SubResource("VisualShader_yrcys")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_q0swf"]
+constant = Color(0, 1, 0, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_ngewf"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_nsvdt"]
+texture = ExtResource("4_och2y")
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_fowxn"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_ljed8"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_j5s8b"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_bqjpa"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_q751o"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShader" id="VisualShader_rjrvb"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+uniform sampler2D tex_frg_4;
+
+
+
+void fragment() {
+// Texture2D:4
+	vec4 n_out4p0 = texture(tex_frg_4, UV);
+
+
+// Output:0
+	ALBEDO = vec3(n_out4p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(-188.532, -14.0396)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_q0swf")
+nodes/fragment/2/position = Vector2(-40, 120)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_ngewf")
+nodes/fragment/3/position = Vector2(-180, 320)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_nsvdt")
+nodes/fragment/4/position = Vector2(140, 40)
+nodes/fragment/connections = PackedInt32Array(4, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_fowxn")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_ljed8")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_j5s8b")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_bqjpa")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_q751o")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b85ex"]
+render_priority = 0
+shader = SubResource("VisualShader_rjrvb")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_s8wqp"]
+constant = Color(0, 1, 0, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_8xus1"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_kvj8b"]
+texture = ExtResource("5_6fnky")
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_yt2fh"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_2dptx"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_prqsy"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_6rxkf"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_eivvq"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShader" id="VisualShader_jb3mc"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+uniform sampler2D tex_frg_4;
+
+
+
+void fragment() {
+// Texture2D:4
+	vec4 n_out4p0 = texture(tex_frg_4, UV);
+
+
+// Output:0
+	ALBEDO = vec3(n_out4p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(-79.5317, -25.0396)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_s8wqp")
+nodes/fragment/2/position = Vector2(-40, 120)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_8xus1")
+nodes/fragment/3/position = Vector2(-180, 320)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_kvj8b")
+nodes/fragment/4/position = Vector2(140, 40)
+nodes/fragment/connections = PackedInt32Array(4, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_yt2fh")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_2dptx")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_prqsy")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_6rxkf")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_eivvq")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_da5rv"]
+render_priority = 0
+shader = SubResource("VisualShader_jb3mc")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_qun8o"]
+constant = Color(0.539863, 8.66354e-07, 1.92523e-07, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_3v8rk"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_h86wx"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_q4gjd"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_ftcrs"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_ewyfp"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_fxnxp"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShader" id="VisualShader_y67qc"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.539863, 0.000001, 0.000000, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_qun8o")
+nodes/fragment/2/position = Vector2(200, 220)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_3v8rk")
+nodes/fragment/3/position = Vector2(-60, 280)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_h86wx")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_q4gjd")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_ftcrs")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_ewyfp")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_fxnxp")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2y3pk"]
+render_priority = 0
+shader = SubResource("VisualShader_y67qc")
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id="VisualShaderNodeTransformVecMult_2rbm6"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id="VisualShaderNodeTransformVecMult_x60u3"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeTransformFunc" id="VisualShaderNodeTransformFunc_np0bh"]
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id="VisualShaderNodeTransformVecMult_jpx01"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_mxru6"]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeVaryingGetter" id="VisualShaderNodeVaryingGetter_8gefu"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_7bijy"]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_l7h3k"]
+constant = Color(0, 1, 0, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_agwph"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_pg38g"]
+input_name = "model_matrix"
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id="VisualShaderNodeVectorDecompose_ioucu"]
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_lxwmg"]
+function = 3
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_0frto"]
+default_input_values = [0, false, 1, Vector3(1, 1, 1), 2, Vector3(0, 0, 0)]
+op_type = 4
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_bgrqm"]
+constant = Color(1, 0, 0, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_7na0x"]
+input_name = "inv_view_matrix"
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_1h5di"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_mayfp"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_gp6bd"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_ixfe8"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_8e1i6"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_1db0w"]
+input_name = "modelview_matrix"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_ppia7"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShader" id="VisualShader_bbxtm"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying mat4 matry;
+
+
+
+
+void vertex() {
+// Input:2
+	mat4 n_out2p0 = MODELVIEW_MATRIX;
+
+
+// VaryingSetter:3
+	matry = n_out2p0;
+
+
+}
+
+void fragment() {
+// Input:9
+	mat4 n_out9p0 = INV_VIEW_MATRIX;
+
+
+// Input:14
+	vec3 n_out14p0 = VERTEX;
+
+
+// TransformVectorMult:13
+	vec3 n_out13p0 = (n_out9p0 * vec4(n_out14p0, 1.0)).xyz;
+
+
+// VectorDecompose:5
+	float n_out5p0 = n_out13p0.x;
+	float n_out5p1 = n_out13p0.y;
+	float n_out5p2 = n_out13p0.z;
+
+
+// Compare:6
+	float n_in6p1 = 0.00000;
+	bool n_out6p0 = n_out5p0 >= n_in6p1;
+
+
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.000000, 1.000000, 0.000000, 1.000000);
+
+
+// ColorConstant:8
+	vec4 n_out8p0 = vec4(1.000000, 0.000000, 0.000000, 1.000000);
+
+
+	vec3 n_out7p0;
+// Switch:7
+	n_out7p0 = mix(vec3(n_out8p0.xyz), vec3(n_out2p0.xyz), float(n_out6p0));
+
+
+// Output:0
+	ALBEDO = n_out7p0;
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(-446.052, -30.1053)
+varyings/matry = "0,7"
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_1db0w")
+nodes/vertex/2/position = Vector2(-240, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVaryingSetter_ppia7")
+nodes/vertex/3/position = Vector2(161.484, 217.73)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)
+nodes/fragment/0/position = Vector2(680, 220)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_l7h3k")
+nodes/fragment/2/position = Vector2(60, 380)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_agwph")
+nodes/fragment/3/position = Vector2(-60, 280)
+nodes/fragment/4/node = SubResource("VisualShaderNodeInput_pg38g")
+nodes/fragment/4/position = Vector2(-1180, 300)
+nodes/fragment/5/node = SubResource("VisualShaderNodeVectorDecompose_ioucu")
+nodes/fragment/5/position = Vector2(-140, 100)
+nodes/fragment/6/node = SubResource("VisualShaderNodeCompare_lxwmg")
+nodes/fragment/6/position = Vector2(164.439, 146.808)
+nodes/fragment/7/node = SubResource("VisualShaderNodeSwitch_0frto")
+nodes/fragment/7/position = Vector2(440, 340)
+nodes/fragment/8/node = SubResource("VisualShaderNodeColorConstant_bgrqm")
+nodes/fragment/8/position = Vector2(100, 480)
+nodes/fragment/9/node = SubResource("VisualShaderNodeInput_7na0x")
+nodes/fragment/9/position = Vector2(-1100, 100)
+nodes/fragment/10/node = SubResource("VisualShaderNodeTransformVecMult_2rbm6")
+nodes/fragment/10/position = Vector2(-520, 260)
+nodes/fragment/11/node = SubResource("VisualShaderNodeTransformVecMult_x60u3")
+nodes/fragment/11/position = Vector2(-600, 420)
+nodes/fragment/12/node = SubResource("VisualShaderNodeTransformFunc_np0bh")
+nodes/fragment/12/position = Vector2(-940, 240)
+nodes/fragment/13/node = SubResource("VisualShaderNodeTransformVecMult_jpx01")
+nodes/fragment/13/position = Vector2(-700, 40)
+nodes/fragment/14/node = SubResource("VisualShaderNodeInput_mxru6")
+nodes/fragment/14/position = Vector2(-1060, 20)
+nodes/fragment/15/node = SubResource("VisualShaderNodeVaryingGetter_8gefu")
+nodes/fragment/15/position = Vector2(-1140, 220)
+nodes/fragment/16/node = SubResource("VisualShaderNodeInput_7bijy")
+nodes/fragment/16/position = Vector2(-440, 200)
+nodes/fragment/connections = PackedInt32Array(5, 0, 6, 0, 6, 0, 7, 0, 2, 0, 7, 1, 8, 0, 7, 2, 15, 0, 12, 0, 12, 0, 10, 0, 13, 0, 10, 1, 14, 0, 13, 1, 9, 0, 13, 0, 7, 0, 0, 0, 13, 0, 5, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_1h5di")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_mayfp")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_gp6bd")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_ixfe8")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_8e1i6")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4upvv"]
+render_priority = 0
+shader = SubResource("VisualShader_bbxtm")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_53joe"]
+constant = Color(0.82, 0.71668, 0.1312, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_dnj0h"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_ywycw"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_j34ih"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_2xf7f"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_esfi7"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_ktch0"]
+input_name = "modelview_matrix"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_0m6jo"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShader" id="VisualShader_27yay"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying mat4 matry;
+
+
+
+
+void vertex() {
+// Input:2
+	mat4 n_out2p0 = MODELVIEW_MATRIX;
+
+
+// VaryingSetter:3
+	matry = n_out2p0;
+
+
+}
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.820000, 0.716680, 0.131200, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(81.2943, -14.2809)
+varyings/matry = "0,7"
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_ktch0")
+nodes/vertex/2/position = Vector2(-240, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVaryingSetter_0m6jo")
+nodes/vertex/3/position = Vector2(161.484, 217.73)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)
+nodes/fragment/0/position = Vector2(680, 220)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_53joe")
+nodes/fragment/2/position = Vector2(400, 180)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_dnj0h")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_ywycw")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_j34ih")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_2xf7f")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_esfi7")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hfmmx"]
+render_priority = 0
+shader = SubResource("VisualShader_27yay")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_6fkyd"]
+constant = Color(0.0191324, 0.00956619, 3.76021e-09, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_x4owf"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_cnvnd"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_irmam"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_idkpd"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_7pvrh"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_esott"]
+input_name = "modelview_matrix"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_nyruq"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShader" id="VisualShader_62ehc"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying mat4 matry;
+
+
+
+
+void vertex() {
+// Input:2
+	mat4 n_out2p0 = MODELVIEW_MATRIX;
+
+
+// VaryingSetter:3
+	matry = n_out2p0;
+
+
+}
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.019132, 0.009566, 0.000000, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(314, 44)
+varyings/matry = "0,7"
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_esott")
+nodes/vertex/2/position = Vector2(-240, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVaryingSetter_nyruq")
+nodes/vertex/3/position = Vector2(161.484, 217.73)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)
+nodes/fragment/0/position = Vector2(680, 220)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_6fkyd")
+nodes/fragment/2/position = Vector2(400, 180)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_x4owf")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_cnvnd")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_irmam")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_idkpd")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_7pvrh")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p4ggm"]
+render_priority = 0
+shader = SubResource("VisualShader_62ehc")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_giwwy"]
+constant = Color(1, 0.890196, 0.266667, 1)
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_cwtnf"]
+texture = ExtResource("6_q25oo")
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_eww6q"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_5q3vt"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_vwsxb"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_e0jmd"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_nlejt"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_grprn"]
+input_name = "modelview_matrix"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_52rvi"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShader" id="VisualShader_6qvx1"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying mat4 matry;
+
+uniform sampler2D tex_frg_3 : source_color;
+
+
+
+void vertex() {
+// Input:2
+	mat4 n_out2p0 = MODELVIEW_MATRIX;
+
+
+// VaryingSetter:3
+	matry = n_out2p0;
+
+
+}
+
+void fragment() {
+// Texture2D:3
+	vec4 n_out3p0 = texture(tex_frg_3, UV);
+
+
+// Output:0
+	ALBEDO = vec3(n_out3p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(124.152, 162.029)
+varyings/matry = "0,7"
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_grprn")
+nodes/vertex/2/position = Vector2(-240, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVaryingSetter_52rvi")
+nodes/vertex/3/position = Vector2(161.484, 217.73)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)
+nodes/fragment/0/position = Vector2(680, 220)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_giwwy")
+nodes/fragment/2/position = Vector2(400, 180)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_cwtnf")
+nodes/fragment/3/position = Vector2(298.021, 331.955)
+nodes/fragment/connections = PackedInt32Array(3, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_eww6q")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_5q3vt")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_vwsxb")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_e0jmd")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_nlejt")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ri703"]
+render_priority = 0
+shader = SubResource("VisualShader_6qvx1")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_u8ply"]
+constant = Color(0.0475577, 0.0475576, 0.0475576, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_m5qqb"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_k08go"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_ignw4"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_sj4of"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_go0ln"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_sp3ai"]
+input_name = "modelview_matrix"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_qjyqi"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShader" id="VisualShader_5l7hc"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying mat4 matry;
+
+
+
+
+void vertex() {
+// Input:2
+	mat4 n_out2p0 = MODELVIEW_MATRIX;
+
+
+// VaryingSetter:3
+	matry = n_out2p0;
+
+
+}
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.047558, 0.047558, 0.047558, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(378, 52)
+varyings/matry = "0,7"
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_sp3ai")
+nodes/vertex/2/position = Vector2(-240, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVaryingSetter_qjyqi")
+nodes/vertex/3/position = Vector2(161.484, 217.73)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)
+nodes/fragment/0/position = Vector2(680, 220)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_u8ply")
+nodes/fragment/2/position = Vector2(400, 180)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_m5qqb")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_k08go")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_ignw4")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_sj4of")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_go0ln")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5udxu"]
+render_priority = 0
+shader = SubResource("VisualShader_5l7hc")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_x6k5c"]
+constant = Color(0.76, 0.76, 0.152, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_kn3fy"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_xpiyx"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_fyfkd"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_21aaf"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_ahpps"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_0x7bu"]
+input_name = "modelview_matrix"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_hfxin"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShader" id="VisualShader_3sv6a"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying mat4 matry;
+
+
+
+
+void vertex() {
+// Input:2
+	mat4 n_out2p0 = MODELVIEW_MATRIX;
+
+
+// VaryingSetter:3
+	matry = n_out2p0;
+
+
+}
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.760000, 0.760000, 0.152000, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(273.1, 81.3)
+varyings/matry = "0,7"
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_0x7bu")
+nodes/vertex/2/position = Vector2(-240, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVaryingSetter_hfxin")
+nodes/vertex/3/position = Vector2(161.484, 217.73)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)
+nodes/fragment/0/position = Vector2(680, 220)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_x6k5c")
+nodes/fragment/2/position = Vector2(400, 180)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_kn3fy")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_xpiyx")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_fyfkd")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_21aaf")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_ahpps")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hjpo0"]
+render_priority = 0
+shader = SubResource("VisualShader_3sv6a")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_2ovp7"]
+constant = Color(0.674815, 0.674815, 0.674815, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_cdrlj"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_6h55i"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_k6nht"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_uoqlm"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_qrxcy"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_cnc07"]
+input_name = "modelview_matrix"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_vix20"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShader" id="VisualShader_5dcgo"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying mat4 matry;
+
+
+
+
+void vertex() {
+// Input:2
+	mat4 n_out2p0 = MODELVIEW_MATRIX;
+
+
+// VaryingSetter:3
+	matry = n_out2p0;
+
+
+}
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.674815, 0.674815, 0.674815, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+graph_offset = Vector2(165, 69)
+varyings/matry = "0,7"
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_cnc07")
+nodes/vertex/2/position = Vector2(-240, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVaryingSetter_vix20")
+nodes/vertex/3/position = Vector2(161.484, 217.73)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)
+nodes/fragment/0/position = Vector2(680, 220)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_2ovp7")
+nodes/fragment/2/position = Vector2(400, 180)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_cdrlj")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_6h55i")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_k6nht")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_uoqlm")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_qrxcy")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h3ueg"]
+render_priority = 0
+shader = SubResource("VisualShader_5dcgo")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_uw8jd"]
+constant = Color(0.0233182, 0.544309, 0.0236167, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_nkp3u"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_g6u7k"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_los4l"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_scoxe"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_4h30e"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_dtwmk"]
+input_name = "modelview_matrix"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_mhm55"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShader" id="VisualShader_kvnyn"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying mat4 matry;
+
+
+
+
+void vertex() {
+// Input:2
+	mat4 n_out2p0 = MODELVIEW_MATRIX;
+
+
+// VaryingSetter:3
+	matry = n_out2p0;
+
+
+}
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.023318, 0.544309, 0.023617, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+varyings/matry = "0,7"
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_dtwmk")
+nodes/vertex/2/position = Vector2(-240, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVaryingSetter_mhm55")
+nodes/vertex/3/position = Vector2(161.484, 217.73)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)
+nodes/fragment/0/position = Vector2(680, 220)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_uw8jd")
+nodes/fragment/2/position = Vector2(400, 180)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_nkp3u")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_g6u7k")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_los4l")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_scoxe")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_4h30e")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0mbkm"]
+render_priority = 0
+shader = SubResource("VisualShader_kvnyn")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_f4vnl"]
+constant = Color(0.0233182, 0.544309, 0.0236167, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_br58s"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_vv42s"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_pnpa7"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_2oa75"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_i55n0"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_psqmk"]
+input_name = "modelview_matrix"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_21i5w"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShader" id="VisualShader_n02ii"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying mat4 matry;
+
+
+
+
+void vertex() {
+// Input:2
+	mat4 n_out2p0 = MODELVIEW_MATRIX;
+
+
+// VaryingSetter:3
+	matry = n_out2p0;
+
+
+}
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.023318, 0.544309, 0.023617, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+varyings/matry = "0,7"
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_psqmk")
+nodes/vertex/2/position = Vector2(-240, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVaryingSetter_21i5w")
+nodes/vertex/3/position = Vector2(161.484, 217.73)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)
+nodes/fragment/0/position = Vector2(680, 220)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_f4vnl")
+nodes/fragment/2/position = Vector2(400, 180)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_br58s")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_vv42s")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_pnpa7")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_2oa75")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_i55n0")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yshuu"]
+render_priority = 0
+shader = SubResource("VisualShader_n02ii")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_c1e3h"]
+constant = Color(0.775063, 0.775063, 0.775063, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_1xsvd"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_cfdky"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_yhqy5"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_xblr6"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_kibp4"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_irtyh"]
+input_name = "modelview_matrix"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_1fncs"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShader" id="VisualShader_w2crf"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying mat4 matry;
+
+
+
+
+void vertex() {
+// Input:2
+	mat4 n_out2p0 = MODELVIEW_MATRIX;
+
+
+// VaryingSetter:3
+	matry = n_out2p0;
+
+
+}
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.775063, 0.775063, 0.775063, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+varyings/matry = "0,7"
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_irtyh")
+nodes/vertex/2/position = Vector2(-240, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVaryingSetter_1fncs")
+nodes/vertex/3/position = Vector2(161.484, 217.73)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)
+nodes/fragment/0/position = Vector2(680, 220)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_c1e3h")
+nodes/fragment/2/position = Vector2(400, 180)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_1xsvd")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_cfdky")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_yhqy5")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_xblr6")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_kibp4")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_usap1"]
+render_priority = 0
+shader = SubResource("VisualShader_w2crf")
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_4sk5i"]
+constant = Color(0.839216, 0, 0.0235294, 1)
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_7glai"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeCompare" id="VisualShaderNodeCompare_pdxs2"]
+function = 3
+
+[sub_resource type="VisualShaderNodeDotProduct" id="VisualShaderNodeDotProduct_d5y0m"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_4nkxp"]
+input_name = "light"
+
+[sub_resource type="VisualShaderNodeSwitch" id="VisualShaderNodeSwitch_ll65a"]
+default_input_values = [0, false, 1, 1.0, 2, 0.7]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_uitl7"]
+input_name = "modelview_matrix"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_8b6q0"]
+varying_name = "matry"
+varying_type = 7
+
+[sub_resource type="VisualShader" id="VisualShader_xlx0m"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+// Varyings
+varying mat4 matry;
+
+
+
+
+void vertex() {
+// Input:2
+	mat4 n_out2p0 = MODELVIEW_MATRIX;
+
+
+// VaryingSetter:3
+	matry = n_out2p0;
+
+
+}
+
+void fragment() {
+// ColorConstant:2
+	vec4 n_out2p0 = vec4(0.839216, 0.000000, 0.023529, 1.000000);
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+
+
+}
+
+void light() {
+// Input:2
+	vec3 n_out2p0 = NORMAL;
+
+
+// Input:6
+	vec3 n_out6p0 = LIGHT;
+
+
+// DotProduct:5
+	float n_out5p0 = dot(n_out2p0, n_out6p0);
+
+
+// Compare:3
+	float n_in3p1 = 0.00000;
+	bool n_out3p0 = n_out5p0 >= n_in3p1;
+
+
+	float n_out7p0;
+// Switch:7
+	float n_in7p1 = 1.00000;
+	float n_in7p2 = 0.70000;
+	n_out7p0 = mix(n_in7p2, n_in7p1, float(n_out3p0));
+
+
+// Output:0
+	DIFFUSE_LIGHT = vec3(n_out7p0);
+
+
+}
+"
+varyings/matry = "0,7"
+nodes/vertex/2/node = SubResource("VisualShaderNodeInput_uitl7")
+nodes/vertex/2/position = Vector2(-240, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVaryingSetter_8b6q0")
+nodes/vertex/3/position = Vector2(161.484, 217.73)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)
+nodes/fragment/0/position = Vector2(680, 220)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorConstant_4sk5i")
+nodes/fragment/2/position = Vector2(400, 180)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 0)
+nodes/light/0/position = Vector2(880, 220)
+nodes/light/2/node = SubResource("VisualShaderNodeInput_7glai")
+nodes/light/2/position = Vector2(-160, 120)
+nodes/light/3/node = SubResource("VisualShaderNodeCompare_pdxs2")
+nodes/light/3/position = Vector2(340, 200)
+nodes/light/5/node = SubResource("VisualShaderNodeDotProduct_d5y0m")
+nodes/light/5/position = Vector2(220, 160)
+nodes/light/6/node = SubResource("VisualShaderNodeInput_4nkxp")
+nodes/light/6/position = Vector2(-180, 220)
+nodes/light/7/node = SubResource("VisualShaderNodeSwitch_ll65a")
+nodes/light/7/position = Vector2(560, 260)
+nodes/light/connections = PackedInt32Array(2, 0, 5, 0, 6, 0, 5, 1, 5, 0, 3, 0, 3, 0, 7, 0, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ueuli"]
+render_priority = 0
+shader = SubResource("VisualShader_xlx0m")
+
+[sub_resource type="Animation" id="Animation_mdo8g"]
+resource_name = "ArmatureAction"
+length = 11.0833
+tracks/0/type = "position_3d"
+tracks/0/imported = true
+tracks/0/enabled = true
+tracks/0/path = NodePath("Armature/Skeleton3D:Hip")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, -1.81329e-05, 0.316329, 2.69261, 6.83333, 1, -1.8133e-05, 0.316845, 2.69232, 6.86667, 1, -1.81337e-05, 0.320841, 2.69004, 6.9, 1, -1.81349e-05, 0.328478, 2.68553, 6.93333, 1, -1.81368e-05, 0.339388, 2.67888, 6.96667, 1, -1.81326e-05, 0.353202, 2.67014, 7, 1, -1.81159e-05, 0.369551, 2.65938, 7.03333, 1, -1.8087e-05, 0.388064, 2.64668, 7.06667, 1, -1.80462e-05, 0.408374, 2.63209, 7.1, 1, -1.79936e-05, 0.43011, 2.61569, 7.13333, 1, -1.79296e-05, 0.452904, 2.59756, 7.16667, 1, -1.78545e-05, 0.476385, 2.57775, 7.2, 1, -1.77684e-05, 0.500185, 2.55633, 7.23333, 1, -1.76717e-05, 0.523935, 2.53339, 7.26667, 1, -1.75646e-05, 0.547264, 2.50897, 7.46667, 1, -1.67191e-05, 0.657877, 2.3356, 7.63333, 1, -1.57769e-05, 0.700318, 2.16903, 7.66667, 1, -1.55655e-05, 0.705418, 2.13565, 7.7, 1, -1.53471e-05, 0.709787, 2.10275, 7.73333, 1, -1.51218e-05, 0.713598, 2.07054, 7.76667, 1, -1.48899e-05, 0.717021, 2.03923, 7.8, 1, -1.46516e-05, 0.720108, 2.00902, 7.83333, 1, -1.44073e-05, 0.722285, 1.97991, 7.86667, 1, -1.41573e-05, 0.723562, 1.9518, 7.9, 1, -1.39017e-05, 0.72407, 1.92462, 7.93333, 1, -1.36411e-05, 0.723939, 1.89828, 7.96667, 1, -1.33756e-05, 0.723299, 1.87272, 8, 1, -1.31056e-05, 0.722281, 1.84785, 8.03333, 1, -1.28314e-05, 0.721014, 1.8236, 8.06667, 1, -1.25533e-05, 0.71963, 1.79989, 8.1, 1, -1.22716e-05, 0.718259, 1.77663, 8.13333, 1, -1.19866e-05, 0.71703, 1.75375, 8.16667, 1, -1.16987e-05, 0.716073, 1.73117, 8.33333, 1, -1.02256e-05, 0.72028, 1.62011, 8.36667, 1, -9.92645e-06, 0.72611, 1.59792, 8.4, 1, -9.62656e-06, 0.734899, 1.57556, 8.43333, 1, -9.32625e-06, 0.746109, 1.5528, 8.46667, 1, -9.02584e-06, 0.759206, 1.52944, 8.5, 1, -8.72566e-06, 0.773651, 1.50523, 8.53333, 1, -8.42605e-06, 0.788909, 1.47997, 8.56667, 1, -8.12732e-06, 0.804443, 1.45343, 8.6, 1, -7.82982e-06, 0.819716, 1.42538, 8.63333, 1, -7.53385e-06, 0.834192, 1.3956, 8.66667, 1, -7.23977e-06, 0.847334, 1.36388, 8.7, 1, -6.94789e-06, 0.858606, 1.32998, 8.73333, 1, -6.65855e-06, 0.867471, 1.29369, 8.76667, 1, -6.37207e-06, 0.873392, 1.25478, 8.8, 1, -6.08877e-06, 0.877719, 1.21327, 8.83333, 1, -5.80892e-06, 0.882097, 1.16943, 8.86667, 1, -5.53278e-06, 0.886436, 1.12338, 8.9, 1, -5.2606e-06, 0.890649, 1.07522, 8.93333, 1, -4.99266e-06, 0.894645, 1.02508, 8.96667, 1, -4.72921e-06, 0.898337, 0.973079, 9, 1, -4.4705e-06, 0.901634, 0.919334, 9.03333, 1, -4.21679e-06, 0.904447, 0.863964, 9.06667, 1, -3.96835e-06, 0.906688, 0.807088, 9.1, 1, -3.72544e-06, 0.908268, 0.748825, 9.13333, 1, -3.4883e-06, 0.909103, 0.689306, 9.23333, 1, -2.81327e-06, 0.908039, 0.508401, 9.26667, 1, -2.60082e-06, 0.907056, 0.449626, 9.3, 1, -2.39485e-06, 0.90604, 0.392773, 9.33333, 1, -2.1955e-06, 0.905163, 0.338539, 9.36667, 1, -2.00291e-06, 0.904593, 0.28762, 9.4, 1, -1.8172e-06, 0.9045, 0.240712, 9.43333, 1, -1.63849e-06, 0.905055, 0.198511, 9.46667, 1, -1.46691e-06, 0.906425, 0.161713, 9.5, 1, -1.30261e-06, 0.908782, 0.131014, 9.53333, 1, -1.14608e-06, 0.912229, 0.105461, 9.56667, 1, -9.98002e-07, 0.916639, 0.0834598, 9.6, 1, -8.5872e-07, 0.921834, 0.0647461, 9.63333, 1, -7.28584e-07, 0.927636, 0.0490542, 9.66667, 1, -6.07934e-07, 0.933867, 0.0361188, 9.7, 1, -4.97124e-07, 0.940349, 0.0256744, 9.73333, 1, -3.96503e-07, 0.946904, 0.017456, 9.76667, 1, -3.06414e-07, 0.953355, 0.011198, 9.8, 1, -2.27209e-07, 0.959523, 0.00663519, 9.83333, 1, -1.59232e-07, 0.96523, 0.0035023, 9.86667, 1, -1.02837e-07, 0.970298, 0.00153395, 9.9, 1, -5.83667e-08, 0.97455, 0.000464898, 9.93333, 1, -2.61737e-08, 0.977807, 2.97362e-05, 9.96667, 1, -6.60047e-09, 0.979892, -3.67719e-05, 11.0833, 1, 2.95978e-17, 0.980627, -3.50867e-24)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = true
+tracks/1/enabled = true
+tracks/1/path = NodePath("Armature/Skeleton3D:Spine Lower")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0.178636, -3.79133e-14, 4.259e-08, 0.983915, 6.96667, 1, 0.177965, 8.51771e-12, 4.25924e-08, 0.984037, 7, 1, 0.176011, 3.34546e-11, 4.25993e-08, 0.984388, 7.03333, 1, 0.172857, 7.36712e-11, 4.26099e-08, 0.984947, 7.06667, 1, 0.168585, 1.28099e-10, 4.26236e-08, 0.985687, 7.1, 1, 0.163279, 1.95653e-10, 4.26395e-08, 0.98658, 7.13333, 1, 0.15702, 2.75253e-10, 4.26566e-08, 0.987595, 7.16667, 1, 0.14989, 3.65826e-10, 4.26741e-08, 0.988703, 7.2, 1, 0.141972, 4.66261e-10, 4.26908e-08, 0.989871, 7.23333, 1, 0.133351, 5.75457e-10, 4.27059e-08, 0.991069, 7.26667, 1, 0.124111, 6.92302e-10, 4.27185e-08, 0.992268, 7.3, 1, 0.114339, 8.15653e-10, 4.27277e-08, 0.993442, 7.33333, 1, 0.104124, 9.44368e-10, 4.2733e-08, 0.994564, 7.36667, 1, 0.0935551, 1.07729e-09, 4.27336e-08, 0.995614, 7.4, 1, 0.0827234, 1.21326e-09, 4.27293e-08, 0.996573, 7.53333, 1, 0.0386208, 1.76413e-09, 4.26599e-08, 0.999254, 7.56667, 1, 0.0278678, 1.89777e-09, 4.26304e-08, 0.999612, 7.6, 1, 0.0174104, 2.02749e-09, 4.25969e-08, 0.999848, 7.63333, 1, 0.00734062, 2.15217e-09, 4.25603e-08, 0.999973, 7.66667, 1, -0.00225021, 2.27071e-09, 4.25215e-08, 0.999998, 7.7, 1, -0.011272, 2.38203e-09, 4.24813e-08, 0.999936, 7.73333, 1, -0.0196359, 2.48507e-09, 4.24411e-08, 0.999807, 7.76667, 1, -0.0272541, 2.57878e-09, 4.24017e-08, 0.999629, 7.8, 1, -0.0340399, 2.66215e-09, 4.23647e-08, 0.99942, 7.83333, 1, -0.0399075, 2.73415e-09, 4.2331e-08, 0.999203, 7.86667, 1, -0.0447717, 2.79378e-09, 4.2302e-08, 0.998997, 7.9, 1, -0.0485473, 2.84003e-09, 4.22788e-08, 0.998821, 7.93333, 1, -0.0511493, 2.87189e-09, 4.22625e-08, 0.998691, 7.96667, 1, -0.0524919, 2.88832e-09, 4.22539e-08, 0.998621, 11.0833, 1, -0.0526639, -3.92453e-14, -1.2556e-08, 0.998612)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = true
+tracks/2/enabled = true
+tracks/2/path = NodePath("Armature/Skeleton3D:Spine Upper")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, -0.0169518, -5.34719e-15, -4.04162e-09, 0.999856, 6.83333, 1, -0.0166602, -1.18235e-12, -4.04162e-09, 0.999861, 6.86667, 1, -0.0144386, -1.01622e-11, -4.04161e-09, 0.999896, 6.9, 1, -0.0102794, -2.69758e-11, -4.04153e-09, 0.999947, 6.93333, 1, -0.0044786, -5.04165e-11, -4.04131e-09, 0.99999, 6.96667, 1, 0.00266742, -7.93024e-11, -4.04085e-09, 0.999996, 7, 1, 0.0108611, -1.12413e-10, -4.04006e-09, 0.999941, 7.03333, 1, 0.0198035, -1.48537e-10, -4.03889e-09, 0.999804, 7.06667, 1, 0.0291942, -1.86478e-10, -4.03732e-09, 0.999574, 7.1, 1, 0.0387324, -2.2499e-10, -4.03535e-09, 0.99925, 7.13333, 1, 0.0481172, -2.62889e-10, -4.03306e-09, 0.998842, 7.16667, 1, 0.0570481, -2.98949e-10, -4.03055e-09, 0.998371, 7.2, 1, 0.0652267, -3.31963e-10, -4.02796e-09, 0.997871, 7.23333, 1, 0.0723558, -3.60738e-10, -4.02549e-09, 0.997379, 7.26667, 1, 0.0781403, -3.84079e-10, -4.02333e-09, 0.996942, 7.3, 1, 0.0822864, -4.00817e-10, -4.0217e-09, 0.996609, 7.33333, 1, 0.0845005, -4.09743e-10, -4.0208e-09, 0.996423, 11.0833, 1, 0.0847911, -1.03624e-14, 2.02158e-08, 0.996399)
+tracks/3/type = "rotation_3d"
+tracks/3/imported = true
+tracks/3/enabled = true
+tracks/3/path = NodePath("Armature/Skeleton3D:Shoulder L")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0, 1, -0.169042, -0.146583, -0.819576, 0.527478, 6.86667, 1, -0.169191, -0.146745, -0.819976, 0.526764, 6.9, 1, -0.169378, -0.147031, -0.820651, 0.525571, 6.93333, 1, -0.169537, -0.14746, -0.821614, 0.523892, 6.96667, 1, -0.169351, -0.147916, -0.822882, 0.52183, 7, 1, -0.16849, -0.148298, -0.824465, 0.519496, 7.03333, 1, -0.16685, -0.148639, -0.826312, 0.516988, 7.06667, 1, -0.164326, -0.148969, -0.828362, 0.514414, 7.1, 1, -0.160831, -0.149321, -0.830546, 0.511889, 7.13333, 1, -0.156307, -0.149721, -0.832784, 0.509531, 7.16667, 1, -0.150748, -0.150193, -0.834988, 0.507457, 7.2, 1, -0.14421, -0.150751, -0.837063, 0.50577, 7.23333, 1, -0.136834, -0.151394, -0.838917, 0.504554, 7.26667, 1, -0.128841, -0.152112, -0.840466, 0.503863, 7.33333, 1, -0.112179, -0.153656, -0.842433, 0.504095, 7.36667, 1, -0.104086, -0.154441, -0.842836, 0.504918, 7.4, 1, -0.0962543, -0.155481, -0.84301, 0.505861, 7.43333, 1, -0.0887837, -0.15686, -0.842967, 0.506871, 7.46667, 1, -0.0817653, -0.158601, -0.84271, 0.507937, 7.5, 1, -0.0752861, -0.160582, -0.842298, 0.508998, 7.53333, 1, -0.0693886, -0.162723, -0.841771, 0.510027, 7.56667, 1, -0.0640798, -0.164965, -0.84116, 0.511009, 7.6, 1, -0.0593469, -0.167251, -0.840492, 0.511936, 7.63333, 1, -0.0551654, -0.169532, -0.839788, 0.512807, 7.66667, 1, -0.0515056, -0.171767, -0.839069, 0.513622, 7.7, 1, -0.0483369, -0.17392, -0.838346, 0.514384, 7.73333, 1, -0.0456306, -0.175966, -0.837631, 0.5151, 7.76667, 1, -0.0433619, -0.177886, -0.83693, 0.515776, 7.8, 1, -0.0415074, -0.179688, -0.836237, 0.516427, 7.83333, 1, -0.0400214, -0.181512, -0.835499, 0.517101, 7.9, 1, -0.0380196, -0.185395, -0.833831, 0.518564, 7.93333, 1, -0.0374626, -0.187504, -0.832884, 0.519367, 7.96667, 1, -0.0371863, -0.189753, -0.831851, 0.520226, 8, 1, -0.0371714, -0.192123, -0.830732, 0.521145, 8.03333, 1, -0.0373225, -0.194391, -0.82959, 0.52211, 8.06667, 1, -0.0376205, -0.196511, -0.828442, 0.523117, 8.1, 1, -0.038063, -0.198472, -0.827293, 0.524163, 8.13333, 1, -0.0386489, -0.200262, -0.826147, 0.525245, 8.16667, 1, -0.0393787, -0.201867, -0.825012, 0.526359, 8.23333, 1, -0.041278, -0.204461, -0.822803, 0.528665, 8.26667, 1, -0.0424539, -0.205417, -0.821745, 0.529846, 8.36667, 1, -0.0470313, -0.206212, -0.819105, 0.533228, 8.4, 1, -0.0490006, -0.205305, -0.818649, 0.534099, 8.43333, 1, -0.0511807, -0.20389, -0.818379, 0.534851, 8.46667, 1, -0.0535479, -0.202083, -0.818243, 0.535513, 8.5, 1, -0.0560745, -0.200001, -0.818189, 0.536118, 8.53333, 1, -0.0587276, -0.197761, -0.818166, 0.5367, 8.6, 1, -0.0642579, -0.193274, -0.818012, 0.537934, 8.63333, 1, -0.0670458, -0.191253, -0.817788, 0.538656, 8.66667, 1, -0.0697827, -0.189522, -0.817409, 0.539494, 8.7, 1, -0.0724149, -0.188177, -0.816837, 0.540484, 8.73333, 1, -0.0748866, -0.187311, -0.816035, 0.541658, 8.76667, 1, -0.0771398, -0.187006, -0.814969, 0.54305, 8.8, 1, -0.0791859, -0.187041, -0.813767, 0.544544, 8.83333, 1, -0.0810652, -0.187149, -0.812582, 0.545999, 8.86667, 1, -0.0827541, -0.187339, -0.811424, 0.5474, 8.9, 1, -0.0842341, -0.187618, -0.810304, 0.548736, 8.93333, 1, -0.0854908, -0.187995, -0.80923, 0.549997, 8.96667, 1, -0.0865133, -0.188476, -0.808207, 0.551174, 9, 1, -0.0872943, -0.189066, -0.807243, 0.552262, 9.03333, 1, -0.0878293, -0.189771, -0.806339, 0.553254, 9.16667, 1, -0.0875294, -0.193791, -0.803375, 0.556213, 9.2, 1, -0.0869753, -0.194999, -0.802799, 0.556709, 9.23333, 1, -0.0863469, -0.196189, -0.802289, 0.557123, 9.26667, 1, -0.0857014, -0.197311, -0.801846, 0.557465, 9.3, 1, -0.0850897, -0.198321, -0.801469, 0.557742, 9.33333, 1, -0.0845579, -0.199179, -0.801157, 0.557965, 9.4, 1, -0.0839048, -0.200281, -0.800734, 0.558276, 9.5, 1, -0.0844153, -0.199826, -0.800727, 0.558372, 9.53333, 1, -0.0846705, -0.199061, -0.801171, 0.55797, 9.56667, 1, -0.0847756, -0.198071, -0.801909, 0.557246, 9.6, 1, -0.0847841, -0.196848, -0.802898, 0.556253, 9.63333, 1, -0.084751, -0.195379, -0.804097, 0.555042, 9.66667, 1, -0.0847376, -0.193651, -0.805462, 0.55367, 9.7, 1, -0.0848159, -0.191653, -0.806942, 0.552196, 9.73333, 1, -0.0850744, -0.189377, -0.808479, 0.55069, 9.76667, 1, -0.085622, -0.18682, -0.810004, 0.549237, 9.8, 1, -0.0865921, -0.183992, -0.81143, 0.547933, 9.83333, 1, -0.0881447, -0.180917, -0.812654, 0.546893, 9.86667, 1, -0.0904633, -0.17764, -0.813551, 0.546256, 9.9, 1, -0.093743, -0.174231, -0.813968, 0.546179, 9.93333, 1, -0.0981653, -0.170795, -0.813729, 0.546844, 9.96667, 1, -0.103771, -0.167585, -0.812598, 0.548481, 10, 1, -0.110015, -0.165389, -0.810244, 0.551405, 10.0333, 1, -0.116574, -0.16419, -0.806709, 0.555583, 10.0667, 1, -0.123173, -0.163789, -0.802114, 0.560906, 10.1, 1, -0.129475, -0.164069, -0.796567, 0.567273, 10.1333, 1, -0.13516, -0.164881, -0.790242, 0.574512, 10.2, 1, -0.143787, -0.167382, -0.776265, 0.590526, 10.2333, 1, -0.14657, -0.168725, -0.769213, 0.598632, 10.2667, 1, -0.148415, -0.169953, -0.76252, 0.606343, 10.3, 1, -0.149488, -0.170993, -0.756444, 0.613357, 10.3333, 1, -0.149986, -0.171818, -0.75119, 0.619433, 10.3667, 1, -0.15011, -0.172436, -0.74691, 0.624386, 10.4, 1, -0.150037, -0.172868, -0.743722, 0.628079, 10.4333, 1, -0.149915, -0.17313, -0.741727, 0.630391, 10.4667, 1, -0.149855, -0.173224, -0.741033, 0.631195, 11.0833, 1, -0.149855, -0.173224, -0.741033, 0.631195)
+tracks/4/type = "rotation_3d"
+tracks/4/imported = true
+tracks/4/enabled = true
+tracks/4/path = NodePath("Armature/Skeleton3D:Arm 1 L")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0, 1, 0.046561, 0.298892, -0.0631946, 0.951053, 6.83333, 1, 0.0469183, 0.298933, -0.0632873, 0.951017, 6.86667, 1, 0.0496878, 0.299234, -0.0639722, 0.950735, 6.9, 1, 0.0550416, 0.299759, -0.06517, 0.950194, 6.93333, 1, 0.0628132, 0.300424, -0.0666715, 0.949397, 6.96667, 1, 0.0730192, 0.301271, -0.0684641, 0.94827, 7, 1, 0.0855744, 0.302234, -0.0705528, 0.94676, 7.03333, 1, 0.100104, 0.30302, -0.072782, 0.944913, 7.06667, 1, 0.116159, 0.303323, -0.0750563, 0.942798, 7.1, 1, 0.13324, 0.302842, -0.0773464, 0.940506, 7.13333, 1, 0.150839, 0.301318, -0.0796913, 0.938139, 7.23333, 1, 0.202553, 0.289198, -0.0883035, 0.931418, 7.3, 1, 0.234111, 0.275579, -0.0972525, 0.927249, 7.33333, 1, 0.249374, 0.267981, -0.103484, 0.924819, 7.36667, 1, 0.265103, 0.260465, -0.111158, 0.921695, 7.4, 1, 0.282843, 0.253379, -0.119241, 0.917377, 7.43333, 1, 0.302985, 0.247153, -0.127295, 0.911543, 7.46667, 1, 0.326039, 0.242332, -0.135453, 0.903674, 7.5, 1, 0.354202, 0.239782, -0.146304, 0.891987, 7.53333, 1, 0.393785, 0.240593, -0.166575, 0.871379, 7.56667, 1, 0.439823, 0.245, -0.192537, 0.842294, 7.6, 1, 0.446723, 0.249429, -0.178574, 0.840437, 7.63333, 1, 0.453416, 0.256251, -0.163673, 0.837831, 7.66667, 1, 0.459734, 0.265349, -0.147955, 0.834472, 7.7, 1, 0.465519, 0.27649, -0.131589, 0.830379, 7.73333, 1, 0.470634, 0.289338, -0.114789, 0.825597, 7.76667, 1, 0.474964, 0.303462, -0.0978203, 0.820214, 7.8, 1, 0.47846, 0.31841, -0.0808712, 0.814341, 7.83333, 1, 0.481252, 0.334021, -0.0634665, 0.807959, 7.93333, 1, 0.485165, 0.381302, -0.0089911, 0.786856, 7.96667, 1, 0.484889, 0.39592, 0.0094015, 0.77977, 8, 1, 0.483802, 0.409461, 0.0275541, 0.772993, 8.03333, 1, 0.48186, 0.422252, 0.0448885, 0.766485, 8.06667, 1, 0.479136, 0.43417, 0.0611243, 0.760388, 8.1, 1, 0.475738, 0.445029, 0.0760638, 0.754875, 8.13333, 1, 0.471783, 0.454688, 0.0895397, 0.750108, 8.16667, 1, 0.467388, 0.463043, 0.10141, 0.746227, 8.2, 1, 0.462666, 0.470021, 0.111556, 0.743354, 8.23333, 1, 0.457721, 0.475571, 0.119878, 0.741588, 8.26667, 1, 0.452641, 0.479653, 0.126288, 0.741013, 8.3, 1, 0.447503, 0.482226, 0.130704, 0.741698, 8.33333, 1, 0.442431, 0.483072, 0.132682, 0.743836, 8.36667, 1, 0.437831, 0.481188, 0.130246, 0.748196, 8.4, 1, 0.433629, 0.476561, 0.123634, 0.754699, 8.43333, 1, 0.429601, 0.469303, 0.113463, 0.763101, 8.46667, 1, 0.425476, 0.459544, 0.100383, 0.773119, 8.5, 1, 0.420981, 0.447483, 0.0851028, 0.784405, 8.53333, 1, 0.415874, 0.433448, 0.0684049, 0.79655, 8.56667, 1, 0.409988, 0.41791, 0.051136, 0.809102, 8.6, 1, 0.403262, 0.401472, 0.0341717, 0.821603, 8.63333, 1, 0.395753, 0.384819, 0.0183657, 0.833641, 8.66667, 1, 0.387624, 0.368648, 0.0044975, 0.844882, 8.7, 1, 0.379118, 0.353602, -0.00676086, 0.855096, 8.73333, 1, 0.370508, 0.340224, -0.0148605, 0.864147, 8.76667, 1, 0.362062, 0.32893, -0.019365, 0.871976, 8.83333, 1, 0.345986, 0.307845, -0.0239012, 0.885976, 8.86667, 1, 0.338492, 0.296809, -0.0256389, 0.892564, 8.9, 1, 0.331512, 0.285517, -0.0269982, 0.898805, 8.93333, 1, 0.325142, 0.274019, -0.0279759, 0.904662, 8.96667, 1, 0.319463, 0.262367, -0.0285753, 0.910104, 9, 1, 0.314542, 0.250612, -0.0288059, 0.91511, 9.03333, 1, 0.310433, 0.238812, -0.0286794, 0.919662, 9.06667, 1, 0.307175, 0.227025, -0.0282079, 0.923746, 9.1, 1, 0.3048, 0.215318, -0.0274036, 0.927353, 9.13333, 1, 0.303323, 0.203754, -0.0262821, 0.930478, 9.2, 1, 0.30257, 0.180728, -0.0238081, 0.935533, 9.23333, 1, 0.302902, 0.168948, -0.0229462, 0.937646, 9.26667, 1, 0.303465, 0.156807, -0.0225999, 0.93958, 9.3, 1, 0.30409, 0.1442, -0.022927, 0.941387, 9.33333, 1, 0.30462, 0.131055, -0.0240539, 0.943108, 9.36667, 1, 0.304898, 0.117338, -0.0260804, 0.944769, 9.4, 1, 0.304769, 0.103069, -0.0290784, 0.946386, 9.43333, 1, 0.304068, 0.0883258, -0.0330963, 0.947969, 9.46667, 1, 0.30262, 0.0732494, -0.0381629, 0.949526, 9.5, 1, 0.300949, 0.0578193, -0.0446791, 0.950837, 9.53333, 1, 0.29976, 0.0419356, -0.052972, 0.951619, 9.56667, 1, 0.29912, 0.0257427, -0.0628758, 0.951794, 9.6, 1, 0.298719, 0.00949821, -0.0742329, 0.951402, 9.63333, 1, 0.298255, -0.00653109, -0.0868757, 0.950502, 9.7, 1, 0.295953, -0.0367316, -0.115161, 0.947524, 9.73333, 1, 0.293522, -0.050179, -0.130212, 0.945712, 9.76667, 1, 0.28985, -0.0619553, -0.145333, 0.943942, 9.8, 1, 0.284656, -0.0715797, -0.159995, 0.94247, 9.83333, 1, 0.277665, -0.0785555, -0.173572, 0.941597, 9.86667, 1, 0.268597, -0.0824075, -0.185344, 0.941654, 9.9, 1, 0.257159, -0.0827327, -0.194521, 0.942967, 9.93333, 1, 0.243024, -0.0792633, -0.200278, 0.945804, 9.96667, 1, 0.226286, -0.07179, -0.201454, 0.950293, 10, 1, 0.209282, -0.0599595, -0.19575, 0.956184, 10.0333, 1, 0.191708, -0.0449244, -0.183748, 0.96305, 10.0667, 1, 0.16162, -0.0271039, -0.160684, 0.973306, 10.1, 1, 0.0552287, -0.0039788, -0.0915525, 0.99426, 10.1333, 1, -0.000205525, 0.0141035, -0.0447073, 0.998901, 10.1667, 1, -0.0424077, 0.0293557, -0.0027129, 0.998665, 10.2, 1, -0.0751608, 0.041813, 0.0346841, 0.995691, 10.2333, 1, -0.099347, 0.0516643, 0.066551, 0.99148, 10.2667, 1, -0.115042, 0.0593936, 0.091913, 0.987314, 10.3, 1, -0.12217, 0.0657723, 0.110076, 0.984191, 10.3333, 1, -0.12095, 0.071863, 0.120784, 0.982659, 10.3667, 1, -0.111783, 0.0793325, 0.12398, 0.982772, 10.4, 1, -0.0956255, 0.0919351, 0.119782, 0.983898, 10.4333, 1, -0.0746293, 0.120748, 0.108027, 0.983962, 10.4667, 1, -0.0576865, 0.159771, 0.0934598, 0.981025, 11.0833, 1, -0.0576865, 0.159771, 0.0934598, 0.981025)
+tracks/5/type = "rotation_3d"
+tracks/5/imported = true
+tracks/5/enabled = true
+tracks/5/path = NodePath("Armature/Skeleton3D:Arm 2 L")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = PackedFloat32Array(0, 1, 0.598925, 6.66503e-05, -0.333242, 0.728175, 6.93333, 1, 0.598722, 6.67019e-05, -0.333129, 0.728393, 6.96667, 1, 0.597719, 6.67464e-05, -0.332571, 0.729471, 7, 1, 0.595361, 6.71272e-05, -0.331259, 0.731992, 7.03333, 1, 0.591511, 6.74437e-05, -0.329117, 0.736069, 7.06667, 1, 0.58603, 6.79684e-05, -0.326067, 0.741787, 7.1, 1, 0.578775, 6.85877e-05, -0.322031, 0.74921, 7.13333, 1, 0.569584, 6.93993e-05, -0.316917, 0.758378, 7.16667, 1, 0.558274, 7.04854e-05, -0.310624, 0.769313, 7.2, 1, 0.544605, 7.16058e-05, -0.303019, 0.782039, 7.23333, 1, 0.528194, 7.30053e-05, -0.293887, 0.796644, 7.26667, 1, 0.508698, 7.44884e-05, -0.28304, 0.813089, 7.3, 1, 0.485406, 7.61072e-05, -0.27008, 0.831528, 7.33333, 1, 0.457255, 7.80409e-05, -0.254417, 0.852167, 7.36667, 1, 0.423215, 8.01652e-05, -0.235477, 0.874894, 7.4, 1, 0.384381, 8.22911e-05, -0.213869, 0.89806, 7.43333, 1, 0.340693, 8.43227e-05, -0.189562, 0.920866, 7.46667, 1, 0.290642, 8.63827e-05, -0.161714, 0.943067, 7.5, 1, 0.226598, 8.84473e-05, -0.12608, 0.965794, 7.53333, 1, 0.127067, 9.0607e-05, -0.0707003, 0.989371, 7.56667, 1, 0.00271484, 9.1578e-05, -0.0015105, 0.999995, 10.0333, 1, 0.00271693, 9.15755e-05, -0.00151173, 0.999995, 10.0667, 1, 0.0286415, 9.15329e-05, -0.0159361, 0.999463, 10.1, 1, 0.225867, 8.84972e-05, -0.125673, 0.966018, 10.1333, 1, 0.300542, 8.60412e-05, -0.167222, 0.938995, 10.1667, 1, 0.342134, 8.42776e-05, -0.190364, 0.920166, 10.2, 1, 0.361226, 8.33992e-05, -0.200986, 0.91056, 10.2333, 1, 0.361986, 8.33536e-05, -0.201409, 0.910165, 10.2667, 1, 0.346678, 8.40602e-05, -0.192892, 0.917937, 10.3, 1, 0.316797, 8.53646e-05, -0.176266, 0.931971, 10.3333, 1, 0.2739, 8.69372e-05, -0.152398, 0.949607, 10.3667, 1, 0.21936, 8.86257e-05, -0.122052, 0.967979, 10.4, 1, 0.15516, 9.01474e-05, -0.0863311, 0.98411, 10.4333, 1, 0.0843642, 9.11527e-05, -0.0469403, 0.995329, 10.4667, 1, 0.0289832, 9.15238e-05, -0.0161263, 0.99945, 11.0833, 1, 0.0289832, 9.15238e-05, -0.0161263, 0.99945)
+tracks/6/type = "rotation_3d"
+tracks/6/imported = true
+tracks/6/enabled = true
+tracks/6/path = NodePath("Armature/Skeleton3D:Neck")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = PackedFloat32Array(0, 1, -0.0980266, -3.34679e-16, -2.33714e-08, 0.995184, 6.83333, 1, -0.0972698, 3.07257e-12, -2.33738e-08, 0.995258, 6.86667, 1, -0.0914983, 2.65573e-11, -2.3392e-08, 0.995805, 6.9, 1, -0.0806662, 7.05773e-11, -2.34241e-08, 0.996741, 6.93333, 1, -0.0655044, 1.32132e-10, -2.34643e-08, 0.997852, 6.96667, 1, -0.0467519, 2.08124e-10, -2.35065e-08, 0.998907, 7, 1, -0.0251686, 2.95405e-10, -2.35448e-08, 0.999683, 7.03333, 1, -0.0015426, 3.90743e-10, -2.35741e-08, 0.999999, 7.06667, 1, 0.0233117, 4.90802e-10, -2.35907e-08, 0.999728, 7.1, 1, 0.0485621, 5.92206e-10, -2.35926e-08, 0.99882, 7.13333, 1, 0.0733716, 6.91591e-10, -2.35798e-08, 0.997305, 7.16667, 1, 0.0969139, 7.85661e-10, -2.35542e-08, 0.995293, 7.2, 1, 0.118386, 8.71269e-10, -2.35192e-08, 0.992968, 7.23333, 1, 0.137014, 9.45382e-10, -2.34799e-08, 0.990569, 7.26667, 1, 0.152057, 1.00513e-09, -2.3442e-08, 0.988372, 7.3, 1, 0.162794, 1.04772e-09, -2.34115e-08, 0.98666, 7.33333, 1, 0.168511, 1.07039e-09, -2.33942e-08, 0.9857, 11.0833, 1, 0.16926, 7.43475e-15, 4.03548e-08, 0.985571)
+tracks/7/type = "rotation_3d"
+tracks/7/imported = true
+tracks/7/enabled = true
+tracks/7/path = NodePath("Armature/Skeleton3D:Head")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = PackedFloat32Array(0, 1, -0.330272, -3.76392e-15, -7.87429e-08, 0.943886)
+tracks/8/type = "rotation_3d"
+tracks/8/imported = true
+tracks/8/enabled = true
+tracks/8/path = NodePath("Armature/Skeleton3D:Eye L")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = PackedFloat32Array(0, 1, -0.0225178, 0.63433, 0.771282, 0.0473535, 1.76667, 1, -0.0225178, 0.63433, 0.771282, 0.0473535, 1.8, 1, -0.0941191, 0.612633, 0.760691, 0.192797, 2.03333, 1, -0.0941188, 0.612634, 0.760691, 0.192796, 2.06667, 1, -0.111355, -0.603921, -0.756258, 0.225729, 2.3, 1, -0.111355, -0.603921, -0.756257, 0.22573, 2.33333, 1, -0.133846, -0.523453, -0.814029, 0.213166, 3.16667, 1, -0.133846, -0.523453, -0.814029, 0.213166, 3.2, 1, -0.0286438, 0.627516, 0.775837, 0.0589882, 3.93333, 1, -0.0286438, 0.627516, 0.775837, 0.0589882, 3.96667, 1, -0.137569, 0.547236, 0.791012, 0.236451, 4.43333, 1, -0.137569, 0.547236, 0.791012, 0.236451, 4.46667, 1, -0.0918623, 0.683046, 0.677211, 0.257673, 5.03333, 1, -0.0918623, 0.683046, 0.677211, 0.257673, 5.06667, 1, -0.0232546, -0.729311, -0.679969, 0.0721609, 5.53333, 1, -0.0232546, -0.729311, -0.679969, 0.0721609, 5.56667, 1, -0.0232722, -0.613871, -0.787733, 0.0457959, 6.13333, 1, -0.0232722, -0.613871, -0.787733, 0.0457959, 6.16667, 1, -0.0230418, 0.634265, 0.771252, 0.0484516, 6.83333, 1, -0.0231288, 0.634641, 0.770941, 0.0484327, 6.86667, 1, -0.0237909, 0.637421, 0.768635, 0.0482681, 6.9, 1, -0.025024, 0.642427, 0.764439, 0.047895, 6.93333, 1, -0.0267216, 0.649126, 0.758741, 0.047253, 6.96667, 1, -0.0287006, 0.656134, 0.752682, 0.0461998, 7, 1, -0.0307478, 0.662258, 0.747314, 0.0446235, 7.03333, 1, -0.0326895, 0.667362, 0.742799, 0.0425354, 7.06667, 1, -0.034354, 0.671397, 0.73922, 0.0399942, 7.1, 1, -0.0355939, 0.674356, 0.736614, 0.0371065, 7.13333, 1, -0.0363073, 0.676209, 0.735028, 0.0340158, 7.16667, 1, -0.0364493, 0.676849, 0.73457, 0.0308816, 7.2, 1, -0.0360324, 0.676036, 0.735459, 0.0278563, 7.23333, 1, -0.0351136, 0.673385, 0.738033, 0.0250664, 7.26667, 1, -0.0337765, 0.668363, 0.742724, 0.0226016, 7.3, 1, -0.0321117, 0.660312, 0.750024, 0.0205131, 7.33333, 1, -0.0302026, 0.648463, 0.760414, 0.0188183, 7.36667, 1, -0.028151, 0.632889, 0.773533, 0.0174918, 7.4, 1, -0.0262026, 0.618648, 0.78506, 0.0164055, 7.43333, 1, -0.0243944, 0.606524, 0.79454, 0.015501, 7.46667, 1, -0.0227241, 0.596331, 0.802281, 0.0147414, 7.5, 1, -0.0211977, 0.58746, 0.808853, 0.0140886, 7.53333, 1, -0.0198117, 0.579604, 0.814545, 0.0135196, 7.56667, 1, -0.0185584, 0.572583, 0.819533, 0.0130184, 7.6, 1, -0.0174288, 0.566265, 0.823943, 0.0125729, 7.63333, 1, -0.0164141, 0.560556, 0.827864, 0.0121738, 7.66667, 1, -0.0155053, 0.555392, 0.83136, 0.011814, 7.7, 1, -0.0146944, 0.550733, 0.834473, 0.0114878, 7.73333, 1, -0.0139738, 0.546557, 0.83723, 0.0111909, 7.76667, 1, -0.0133367, 0.542857, 0.839648, 0.0109196, 7.8, 1, -0.0127766, 0.539681, 0.841705, 0.0106718, 7.83333, 1, -0.0122826, 0.537323, 0.843222, 0.0104469, 7.86667, 1, -0.0118469, 0.535863, 0.84416, 0.0102409, 7.93333, 1, -0.0111307, 0.535789, 0.844221, 0.00987101, 7.96667, 1, -0.0108421, 0.537259, 0.843292, 0.00970113, 8, 1, -0.0105926, 0.539649, 0.841769, 0.00953861, 8.03333, 1, -0.0103615, 0.54211, 0.840191, 0.00938551, 8.06667, 1, -0.0101443, 0.544474, 0.838665, 0.00924091, 8.1, 1, -0.0099397, 0.546717, 0.837209, 0.00910325, 8.13333, 1, -0.00974647, 0.548812, 0.835841, 0.00897124, 8.16667, 1, -0.00956362, 0.550737, 0.834577, 0.00884371, 8.2, 1, -0.00939019, 0.55247, 0.833434, 0.00871956, 8.23333, 1, -0.00922546, 0.553988, 0.832429, 0.00859795, 8.26667, 1, -0.00906862, 0.555271, 0.831577, 0.00847791, 8.3, 1, -0.00891906, 0.556299, 0.830892, 0.00835876, 8.36667, 1, -0.00864822, 0.55677, 0.830582, 0.00811409, 8.4, 1, -0.00852925, 0.555822, 0.831219, 0.00798418, 8.43333, 1, -0.00841697, 0.554302, 0.832236, 0.00785025, 8.46667, 1, -0.00830832, 0.552388, 0.83351, 0.00771324, 8.5, 1, -0.00820051, 0.550247, 0.834927, 0.00757405, 8.53333, 1, -0.00809118, 0.548038, 0.836381, 0.00743352, 8.56667, 1, -0.00797807, 0.545914, 0.837772, 0.00729233, 8.6, 1, -0.00785946, 0.544014, 0.839009, 0.00715129, 8.63333, 1, -0.00773385, 0.542472, 0.840009, 0.00701104, 8.66667, 1, -0.00760003, 0.541409, 0.840697, 0.00687224, 8.73333, 1, -0.00730426, 0.541148, 0.84087, 0.0066006, 8.76667, 1, -0.00714139, 0.542134, 0.840237, 0.00646866, 8.8, 1, -0.00697232, 0.543558, 0.839318, 0.00633707, 8.83333, 1, -0.00680185, 0.545037, 0.838362, 0.00620402, 8.9, 1, -0.00646082, 0.548166, 0.836324, 0.00593732, 8.93333, 1, -0.00629206, 0.549821, 0.835238, 0.00580526, 8.96667, 1, -0.00612549, 0.551542, 0.834106, 0.00567499, 9, 1, -0.00596161, 0.553328, 0.832924, 0.00554692, 9.03333, 1, -0.00580086, 0.555182, 0.831691, 0.00542151, 9.06667, 1, -0.00564378, 0.557107, 0.830405, 0.00529921, 9.1, 1, -0.00549055, 0.559103, 0.829064, 0.00518025, 9.16667, 1, -0.00519759, 0.563283, 0.826233, 0.00495369, 9.2, 1, -0.00506025, 0.565385, 0.824797, 0.00484743, 9.23333, 1, -0.00493063, 0.567429, 0.823394, 0.00474676, 9.26667, 1, -0.00480966, 0.569374, 0.822051, 0.00465225, 9.3, 1, -0.00469802, 0.571185, 0.820795, 0.00456436, 9.33333, 1, -0.00459631, 0.572829, 0.81965, 0.00448348, 9.36667, 1, -0.00450485, 0.574279, 0.818635, 0.00440985, 9.4, 1, -0.00442403, 0.575509, 0.817772, 0.00434377, 9.43333, 1, -0.00435418, 0.576494, 0.817078, 0.0042855, 9.5, 1, -0.0042489, 0.577631, 0.816277, 0.00419353, 9.66667, 1, -0.00412195, 0.576567, 0.817029, 0.00405765, 9.73333, 1, -0.00410305, 0.57532, 0.817908, 0.00402673, 9.8, 1, -0.00409535, 0.573954, 0.818868, 0.00400579, 9.86667, 1, -0.00409473, 0.572694, 0.81975, 0.00399286, 9.93333, 1, -0.00409723, 0.571767, 0.820396, 0.00398629, 11.0833, 1, -0.00409894, 0.571407, 0.820647, 0.00398444)
+tracks/9/type = "rotation_3d"
+tracks/9/imported = true
+tracks/9/enabled = true
+tracks/9/path = NodePath("Armature/Skeleton3D:Eye R")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = PackedFloat32Array(0, 1, -0.0235884, -0.634196, -0.771219, 0.0495971, 1.76667, 1, -0.0235884, -0.634196, -0.771219, 0.0495971, 1.8, 1, -0.0519572, 0.628464, 0.768481, 0.108487, 2.03333, 1, -0.051957, 0.628465, 0.768481, 0.108486, 2.06667, 1, -0.145883, -0.583162, -0.74526, 0.288494, 2.3, 1, -0.145883, -0.583162, -0.745259, 0.288495, 2.33333, 1, -0.172049, -0.511418, -0.796203, 0.273699, 3.16667, 1, -0.172049, -0.511418, -0.796203, 0.273699, 3.2, 1, -0.0181989, -0.628764, -0.776477, 0.0375327, 3.93333, 1, -0.0181989, -0.628764, -0.776477, 0.0375327, 3.96667, 1, -0.106446, 0.558102, 0.802058, 0.184105, 4.43333, 1, -0.106446, 0.558102, 0.802058, 0.184105, 4.46667, 1, -0.068723, 0.703046, 0.678602, 0.201253, 5.03333, 1, -0.068723, 0.703046, 0.678602, 0.201253, 5.06667, 1, -0.0476916, -0.717833, -0.679433, 0.144264, 5.53333, 1, -0.0476916, -0.717833, -0.679433, 0.144264, 5.56667, 1, -0.0574846, -0.6078, -0.783987, 0.112422, 6.13333, 1, -0.0574846, -0.6078, -0.783987, 0.112422, 6.16667, 1, -0.0230647, -0.634262, -0.771251, 0.0484998, 6.83333, 1, -0.0231518, -0.634638, -0.77094, 0.0484808, 6.86667, 1, -0.0238146, -0.637418, -0.768633, 0.0483161, 6.9, 1, -0.0250489, -0.642425, -0.764438, 0.0479426, 6.93333, 1, -0.0267482, -0.649124, -0.75874, 0.0473, 6.96667, 1, -0.0287291, -0.656131, -0.75268, 0.0462456, 7, 1, -0.0307783, -0.662255, -0.747312, 0.0446678, 7.03333, 1, -0.0327219, -0.66736, -0.742797, 0.0425775, 7.06667, 1, -0.0343879, -0.671395, -0.739218, 0.0400338, 7.1, 1, -0.035629, -0.674354, -0.736612, 0.0371432, 7.13333, 1, -0.0363429, -0.676208, -0.735026, 0.0340493, 7.16667, 1, -0.0364849, -0.676848, -0.734568, 0.0309118, 7.2, 1, -0.0360674, -0.676036, -0.735457, 0.0278834, 7.23333, 1, -0.0351475, -0.673384, -0.738031, 0.0250907, 7.26667, 1, -0.0338089, -0.668362, -0.742723, 0.0226233, 7.3, 1, -0.0321423, -0.660312, -0.750022, 0.0205328, 7.33333, 1, -0.0302311, -0.648463, -0.760413, 0.0188362, 7.36667, 1, -0.0281776, -0.632889, -0.773531, 0.0175083, 7.4, 1, -0.0262272, -0.618648, -0.785059, 0.0164208, 7.43333, 1, -0.0244171, -0.606524, -0.794539, 0.0155153, 7.46667, 1, -0.022745, -0.596331, -0.802281, 0.0147549, 7.5, 1, -0.021217, -0.58746, -0.808852, 0.0141013, 7.53333, 1, -0.0198296, -0.579604, -0.814544, 0.0135317, 7.56667, 1, -0.0185749, -0.572583, -0.819533, 0.0130299, 7.6, 1, -0.0174441, -0.566265, -0.823943, 0.0125838, 7.63333, 1, -0.0164283, -0.560556, -0.827864, 0.0121842, 7.66667, 1, -0.0155186, -0.555392, -0.83136, 0.011824, 7.7, 1, -0.0147068, -0.550733, -0.834473, 0.0114974, 7.73333, 1, -0.0139854, -0.546557, -0.83723, 0.0112, 7.76667, 1, -0.0133477, -0.542857, -0.839648, 0.0109284, 7.8, 1, -0.0127869, -0.539681, -0.841705, 0.0106802, 7.83333, 1, -0.0122922, -0.537323, -0.843222, 0.0104549, 7.86667, 1, -0.0118561, -0.535863, -0.844159, 0.0102487, 7.93333, 1, -0.011139, -0.535789, -0.844221, 0.00987824, 7.96667, 1, -0.01085, -0.537259, -0.843292, 0.00970813, 8, 1, -0.0106, -0.539649, -0.841769, 0.00954535, 8.03333, 1, -0.0103687, -0.54211, -0.840191, 0.00939203, 8.06667, 1, -0.0101511, -0.544474, -0.838665, 0.00924712, 8.1, 1, -0.00994622, -0.546717, -0.837209, 0.00910923, 8.13333, 1, -0.00975272, -0.548812, -0.835841, 0.00897701, 8.16667, 1, -0.00956955, -0.550737, -0.834577, 0.0088492, 8.2, 1, -0.00939587, -0.55247, -0.833434, 0.00872485, 8.23333, 1, -0.00923089, -0.553988, -0.832429, 0.00860302, 8.26667, 1, -0.00907378, -0.555271, -0.831577, 0.00848276, 8.3, 1, -0.00892405, -0.556299, -0.830892, 0.00836345, 8.36667, 1, -0.00865275, -0.55677, -0.830582, 0.00811835, 8.4, 1, -0.00853353, -0.555822, -0.831219, 0.00798819, 8.43333, 1, -0.00842109, -0.554302, -0.832236, 0.00785408, 8.46667, 1, -0.00831221, -0.552388, -0.83351, 0.00771686, 8.5, 1, -0.00820421, -0.550247, -0.834927, 0.00757748, 8.53333, 1, -0.00809465, -0.548038, -0.836381, 0.00743672, 8.56667, 1, -0.00798141, -0.545914, -0.837772, 0.0072954, 8.6, 1, -0.00786261, -0.544014, -0.839009, 0.00715416, 8.63333, 1, -0.00773681, -0.542472, -0.840009, 0.00701375, 8.66667, 1, -0.0076028, -0.541409, -0.840697, 0.00687475, 8.73333, 1, -0.00730672, -0.541147, -0.84087, 0.00660286, 8.76667, 1, -0.00714364, -0.542134, -0.840237, 0.00647071, 8.8, 1, -0.00697444, -0.543558, -0.839318, 0.006339, 8.83333, 1, -0.00680373, -0.545037, -0.838362, 0.00620575, 8.86667, 1, -0.00663278, -0.546571, -0.837364, 0.00607212, 8.9, 1, -0.00646247, -0.548165, -0.836324, 0.00593884, 8.93333, 1, -0.00629351, -0.549821, -0.835238, 0.00580661, 8.96667, 1, -0.0061268, -0.551542, -0.834106, 0.00567618, 9.03333, 1, -0.00580199, -0.555182, -0.831691, 0.00542258, 9.06667, 1, -0.00564473, -0.557107, -0.830405, 0.00530014, 9.1, 1, -0.00549141, -0.559103, -0.829064, 0.00518106, 9.2, 1, -0.00506082, -0.565385, -0.824797, 0.00484797, 9.23333, 1, -0.00493112, -0.567429, -0.823394, 0.00474724, 9.26667, 1, -0.0048101, -0.569374, -0.822051, 0.00465269, 9.3, 1, -0.00469843, -0.571185, -0.820795, 0.00456474, 9.33333, 1, -0.0045966, -0.572829, -0.81965, 0.00448376, 9.36667, 1, -0.00450506, -0.574279, -0.818635, 0.00441006, 9.4, 1, -0.0044242, -0.575509, -0.817772, 0.00434396, 9.43333, 1, -0.00435432, -0.576494, -0.817078, 0.00428565, 9.5, 1, -0.00424894, -0.577631, -0.816277, 0.00419357, 9.66667, 1, -0.00412189, -0.576567, -0.817029, 0.00405758, 9.8, 1, -0.00409514, -0.573954, -0.818868, 0.00400557, 9.86667, 1, -0.00409449, -0.572694, -0.81975, 0.00399264, 9.93333, 1, -0.00409697, -0.571767, -0.820396, 0.00398605, 11.0833, 1, -0.00409871, -0.571407, -0.820647, 0.00398422)
+tracks/10/type = "rotation_3d"
+tracks/10/imported = true
+tracks/10/enabled = true
+tracks/10/path = NodePath("Armature/Skeleton3D:Shoulder R")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = PackedFloat32Array(0, 1, -0.100241, 0.138477, 0.849415, 0.499269, 6.83333, 1, -0.100224, 0.13863, 0.849385, 0.499282, 6.86667, 1, -0.100062, 0.139805, 0.849152, 0.499383, 6.9, 1, -0.0997011, 0.142036, 0.848708, 0.499581, 6.93333, 1, -0.0991086, 0.145198, 0.848069, 0.499873, 6.96667, 1, -0.0981065, 0.14903, 0.847268, 0.500301, 7, 1, -0.0966193, 0.153246, 0.846338, 0.500892, 7.03333, 1, -0.094777, 0.157674, 0.845301, 0.501621, 7.1, 1, -0.0904618, 0.166471, 0.843044, 0.503369, 7.13333, 1, -0.0881506, 0.1705, 0.841918, 0.504315, 7.16667, 1, -0.0858095, 0.174067, 0.840865, 0.505256, 7.2, 1, -0.0834689, 0.177021, 0.839944, 0.506153, 7.23333, 1, -0.0811464, 0.179223, 0.83921, 0.506972, 7.26667, 1, -0.0788488, 0.180547, 0.838717, 0.50768, 7.3, 1, -0.0765748, 0.180876, 0.838511, 0.508252, 7.33333, 1, -0.0743177, 0.180104, 0.838627, 0.50867, 7.36667, 1, -0.0721354, 0.178224, 0.839061, 0.50893, 7.4, 1, -0.0703912, 0.175787, 0.839614, 0.509109, 7.43333, 1, -0.0690555, 0.173043, 0.840201, 0.509265, 7.46667, 1, -0.0680451, 0.170126, 0.840777, 0.509433, 7.5, 1, -0.0673194, 0.167022, 0.84136, 0.509593, 7.53333, 1, -0.0668446, 0.163766, 0.841946, 0.509745, 7.56667, 1, -0.0665913, 0.160405, 0.842523, 0.509893, 7.66667, 1, -0.0669285, 0.150118, 0.844122, 0.510336, 7.7, 1, -0.0673459, 0.146752, 0.844594, 0.510479, 7.73333, 1, -0.0678913, 0.143477, 0.84503, 0.510616, 7.76667, 1, -0.0685519, 0.140327, 0.845431, 0.51074, 7.8, 1, -0.0693109, 0.137351, 0.845791, 0.51085, 7.83333, 1, -0.0701028, 0.134709, 0.846077, 0.510972, 7.86667, 1, -0.0708446, 0.132498, 0.846288, 0.5111, 7.9, 1, -0.0714477, 0.130802, 0.846427, 0.511221, 7.93333, 1, -0.071814, 0.129714, 0.846502, 0.511323, 8, 1, -0.0713458, 0.129741, 0.846478, 0.511422, 8.03333, 1, -0.0699859, 0.130773, 0.846457, 0.511381, 8.06667, 1, -0.0677446, 0.132392, 0.846456, 0.511268, 8.1, 1, -0.0646846, 0.134597, 0.846455, 0.51109, 8.13333, 1, -0.0608871, 0.137391, 0.846431, 0.510853, 8.16667, 1, -0.0564529, 0.140766, 0.846358, 0.510565, 8.2, 1, -0.0515002, 0.144706, 0.846211, 0.51023, 8.23333, 1, -0.0461627, 0.149171, 0.845972, 0.509852, 8.26667, 1, -0.040583, 0.154092, 0.845629, 0.509432, 8.33333, 1, -0.0292827, 0.16478, 0.84468, 0.508434, 8.36667, 1, -0.0238719, 0.169718, 0.844301, 0.507723, 8.4, 1, -0.0187569, 0.174051, 0.844068, 0.506856, 8.43333, 1, -0.0139982, 0.177769, 0.843967, 0.505887, 8.46667, 1, -0.00964487, 0.180892, 0.843974, 0.50487, 8.5, 1, -0.00573448, 0.183465, 0.84406, 0.503856, 8.53333, 1, -0.00229434, 0.185551, 0.844195, 0.502892, 8.56667, 1, 0.00065791, 0.187226, 0.844347, 0.50202, 8.6, 1, 0.00311198, 0.18857, 0.844487, 0.501271, 8.63333, 1, 0.00506461, 0.189665, 0.844589, 0.500671, 8.66667, 1, 0.00651817, 0.190589, 0.844627, 0.500239, 8.7, 1, 0.00747957, 0.191415, 0.844581, 0.499988, 8.76667, 1, 0.00800558, 0.193091, 0.844148, 0.500067, 8.8, 1, 0.00782743, 0.194046, 0.843784, 0.500313, 8.86667, 1, 0.0070174, 0.195421, 0.843118, 0.500913, 8.93333, 1, 0.00580133, 0.196362, 0.842487, 0.501621, 9.06667, 1, 0.00286534, 0.198001, 0.841143, 0.503255, 9.1, 1, 0.00212227, 0.198507, 0.840761, 0.503697, 9.13333, 1, 0.00140014, 0.199089, 0.840353, 0.504151, 9.16667, 1, 0.000702807, 0.19973, 0.839925, 0.504612, 9.23333, 1, -0.000633993, 0.200986, 0.839081, 0.505517, 9.26667, 1, -0.00128604, 0.201519, 0.838693, 0.505948, 9.33333, 1, -0.00259908, 0.202211, 0.838046, 0.506738, 9.4, 1, -0.0039974, 0.202175, 0.837644, 0.507407, 9.43333, 1, -0.00476386, 0.20179, 0.837564, 0.507685, 9.46667, 1, -0.00560064, 0.201097, 0.837583, 0.507921, 9.5, 1, -0.00654118, 0.199974, 0.837739, 0.508096, 9.53333, 1, -0.00760556, 0.198381, 0.838041, 0.508206, 9.56667, 1, -0.00879841, 0.196399, 0.838458, 0.50827, 9.6, 1, -0.0101617, 0.194038, 0.838971, 0.508305, 9.63333, 1, -0.0117448, 0.191303, 0.839563, 0.50833, 9.66667, 1, -0.013606, 0.188202, 0.840215, 0.508364, 9.7, 1, -0.0158161, 0.184741, 0.840904, 0.50843, 9.73333, 1, -0.0184617, 0.18093, 0.841604, 0.508553, 9.76667, 1, -0.0216477, 0.176784, 0.842281, 0.508765, 9.8, 1, -0.0255026, 0.17233, 0.842892, 0.509101, 9.83333, 1, -0.0301811, 0.167608, 0.843384, 0.509609, 9.86667, 1, -0.035866, 0.162676, 0.843681, 0.510345, 9.9, 1, -0.0427639, 0.157625, 0.843687, 0.511387, 9.93333, 1, -0.0510917, 0.152579, 0.843271, 0.512838, 9.96667, 1, -0.0611489, 0.147869, 0.842161, 0.514937, 10, 1, -0.0735263, 0.14466, 0.839533, 0.518509, 10.0333, 1, -0.0877354, 0.14319, 0.835077, 0.523875, 10.0667, 1, -0.102721, 0.143432, 0.828671, 0.531206, 10.1, 1, -0.117097, 0.145315, 0.820357, 0.540543, 10.1333, 1, -0.129543, 0.148537, 0.810468, 0.551631, 10.1667, 1, -0.139199, 0.152589, 0.799606, 0.563889, 10.2, 1, -0.14585, 0.156893, 0.788506, 0.576516, 10.2333, 1, -0.149817, 0.160956, 0.777874, 0.588694, 10.2667, 1, -0.151721, 0.164473, 0.768251, 0.599767, 10.3, 1, -0.152234, 0.167329, 0.759969, 0.609322, 10.3333, 1, -0.151942, 0.169537, 0.753175, 0.617169, 10.3667, 1, -0.151288, 0.171169, 0.747899, 0.623266, 10.4, 1, -0.150588, 0.172302, 0.744118, 0.627633, 10.4333, 1, -0.150059, 0.172986, 0.74182, 0.630287, 10.4667, 1, -0.149856, 0.173223, 0.741033, 0.631195, 11.0833, 1, -0.149856, 0.173223, 0.741033, 0.631195)
+tracks/11/type = "rotation_3d"
+tracks/11/imported = true
+tracks/11/enabled = true
+tracks/11/path = NodePath("Armature/Skeleton3D:Arm 1 R")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = PackedFloat32Array(0, 1, 0.259035, -0.293452, 0.137707, 0.909848, 6.83333, 1, 0.258807, -0.292618, 0.13774, 0.910177, 6.86667, 1, 0.257108, -0.286153, 0.138039, 0.912665, 6.9, 1, 0.254077, -0.273769, 0.138758, 0.917193, 6.93333, 1, 0.250187, -0.25604, 0.140032, 0.923169, 6.96667, 1, 0.246199, -0.233908, 0.142308, 0.929743, 7, 1, 0.242866, -0.208508, 0.145994, 0.936069, 7.03333, 1, 0.24071, -0.180805, 0.151112, 0.941559, 7.06667, 1, 0.240236, -0.151812, 0.157637, 0.945722, 7.13333, 1, 0.24614, -0.0939981, 0.174736, 0.948708, 7.2, 1, 0.263653, -0.0423991, 0.197294, 0.943273, 7.23333, 1, 0.277868, -0.0206573, 0.21112, 0.936905, 7.26667, 1, 0.297109, -0.00216255, 0.227543, 0.927333, 7.3, 1, 0.325156, 0.0131035, 0.248775, 0.912257, 7.33333, 1, 0.387731, 0.0272076, 0.288296, 0.875106, 7.36667, 1, 0.382305, 0.0319432, 0.293413, 0.875632, 7.43333, 1, 0.369742, 0.0326267, 0.303775, 0.877466, 7.46667, 1, 0.363342, 0.0295629, 0.308317, 0.878663, 7.5, 1, 0.356881, 0.0246484, 0.312575, 0.879957, 7.53333, 1, 0.350404, 0.0181197, 0.316596, 0.881281, 7.56667, 1, 0.344004, 0.010178, 0.320372, 0.882564, 7.6, 1, 0.337769, 0.00100176, 0.3239, 0.883742, 7.63333, 1, 0.331783, -0.00924306, 0.327182, 0.884752, 7.66667, 1, 0.326121, -0.0203932, 0.330224, 0.88554, 7.7, 1, 0.320852, -0.032281, 0.333041, 0.886056, 7.8, 1, 0.307991, -0.0704851, 0.340353, 0.885626, 7.83333, 1, 0.305331, -0.0834861, 0.342081, 0.884751, 7.86667, 1, 0.30402, -0.0963136, 0.343139, 0.883488, 7.9, 1, 0.304309, -0.108719, 0.343413, 0.881841, 7.96667, 1, 0.310828, -0.131236, 0.340968, 0.877442, 8, 1, 0.317838, -0.141211, 0.337731, 0.874629, 8.03333, 1, 0.328392, -0.152563, 0.33245, 0.870839, 8.06667, 1, 0.282169, -0.175132, 0.274288, 0.902483, 8.1, 1, 0.265898, -0.19178, 0.233453, 0.915433, 8.13333, 1, 0.263015, -0.205635, 0.197534, 0.921693, 8.26667, 1, 0.313171, -0.233948, 0.0660146, 0.91806, 8.3, 1, 0.333267, -0.23351, 0.0375673, 0.912686, 8.33333, 1, 0.354054, -0.230503, 0.0131091, 0.906279, 8.36667, 1, 0.374422, -0.225682, -0.00329026, 0.899369, 8.4, 1, 0.394192, -0.220134, -0.0116427, 0.892198, 8.43333, 1, 0.413636, -0.21481, -0.0128485, 0.884645, 8.46667, 1, 0.433262, -0.210447, -0.00779985, 0.876319, 8.5, 1, 0.453731, -0.207587, 0.00276993, 0.866619, 8.53333, 1, 0.476021, -0.20668, 0.0185778, 0.8546, 8.56667, 1, 0.501931, -0.208303, 0.0403526, 0.838479, 8.6, 1, 0.536583, -0.214006, 0.0723885, 0.813044, 8.63333, 1, 0.592144, -0.227425, 0.12736, 0.762511, 8.66667, 1, 0.591873, -0.224037, 0.127373, 0.763721, 8.7, 1, 0.590759, -0.221587, 0.126689, 0.76541, 8.73333, 1, 0.588954, -0.220109, 0.125006, 0.767502, 8.76667, 1, 0.586691, -0.219407, 0.122082, 0.769903, 8.8, 1, 0.584115, -0.217915, 0.119304, 0.772716, 8.83333, 1, 0.58089, -0.215321, 0.11795, 0.776074, 8.86667, 1, 0.57719, -0.211791, 0.117713, 0.779833, 8.9, 1, 0.57316, -0.207474, 0.118325, 0.783864, 8.93333, 1, 0.56892, -0.202499, 0.119547, 0.788056, 8.96667, 1, 0.564576, -0.196987, 0.121175, 0.792317, 9, 1, 0.56022, -0.191044, 0.123028, 0.796567, 9.1, 1, 0.547828, -0.171569, 0.128518, 0.80866, 9.13333, 1, 0.544132, -0.164797, 0.129952, 0.812327, 9.16667, 1, 0.54069, -0.157971, 0.131183, 0.815776, 9.3, 1, 0.528489, -0.130246, 0.137395, 0.827561, 9.33333, 1, 0.525569, -0.123256, 0.139912, 0.830066, 9.36667, 1, 0.52259, -0.116274, 0.143025, 0.832421, 9.4, 1, 0.519487, -0.109325, 0.146834, 0.834638, 9.43333, 1, 0.516185, -0.102447, 0.151445, 0.836733, 9.46667, 1, 0.512596, -0.0956905, 0.156981, 0.838717, 9.5, 1, 0.508515, -0.0892648, 0.1637, 0.840623, 9.53333, 1, 0.503805, -0.0834306, 0.171546, 0.842491, 9.56667, 1, 0.498507, -0.078332, 0.18013, 0.844339, 9.6, 1, 0.492561, -0.0740978, 0.189299, 0.846203, 9.63333, 1, 0.485904, -0.070867, 0.198903, 0.848123, 9.66667, 1, 0.478467, -0.068789, 0.208793, 0.850143, 9.7, 1, 0.470178, -0.0680248, 0.218817, 0.852305, 9.73333, 1, 0.460956, -0.0687474, 0.228815, 0.854656, 9.76667, 1, 0.450711, -0.07114, 0.238622, 0.857239, 9.8, 1, 0.43934, -0.0753969, 0.248056, 0.860096, 9.83333, 1, 0.426721, -0.0817178, 0.256919, 0.863264, 9.86667, 1, 0.412713, -0.0903025, 0.264993, 0.866771, 9.9, 1, 0.397141, -0.101335, 0.272029, 0.870638, 9.93333, 1, 0.379791, -0.114955, 0.277743, 0.874873, 9.96667, 1, 0.360369, -0.130813, 0.281339, 0.879699, 10, 1, 0.338141, -0.145983, 0.27973, 0.886623, 10.0333, 1, 0.231247, -0.167249, 0.206748, 0.935846, 10.0667, 1, 0.1395, -0.180671, 0.142865, 0.963062, 10.1, 1, 0.0627927, -0.183476, 0.091281, 0.976761, 10.1333, 1, -0.00905941, -0.172831, 0.0456354, 0.983852, 10.1667, 1, -0.0764388, -0.145185, 0.00580098, 0.98643, 10.2, 1, -0.135243, -0.0988621, -0.0273362, 0.985489, 10.2333, 1, -0.179026, -0.0371421, -0.0536762, 0.981677, 10.2667, 1, -0.202233, 0.0303966, -0.0743617, 0.976037, 10.3, 1, -0.203601, 0.0910265, -0.0910251, 0.970554, 10.3333, 1, -0.186252, 0.133419, -0.104558, 0.967769, 10.3667, 1, -0.155571, 0.14679, -0.114846, 0.970083, 10.4, 1, -0.117941, 0.110122, -0.120574, 0.979502, 10.4333, 1, -0.0823569, -0.0233206, -0.115422, 0.989622, 10.4667, 1, -0.0576884, -0.159768, -0.0934615, 0.981026, 11.0833, 1, -0.0576884, -0.159768, -0.0934615, 0.981026)
+tracks/12/type = "rotation_3d"
+tracks/12/imported = true
+tracks/12/enabled = true
+tracks/12/path = NodePath("Armature/Skeleton3D:Arm 2 R")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = PackedFloat32Array(0, 1, 0.469895, -7.72042e-05, 0.26145, 0.843115, 6.93333, 1, 0.471403, -7.71372e-05, 0.262289, 0.842012, 6.96667, 1, 0.469996, -7.7264e-05, 0.261506, 0.843041, 7, 1, 0.465629, -7.75162e-05, 0.259076, 0.846209, 7.03333, 1, 0.457891, -7.80031e-05, 0.25477, 0.851721, 7.06667, 1, 0.446316, -7.88321e-05, 0.24833, 0.859729, 7.1, 1, 0.430377, -7.97274e-05, 0.239462, 0.870306, 7.13333, 1, 0.409403, -8.09018e-05, 0.227792, 0.883459, 7.16667, 1, 0.382665, -8.23317e-05, 0.212915, 0.899019, 7.2, 1, 0.348939, -8.39315e-05, 0.19415, 0.916814, 7.23333, 1, 0.306376, -8.5793e-05, 0.170468, 0.936523, 7.26667, 1, 0.251184, -8.76718e-05, 0.139759, 0.957796, 7.3, 1, 0.172739, -8.97883e-05, 0.0961119, 0.980267, 7.33333, 1, 0.00271386, -9.16063e-05, 0.00150998, 0.999995, 8.03333, 1, 0.00271431, -9.15509e-05, 0.00151026, 0.999995, 8.06667, 1, 0.177748, -8.96657e-05, 0.0988992, 0.979094, 8.1, 1, 0.2748, -8.69468e-05, 0.152899, 0.949266, 8.13333, 1, 0.342518, -8.42745e-05, 0.190577, 0.919979, 8.16667, 1, 0.39459, -8.1717e-05, 0.21955, 0.892243, 8.2, 1, 0.435397, -7.94486e-05, 0.242256, 0.86703, 8.23333, 1, 0.466861, -7.74435e-05, 0.259761, 0.84532, 8.26667, 1, 0.490111, -7.58193e-05, 0.272698, 0.827905, 8.3, 1, 0.505681, -7.47205e-05, 0.281361, 0.81555, 8.33333, 1, 0.513548, -7.41294e-05, 0.285738, 0.809087, 8.36667, 1, 0.511747, -7.42594e-05, 0.284736, 0.81058, 8.4, 1, 0.500947, -7.5018e-05, 0.278728, 0.819367, 8.43333, 1, 0.481593, -7.64411e-05, 0.267959, 0.834426, 8.46667, 1, 0.45337, -7.82811e-05, 0.252255, 0.854882, 8.5, 1, 0.415226, -8.06242e-05, 0.231031, 0.879893, 8.53333, 1, 0.364727, -8.32187e-05, 0.202934, 0.908731, 8.56667, 1, 0.296252, -8.6177e-05, 0.164834, 0.940779, 8.6, 1, 0.19192, -8.93248e-05, 0.106784, 0.975584, 8.63333, 1, 0.00271473, -9.16017e-05, 0.00151042, 0.999995, 10, 1, 0.00271675, -9.15768e-05, 0.00151161, 0.999995, 10.0333, 1, 0.22566, -8.84971e-05, 0.125557, 0.966081, 10.0667, 1, 0.378493, -8.25258e-05, 0.210594, 0.901329, 10.1, 1, 0.467018, -7.74143e-05, 0.259849, 0.845206, 10.1333, 1, 0.521497, -7.3475e-05, 0.290161, 0.802401, 10.1667, 1, 0.550201, -7.11499e-05, 0.306132, 0.776893, 10.2, 1, 0.556635, -7.06526e-05, 0.309712, 0.770867, 10.2333, 1, 0.542855, -7.18217e-05, 0.302045, 0.783631, 10.2667, 1, 0.510192, -7.4344e-05, 0.283871, 0.811863, 10.3, 1, 0.459983, -7.78538e-05, 0.255934, 0.850243, 10.3333, 1, 0.393568, -8.17881e-05, 0.218981, 0.892834, 10.3667, 1, 0.312535, -8.55755e-05, 0.173895, 0.933853, 10.4, 1, 0.218904, -8.86777e-05, 0.121798, 0.968115, 10.4333, 1, 0.115994, -9.07497e-05, 0.0645389, 0.991151, 10.4667, 1, 0.0289889, -9.15078e-05, 0.0161294, 0.99945, 11.0833, 1, 0.0289889, -9.15078e-05, 0.0161294, 0.99945)
+tracks/13/type = "rotation_3d"
+tracks/13/imported = true
+tracks/13/enabled = true
+tracks/13/path = NodePath("Armature/Skeleton3D:Leg 1 L")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = PackedFloat32Array(0, 1, 0.853532, 0.0653182, 0.000808329, 0.516929, 6.8, 1, 0.853532, 0.0653182, 0.000808329, 0.516929, 6.83333, 1, 0.854422, 0.0653178, 0.000883731, 0.515457, 6.86667, 1, 0.861064, 0.0653033, 0.00145388, 0.504285, 6.9, 1, 0.872768, 0.065223, 0.00248993, 0.483752, 6.93333, 1, 0.887537, 0.0649968, 0.00385261, 0.456113, 6.96667, 1, 0.903499, 0.0645361, 0.0053824, 0.423669, 7, 1, 0.919163, 0.0637868, 0.00692313, 0.388617, 7.03333, 1, 0.933655, 0.0627128, 0.00833924, 0.352541, 7.06667, 1, 0.946549, 0.0613168, 0.00953422, 0.316535, 7.1, 1, 0.957715, 0.0596305, 0.010455, 0.281278, 7.13333, 1, 0.967194, 0.0576996, 0.0110854, 0.247153, 7.16667, 1, 0.975113, 0.0555694, 0.0114337, 0.214329, 7.2, 1, 0.981582, 0.0533025, 0.0115294, 0.183091, 7.23333, 1, 0.986766, 0.0509383, 0.0114039, 0.153522, 7.26667, 1, 0.990822, 0.0484797, 0.0110769, 0.125693, 7.3, 1, 0.993926, 0.0459403, 0.01059, 0.0994438, 7.33333, 1, 0.996234, 0.0433466, 0.00999149, 0.0744222, 7.36667, 1, 0.997841, 0.0407488, 0.00932868, 0.0506571, 7.4, 1, 0.998839, 0.0381755, 0.00863462, 0.0280724, 7.43333, 1, 0.999308, 0.0356776, 0.00794451, 0.00687362, 7.46667, 1, -0.999337, -0.0332914, -0.00728364, 0.0127753, 7.5, 1, -0.999017, -0.0309854, -0.00664627, 0.0310103, 7.53333, 1, -0.998423, -0.0287596, -0.006039, 0.0478417, 7.56667, 1, -0.997617, -0.0266041, -0.00546482, 0.0634217, 7.6, 1, -0.996652, -0.0245162, -0.00492782, 0.0778418, 7.63333, 1, -0.995561, -0.0224828, -0.0044275, 0.0912883, 7.66667, 1, -0.994359, -0.0204851, -0.00396082, 0.103996, 7.7, 1, -0.993051, -0.0185086, -0.00352516, 0.116165, 7.73333, 1, -0.991613, -0.016522, -0.00311262, 0.128143, 7.76667, 1, -0.990009, -0.0144998, -0.0027166, 0.140232, 7.9, 1, -0.981642, -0.00617982, -0.00138681, 0.190629, 7.93333, 1, -0.979186, -0.00413569, -0.00114511, 0.202918, 7.96667, 1, -0.976621, -0.00210891, -0.000936457, 0.214958, 8, 1, -0.973981, -0.000108712, -0.000760546, 0.226627, 8.03333, 1, -0.971278, 0.00187071, -0.000613098, 0.237938, 8.06667, 1, -0.968539, 0.00382652, -0.000491507, 0.248833, 8.1, 1, -0.965787, 0.00575742, -0.000392391, 0.259271, 8.13333, 1, -0.963044, 0.00766452, -0.000311393, 0.269235, 8.16667, 1, -0.960316, 0.00955349, -0.000242856, 0.278751, 8.2, 1, -0.957577, 0.0114414, -0.000178677, 0.28795, 8.23333, 1, -0.954704, 0.0133791, -0.000104635, 0.297256, 8.26667, 1, -0.951032, 0.0156002, 2.5066e-05, 0.308698, 8.3, 1, -0.947938, 0.0176152, 0.000123564, 0.317969, 8.33333, 1, -0.948722, 0.0183455, 3.17533e-05, 0.315577, 8.36667, 1, -0.949996, 0.0189724, 1.25354e-05, 0.311686, 8.4, 1, -0.951732, 0.0194944, 6.70083e-05, 0.306312, 8.43333, 1, -0.95386, 0.0199221, 0.000186651, 0.29959, 8.46667, 1, -0.956312, 0.0202681, 0.000361066, 0.291644, 8.5, 1, -0.959022, 0.0205464, 0.000579245, 0.282585, 8.53333, 1, -0.961931, 0.0207712, 0.000830417, 0.272502, 8.56667, 1, -0.964986, 0.0209564, 0.00110476, 0.261461, 8.6, 1, -0.968144, 0.0211152, 0.00139381, 0.2495, 8.63333, 1, -0.971367, 0.0212601, 0.00169073, 0.236624, 8.66667, 1, -0.974626, 0.0214027, 0.00199044, 0.222804, 8.7, 1, -0.977895, 0.0215542, 0.00228977, 0.207968, 8.73333, 1, -0.981152, 0.0217253, 0.00258754, 0.191996, 8.76667, 1, -0.984371, 0.0219265, 0.0028848, 0.174713, 8.8, 1, -0.98753, 0.0219099, 0.00318316, 0.15587, 8.83333, 1, -0.998292, 0.0122136, 0.00393372, 0.0569897, 8.86667, 1, 0.99996, -0.00678993, -0.00460421, 0.00351556, 8.9, 1, 0.998333, -0.00196123, -0.00524931, 0.0574391, 8.93333, 1, 0.994126, 0.00260903, -0.0058361, 0.108043, 8.96667, 1, 0.987659, 0.0069971, -0.00633014, 0.156338, 9, 1, 0.97918, 0.0111945, -0.00669775, 0.202575, 9.03333, 1, 0.968961, 0.0151555, -0.0069077, 0.246652, 9.06667, 1, 0.957318, 0.0188259, -0.0069348, 0.28834, 9.1, 1, 0.944629, 0.0221469, -0.00676326, 0.327323, 9.13333, 1, 0.931382, 0.0250462, -0.00638883, 0.363125, 9.16667, 1, 0.918191, 0.0274616, -0.00582037, 0.395142, 9.2, 1, 0.905812, 0.0293338, -0.00508657, 0.422633, 9.23333, 1, 0.894966, 0.0306183, -0.00424907, 0.445063, 9.26667, 1, 0.886274, 0.0312757, -0.00340167, 0.462091, 9.3, 1, 0.880148, 0.0312773, -0.00266538, 0.47366, 9.33333, 1, 0.876837, 0.0305838, -0.00217139, 0.479809, 9.36667, 1, 0.876451, 0.0294083, -0.00199945, 0.480587, 9.4, 1, 0.878567, 0.0292375, -0.00198603, 0.47672, 9.43333, 1, 0.883042, 0.0300381, -0.00204365, 0.468327, 9.46667, 1, 0.890923, 0.0312855, -0.00200236, 0.45307, 9.5, 1, 0.902947, 0.032428, -0.0017219, 0.428524, 9.53333, 1, 0.918255, 0.0329973, -0.0011984, 0.39461, 9.56667, 1, 0.934553, 0.0327436, -0.00056776, 0.354313, 9.6, 1, 0.949445, 0.0316824, -3.00061e-06, 0.312332, 9.63333, 1, 0.96113, 0.0300013, 0.000366515, 0.274462, 9.66667, 1, 0.968638, 0.028003, 0.000494608, 0.246893, 9.7, 1, 0.973641, 0.0258373, 0.000462566, 0.226616, 9.73333, 1, 0.978104, 0.0234965, 0.000365078, 0.206785, 9.76667, 1, 0.982067, 0.0210294, 0.000230539, 0.187353, 9.8, 1, 0.985559, 0.0184875, 8.17111e-05, 0.168323, 9.83333, 1, 0.988603, 0.0159201, -6.33122e-05, 0.149699, 9.86667, 1, 0.991221, 0.0133805, -0.000190431, 0.131535, 9.9, 1, 0.99342, 0.0109351, -0.000289281, 0.114006, 9.93333, 1, 0.995183, 0.00869128, -0.000353612, 0.0976492, 9.96667, 1, 0.996434, 0.00688211, -0.000383306, 0.0840952, 10, 1, 0.996931, 0.00609338, -0.00038943, 0.0780481, 11.0833, 1, 0.996931, 0.00609338, -0.00038943, 0.0780481)
+tracks/14/type = "scale_3d"
+tracks/14/imported = true
+tracks/14/enabled = true
+tracks/14/path = NodePath("Armature/Skeleton3D:Leg 1 L")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = PackedFloat32Array(0, 1, 1, 1.00001, 1.00003)
+tracks/15/type = "rotation_3d"
+tracks/15/imported = true
+tracks/15/enabled = true
+tracks/15/path = NodePath("Armature/Skeleton3D:Leg 2 L")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = PackedFloat32Array(0, 1, 0.96192, -0.00145778, 0.104167, 0.252698, 6.83333, 1, 0.961782, -0.00146088, 0.104152, 0.253232, 6.86667, 1, 0.960663, -0.00148544, 0.10403, 0.257491, 6.9, 1, 0.958314, -0.00153568, 0.103776, 0.266199, 6.93333, 1, 0.954491, -0.00161386, 0.103362, 0.27975, 6.96667, 1, 0.948847, -0.00172227, 0.102751, 0.298544, 7, 1, 0.94109, -0.00186006, 0.101911, 0.322429, 7.03333, 1, 0.930853, -0.00202607, 0.100802, 0.351208, 7.06667, 1, 0.917832, -0.00221707, 0.0993924, 0.384318, 7.1, 1, 0.901804, -0.00242846, 0.0976566, 0.42096, 7.13333, 1, 0.882636, -0.00265499, 0.095581, 0.460229, 7.16667, 1, 0.86027, -0.00289164, 0.0931589, 0.501246, 7.2, 1, 0.834922, -0.00313184, 0.0904139, 0.542882, 7.3, 1, 0.744343, -0.00382219, 0.0806063, 0.662904, 7.33333, 1, 0.711007, -0.0040302, 0.0769963, 0.698946, 7.36667, 1, 0.677078, -0.00422232, 0.0733221, 0.732237, 7.4, 1, 0.643108, -0.00439745, 0.0696434, 0.762589, 7.43333, 1, 0.610063, -0.0045532, 0.066065, 0.789581, 7.46667, 1, 0.578763, -0.00468873, 0.0626754, 0.81307, 7.5, 1, 0.548877, -0.00480818, 0.0594389, 0.833773, 7.53333, 1, 0.520541, -0.00491312, 0.0563704, 0.85196, 7.56667, 1, 0.493698, -0.00500552, 0.0534634, 0.867974, 7.6, 1, 0.468379, -0.00508678, 0.0507216, 0.882056, 7.63333, 1, 0.444402, -0.0051587, 0.048125, 0.894519, 7.66667, 1, 0.42145, -0.00522314, 0.0456395, 0.905687, 7.7, 1, 0.399245, -0.00528156, 0.0432349, 0.915809, 7.76667, 1, 0.354697, -0.00538755, 0.0384107, 0.934176, 7.8, 1, 0.331073, -0.00543795, 0.0358524, 0.942908, 7.83333, 1, 0.307755, -0.00548388, 0.0333272, 0.950866, 7.86667, 1, 0.28484, -0.00552541, 0.0308457, 0.958063, 7.9, 1, 0.262474, -0.00556259, 0.0284236, 0.964504, 7.93333, 1, 0.240542, -0.00559589, 0.0260486, 0.970273, 7.96667, 1, 0.219034, -0.00562556, 0.0237195, 0.975413, 8, 1, 0.198074, -0.00565167, 0.0214496, 0.979936, 8.03333, 1, 0.177487, -0.00567466, 0.0192203, 0.983919, 8.06667, 1, 0.157257, -0.00569471, 0.0170296, 0.987395, 8.1, 1, 0.137332, -0.00571204, 0.0148718, 0.990397, 8.16667, 1, 0.0978566, -0.00573934, 0.010597, 0.995128, 8.2, 1, 0.0776511, -0.00574973, 0.00840898, 0.996929, 8.23333, 1, 0.0558508, -0.00575824, 0.00604821, 0.998404, 8.26667, 1, 0.0276123, -0.00576512, 0.00299024, 0.999598, 8.3, 1, 0.0026826, -0.00576731, 0.000290576, 0.99998, 8.8, 1, 0.00268271, -0.00576731, 0.000290595, 0.99998, 8.83333, 1, 0.174611, -0.00567766, 0.0189089, 0.984439, 8.86667, 1, 0.256277, -0.00557232, 0.0277526, 0.966189, 8.9, 1, 0.318832, -0.00546253, 0.0345268, 0.947166, 8.93333, 1, 0.369893, -0.00535304, 0.0400563, 0.928195, 8.96667, 1, 0.412171, -0.00524802, 0.0446346, 0.909997, 9, 1, 0.446847, -0.00515158, 0.0483897, 0.893286, 9.03333, 1, 0.474471, -0.00506774, 0.0513812, 0.878756, 9.06667, 1, 0.495443, -0.00499972, 0.0536524, 0.866967, 9.1, 1, 0.510064, -0.00494997, 0.0552357, 0.858347, 9.13333, 1, 0.518363, -0.00492087, 0.0561344, 0.853302, 9.16667, 1, 0.520422, -0.00491354, 0.0563573, 0.852033, 9.2, 1, 0.516303, -0.00492815, 0.0559113, 0.854565, 9.23333, 1, 0.506314, -0.00496292, 0.0548296, 0.86059, 9.26667, 1, 0.490937, -0.00501466, 0.0531644, 0.869557, 9.3, 1, 0.471036, -0.00507852, 0.0510092, 0.880624, 9.33333, 1, 0.447544, -0.00514955, 0.0484652, 0.892933, 9.36667, 1, 0.424639, -0.00521445, 0.0459848, 0.904179, 9.4, 1, 0.421594, -0.00522276, 0.0456551, 0.905619, 9.43333, 1, 0.436259, -0.00518205, 0.0472432, 0.898565, 9.46667, 1, 0.458266, -0.00511769, 0.0496264, 0.887414, 9.5, 1, 0.477314, -0.00505874, 0.0516891, 0.877197, 9.53333, 1, 0.485664, -0.00503192, 0.0525933, 0.872548, 9.56667, 1, 0.479852, -0.00505066, 0.0519639, 0.875795, 9.6, 1, 0.460586, -0.00511068, 0.0498776, 0.886198, 9.63333, 1, 0.430976, -0.00519691, 0.046671, 0.901141, 9.66667, 1, 0.39592, -0.00528998, 0.0428748, 0.917268, 9.8, 1, 0.247039, -0.00558635, 0.0267521, 0.96862, 9.83333, 1, 0.209106, -0.00563827, 0.0226443, 0.977615, 9.86667, 1, 0.171325, -0.00568103, 0.018553, 0.985024, 9.9, 1, 0.13423, -0.00571453, 0.014536, 0.990827, 9.93333, 1, 0.0991414, -0.0057386, 0.0107362, 0.994999, 9.96667, 1, 0.0697796, -0.00575313, 0.00755657, 0.997517, 10, 1, 0.0566075, -0.00575799, 0.00613014, 0.998361, 11.0833, 1, 0.0566075, -0.00575799, 0.00613014, 0.998361)
+tracks/16/type = "scale_3d"
+tracks/16/imported = true
+tracks/16/enabled = true
+tracks/16/path = NodePath("Armature/Skeleton3D:Leg 2 L")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = PackedFloat32Array(0, 1, 0.999999, 0.999997, 1.00001)
+tracks/17/type = "rotation_3d"
+tracks/17/imported = true
+tracks/17/enabled = true
+tracks/17/path = NodePath("Armature/Skeleton3D:Foot L")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = PackedFloat32Array(0, 1, -0.895622, 0.0569022, 0.0188087, 0.44076, 6.9, 1, -0.895185, 0.0567995, 0.0187703, 0.441662, 6.96667, 1, -0.894575, 0.0566558, 0.0187168, 0.442916, 7.06667, 1, -0.893699, 0.0564476, 0.0186401, 0.444712, 7.13333, 1, -0.89312, 0.0563094, 0.0185898, 0.445893, 7.23333, 1, -0.89221, 0.0560912, 0.0185108, 0.447742, 7.3, 1, -0.891545, 0.0559319, 0.0184533, 0.449086, 7.36667, 1, -0.890809, 0.0557561, 0.0183898, 0.450568, 7.43333, 1, -0.889981, 0.0555591, 0.0183185, 0.452229, 7.46667, 1, -0.889526, 0.0554512, 0.0182794, 0.453138, 7.56667, 1, -0.887962, 0.0550827, 0.0181454, 0.456246, 7.6, 1, -0.887365, 0.054943, 0.0180945, 0.457425, 7.63333, 1, -0.886725, 0.0547939, 0.01804, 0.458684, 7.66667, 1, -0.88604, 0.0546347, 0.0179817, 0.460027, 7.7, 1, -0.885306, 0.0544649, 0.0179194, 0.46146, 7.73333, 1, -0.884521, 0.0542838, 0.0178529, 0.462988, 7.76667, 1, -0.88368, 0.0540908, 0.0177819, 0.464615, 7.8, 1, -0.882782, 0.0538853, 0.0177062, 0.466347, 7.83333, 1, -0.881822, 0.0536666, 0.0176256, 0.468188, 7.86667, 1, -0.880796, 0.0534341, 0.0175397, 0.470143, 7.9, 1, -0.879703, 0.0531871, 0.0174484, 0.472218, 7.93333, 1, -0.878537, 0.0529251, 0.0173514, 0.474417, 7.96667, 1, -0.877295, 0.0526472, 0.0172484, 0.476744, 8, 1, -0.875973, 0.0523528, 0.0171392, 0.479205, 8.03333, 1, -0.874566, 0.0520413, 0.0170235, 0.481805, 8.06667, 1, -0.873072, 0.0517118, 0.016901, 0.484547, 8.1, 1, -0.871484, 0.0513636, 0.0167715, 0.487438, 8.13333, 1, -0.869799, 0.0509961, 0.0166347, 0.490481, 8.16667, 1, -0.868012, 0.0506084, 0.0164903, 0.493682, 8.2, 1, -0.866118, 0.0501998, 0.016338, 0.497045, 8.23333, 1, -0.864111, 0.0497695, 0.0161775, 0.500574, 8.26667, 1, -0.861986, 0.0493166, 0.0160085, 0.504274, 8.3, 1, -0.859737, 0.0488402, 0.0158307, 0.50815, 8.33333, 1, -0.857358, 0.0483397, 0.0156438, 0.512206, 8.36667, 1, -0.854844, 0.047814, 0.0154473, 0.516446, 8.4, 1, -0.852187, 0.0472623, 0.0152411, 0.520876, 8.43333, 1, -0.849381, 0.0466837, 0.0150248, 0.525497, 8.46667, 1, -0.846418, 0.0460771, 0.014798, 0.530316, 8.5, 1, -0.843291, 0.0454417, 0.0145603, 0.535335, 8.53333, 1, -0.839992, 0.0447764, 0.0143115, 0.540559, 8.56667, 1, -0.836513, 0.0440802, 0.014051, 0.545991, 8.6, 1, -0.832845, 0.0433522, 0.0137786, 0.551634, 8.63333, 1, -0.82898, 0.0425912, 0.0134939, 0.557491, 8.66667, 1, -0.824908, 0.0417961, 0.0131964, 0.563565, 8.7, 1, -0.820619, 0.040966, 0.0128858, 0.56986, 8.73333, 1, -0.816103, 0.0400996, 0.0125617, 0.576376, 8.76667, 1, -0.81135, 0.0391959, 0.0122236, 0.583116, 8.8, 1, -0.806337, 0.0382394, 0.0118709, 0.590099, 8.83333, 1, -0.801055, 0.0372184, 0.011504, 0.597322, 8.86667, 1, -0.795514, 0.0361372, 0.0111239, 0.604755, 8.9, 1, -0.789727, 0.0350002, 0.0107319, 0.612366, 8.93333, 1, -0.783706, 0.033812, 0.010329, 0.620124, 8.96667, 1, -0.777468, 0.0325773, 0.00991656, 0.628, 9, 1, -0.771026, 0.0313009, 0.00949581, 0.635963, 9.03333, 1, -0.764398, 0.0299878, 0.00906805, 0.643983, 9.06667, 1, -0.757603, 0.0286429, 0.00863462, 0.65203, 9.26667, 1, -0.714523, 0.0202033, 0.00599347, 0.699295, 9.3, 1, -0.707185, 0.0187858, 0.00556005, 0.706757, 9.33333, 1, -0.699875, 0.01738, 0.0051325, 0.714036, 9.36667, 1, -0.69262, 0.0159915, 0.0047123, 0.72111, 9.4, 1, -0.685451, 0.0146258, 0.00430093, 0.727959, 9.43333, 1, -0.678398, 0.0132885, 0.00389987, 0.734564, 9.46667, 1, -0.671493, 0.0119851, 0.00351056, 0.740906, 9.5, 1, -0.664765, 0.010721, 0.00313444, 0.746969, 9.53333, 1, -0.658248, 0.00950167, 0.00277295, 0.752736, 9.56667, 1, -0.651972, 0.00833238, 0.00242746, 0.758193, 9.6, 1, -0.64597, 0.00721839, 0.00209938, 0.763326, 9.63333, 1, -0.640273, 0.00616489, 0.00179005, 0.768121, 9.66667, 1, -0.634912, 0.005177, 0.00150082, 0.772565, 9.7, 1, -0.62992, 0.00425978, 0.00123302, 0.776647, 9.73333, 1, -0.625327, 0.00341822, 0.00098795, 0.780354, 9.76667, 1, -0.621165, 0.00265728, 0.000766906, 0.783675, 9.8, 1, -0.617463, 0.00198187, 0.000571173, 0.786597, 9.83333, 1, -0.614252, 0.00139689, 0.000402025, 0.789109, 9.86667, 1, -0.61156, 0.000907229, 0.000260746, 0.791197, 9.9, 1, -0.609419, 0.000517772, 0.00014861, 0.792848, 9.93333, 1, -0.607855, 0.000233433, 6.68996e-05, 0.794048, 9.96667, 1, -0.606896, 5.91569e-05, 1.69097e-05, 0.794781, 11.0833, 1, -0.606571, -5.59589e-08, -4.3756e-08, 0.795029)
+tracks/18/type = "rotation_3d"
+tracks/18/imported = true
+tracks/18/enabled = true
+tracks/18/path = NodePath("Armature/Skeleton3D:Leg 1 R")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = PackedFloat32Array(0, 1, 0.853537, -0.0652463, -0.000785212, 0.51693, 6.83333, 1, 0.853228, -0.0651725, -0.000709164, 0.51745, 6.86667, 1, 0.850796, -0.0646048, -0.00011232, 0.52151, 6.9, 1, 0.846112, -0.0635443, 0.00105168, 0.529203, 6.93333, 1, 0.839471, -0.0620871, 0.00274947, 0.539839, 6.96667, 1, 0.831273, -0.060332, 0.0049396, 0.552558, 7, 1, 0.822107, -0.0583631, 0.00756192, 0.566284, 7.03333, 1, 0.812479, -0.0562622, 0.0105495, 0.580173, 7.06667, 1, 0.802925, -0.0540744, 0.013834, 0.593462, 7.1, 1, 0.793845, -0.0518316, 0.0173512, 0.605658, 7.13333, 1, 0.785536, -0.04955, 0.0210433, 0.61647, 7.16667, 1, 0.778165, -0.0472368, 0.0248612, 0.625787, 7.2, 1, 0.771795, -0.0448935, 0.0287638, 0.633632, 7.23333, 1, 0.766403, -0.0425181, 0.0327166, 0.640116, 7.26667, 1, 0.761895, -0.0401087, 0.0366905, 0.645415, 7.3, 1, 0.758162, -0.0376589, 0.040658, 0.649707, 7.33333, 1, 0.754935, -0.0351889, 0.0446013, 0.653334, 7.36667, 1, 0.752044, -0.0327, 0.0484986, 0.656513, 7.4, 1, 0.749251, -0.0302073, 0.0523339, 0.659524, 7.43333, 1, 0.74631, -0.0277301, 0.0560953, 0.662651, 7.46667, 1, 0.743034, -0.0252952, 0.059762, 0.6661, 7.5, 1, 0.739819, -0.0229377, 0.0632006, 0.669438, 7.53333, 1, 0.736862, -0.0207035, 0.0662994, 0.672466, 7.56667, 1, 0.734319, -0.0186391, 0.0689505, 0.675037, 7.6, 1, 0.732247, -0.0168192, 0.0710538, 0.677114, 7.63333, 1, 0.73082, -0.0152966, 0.0725049, 0.678536, 7.66667, 1, 0.730194, -0.0141303, 0.0732128, 0.679159, 7.7, 1, 0.730552, -0.0133714, 0.0731036, 0.678801, 7.73333, 1, 0.732119, -0.0130583, 0.0721256, 0.677222, 7.76667, 1, 0.735165, -0.0132125, 0.070253, 0.674109, 7.8, 1, 0.740152, -0.0139892, 0.0671678, 0.668931, 7.83333, 1, 0.748025, -0.0161758, 0.0613478, 0.660631, 7.86667, 1, 0.758752, -0.019587, 0.0534417, 0.648888, 7.9, 1, 0.77211, -0.0238864, 0.0443675, 0.633488, 7.93333, 1, 0.787806, -0.0287776, 0.0348798, 0.614262, 7.96667, 1, 0.805436, -0.0340065, 0.0255541, 0.591154, 8, 1, 0.824489, -0.0393539, 0.0168031, 0.564257, 8.03333, 1, 0.844363, -0.0446258, 0.00890535, 0.533835, 8.06667, 1, 0.864416, -0.049646, 0.00203287, 0.500316, 8.1, 1, 0.884025, -0.0542544, -0.00372583, 0.464265, 8.2, 1, 0.935313, -0.0642668, -0.0143425, 0.347641, 8.23333, 1, 0.948894, -0.0659839, -0.0158815, 0.30821, 8.26667, 1, 0.96053, -0.0667595, -0.0165972, 0.269538, 8.3, 1, 0.970221, -0.0665463, -0.016621, 0.232306, 8.36667, 1, 0.984769, -0.0635514, -0.0153812, 0.161107, 8.4, 1, 0.99007, -0.0612899, -0.0144741, 0.125682, 8.46667, 1, 0.996822, -0.0556484, -0.0122132, 0.0556775, 8.5, 1, 0.998349, -0.052373, -0.0108893, 0.0209474, 8.53333, 1, -0.998665, 0.0488335, 0.00944655, 0.0139264, 8.56667, 1, -0.997735, 0.0450335, 0.00788268, 0.0493346, 8.6, 1, -0.995427, 0.0409207, 0.00617108, 0.0860922, 8.63333, 1, -0.99136, 0.0363252, 0.00423298, 0.125967, 8.66667, 1, -0.98396, 0.0304904, 0.00172725, 0.175757, 8.7, 1, -0.973073, 0.0240755, -0.00102534, 0.229236, 8.73333, 1, -0.973265, 0.0238275, -0.00103409, 0.228445, 8.76667, 1, -0.973669, 0.023697, -0.00105722, 0.226731, 8.8, 1, -0.974362, 0.0236423, -0.00107075, 0.223738, 8.83333, 1, -0.975412, 0.0236144, -0.00104832, 0.219117, 8.86667, 1, -0.976782, 0.023613, -0.000991763, 0.21293, 8.9, 1, -0.97843, 0.0236379, -0.000902304, 0.205222, 8.93333, 1, -0.980312, 0.0236888, -0.000780619, 0.196026, 8.96667, 1, -0.982383, 0.0237658, -0.000626925, 0.185361, 9, 1, -0.989536, 0.0274663, 0.000955733, 0.141642, 9.03333, 1, -0.995394, 0.0318146, 0.00272489, 0.0903918, 9.06667, 1, -0.998156, 0.0348117, 0.00391027, 0.0495645, 9.1, 1, -0.999224, 0.0373338, 0.00486228, 0.011554, 9.13333, 1, 0.998878, -0.0395815, -0.00566236, 0.0253601, 9.16667, 1, 0.99724, -0.0415723, -0.0063253, 0.0611816, 9.2, 1, 0.994455, -0.0433019, -0.00686101, 0.0955935, 9.23333, 1, 0.990728, -0.0447507, -0.00727627, 0.12807, 9.26667, 1, 0.986316, -0.0459136, -0.0075838, 0.158162, 9.3, 1, 0.981504, -0.0467971, -0.00779947, 0.185472, 9.33333, 1, 0.976603, -0.0474123, -0.00793905, 0.20961, 9.36667, 1, 0.971934, -0.0477754, -0.00801717, 0.23021, 9.4, 1, 0.967784, -0.0479175, -0.0080484, 0.247049, 9.43333, 1, 0.964463, -0.0478491, -0.00803952, 0.259725, 9.46667, 1, 0.962172, -0.0476088, -0.00799903, 0.26813, 9.5, 1, 0.961123, -0.0472088, -0.00792734, 0.271941, 9.53333, 1, 0.961272, -0.0463572, -0.00770372, 0.271565, 9.56667, 1, 0.962371, -0.0448287, -0.00724058, 0.267919, 9.6, 1, 0.964265, -0.0427266, -0.00659009, 0.261387, 9.63333, 1, 0.966802, -0.0401458, -0.00580666, 0.252285, 9.66667, 1, 0.969813, -0.0371822, -0.00494429, 0.240949, 9.7, 1, 0.973151, -0.0339187, -0.00405229, 0.227618, 9.73333, 1, 0.97666, -0.0304441, -0.00317516, 0.212601, 9.76667, 1, 0.980213, -0.0268326, -0.00234974, 0.196102, 9.8, 1, 0.983685, -0.0231645, -0.00160606, 0.178397, 9.83333, 1, 0.986963, -0.0195171, -0.000966548, 0.159755, 9.9, 1, 0.992567, -0.0126232, -5.40106e-05, 0.121045, 9.93333, 1, 0.994721, -0.00960145, 0.000209098, 0.102165, 9.96667, 1, 0.996286, -0.0071773, 0.000349764, 0.0858111, 10, 1, 0.996931, -0.00609347, 0.000389665, 0.0780487, 11.0833, 1, 0.996931, -0.00609347, 0.000389665, 0.0780487)
+tracks/19/type = "scale_3d"
+tracks/19/imported = true
+tracks/19/enabled = true
+tracks/19/path = NodePath("Armature/Skeleton3D:Leg 1 R")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = PackedFloat32Array(0, 1, 1, 1.00001, 1.00003)
+tracks/20/type = "rotation_3d"
+tracks/20/imported = true
+tracks/20/enabled = true
+tracks/20/path = NodePath("Armature/Skeleton3D:Leg 2 R")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = PackedFloat32Array(0, 1, 0.961921, 0.00145778, -0.104166, 0.252697, 6.83333, 1, 0.96181, 0.00146024, -0.104154, 0.253122, 6.86667, 1, 0.960949, 0.00147921, -0.104061, 0.256409, 6.9, 1, 0.959263, 0.0015156, -0.103879, 0.262719, 6.93333, 1, 0.956754, 0.00156811, -0.103607, 0.271819, 6.96667, 1, 0.953393, 0.00163556, -0.103243, 0.283512, 7, 1, 0.949113, 0.00171734, -0.10278, 0.297687, 7.03333, 1, 0.943923, 0.00181107, -0.102218, 0.313938, 7.06667, 1, 0.937755, 0.00191591, -0.10155, 0.332112, 7.1, 1, 0.930583, 0.00203025, -0.100773, 0.351931, 7.13333, 1, 0.922399, 0.00215231, -0.0998868, 0.373092, 7.16667, 1, 0.913228, 0.0022802, -0.0988936, 0.395259, 7.2, 1, 0.903132, 0.00241178, -0.0978003, 0.418069, 7.3, 1, 0.868465, 0.00280797, -0.0940462, 0.48674, 7.33333, 1, 0.856127, 0.00293273, -0.0927101, 0.508372, 7.36667, 1, 0.843831, 0.00305037, -0.0913786, 0.528763, 7.4, 1, 0.831916, 0.00315866, -0.0900883, 0.547531, 7.43333, 1, 0.820755, 0.00325548, -0.0888796, 0.564315, 7.46667, 1, 0.810691, 0.00333931, -0.0877898, 0.578845, 7.5, 1, 0.801535, 0.00341292, -0.0867983, 0.591605, 7.53333, 1, 0.793331, 0.00347687, -0.0859099, 0.602689, 7.56667, 1, 0.786148, 0.00353136, -0.0851321, 0.612136, 7.6, 1, 0.780235, 0.00357526, -0.0844917, 0.619743, 7.63333, 1, 0.775657, 0.00360864, -0.0839959, 0.62553, 7.66667, 1, 0.772523, 0.00363121, -0.0836565, 0.629442, 7.7, 1, 0.770909, 0.00364275, -0.0834818, 0.63144, 7.73333, 1, 0.770839, 0.00364325, -0.0834743, 0.631526, 7.76667, 1, 0.772265, 0.00363304, -0.0836286, 0.629762, 7.8, 1, 0.774981, 0.00361353, -0.0839228, 0.626377, 7.83333, 1, 0.778352, 0.00358904, -0.0842878, 0.622135, 7.86667, 1, 0.781893, 0.00356306, -0.0846713, 0.617626, 7.9, 1, 0.78512, 0.00353908, -0.0850207, 0.61347, 7.93333, 1, 0.787536, 0.00352097, -0.0852824, 0.610329, 7.96667, 1, 0.788669, 0.00351242, -0.085405, 0.608847, 8, 1, 0.788099, 0.00351674, -0.0853433, 0.609594, 8.03333, 1, 0.785483, 0.00353639, -0.0850601, 0.613, 8.06667, 1, 0.780569, 0.00357285, -0.0845279, 0.619318, 8.1, 1, 0.773208, 0.00362632, -0.0837308, 0.62859, 8.13333, 1, 0.763368, 0.00369585, -0.0826652, 0.640642, 8.16667, 1, 0.751144, 0.00377924, -0.0813414, 0.655097, 8.2, 1, 0.736769, 0.00387124, -0.0797858, 0.67141, 8.23333, 1, 0.720609, 0.00397234, -0.078036, 0.688925, 8.33333, 1, 0.666926, 0.00427635, -0.0722225, 0.741604, 8.36667, 1, 0.643042, 0.00439778, -0.0696362, 0.762646, 8.4, 1, 0.613179, 0.00453908, -0.0664022, 0.787135, 8.43333, 1, 0.577484, 0.00469404, -0.0625367, 0.81399, 8.46667, 1, 0.535953, 0.00485702, -0.0580393, 0.842236, 8.5, 1, 0.488623, 0.00502227, -0.0529138, 0.870874, 8.53333, 1, 0.435212, 0.00518502, -0.0471297, 0.899079, 8.56667, 1, 0.375233, 0.00534051, -0.0406345, 0.926024, 8.6, 1, 0.307281, 0.00548478, -0.0332758, 0.951021, 8.63333, 1, 0.227774, 0.00561387, -0.0246659, 0.973385, 8.66667, 1, 0.121753, 0.00572394, -0.0131848, 0.992456, 8.7, 1, 0.00268424, 0.00576733, -0.00029076, 0.99998, 8.96667, 1, 0.00268386, 0.00576732, -0.000290711, 0.99998, 9, 1, 0.0728208, 0.00575187, -0.00788589, 0.997297, 9.03333, 1, 0.155346, 0.00569649, -0.0168226, 0.987701, 9.06667, 1, 0.210977, 0.00563593, -0.0228469, 0.977208, 9.1, 1, 0.256826, 0.00557148, -0.027812, 0.966041, 9.13333, 1, 0.296864, 0.00550407, -0.0321478, 0.954363, 9.16667, 1, 0.331617, 0.00543684, -0.0359113, 0.942715, 9.2, 1, 0.361279, 0.00537282, -0.0391233, 0.931621, 9.23333, 1, 0.385726, 0.00531529, -0.0417708, 0.921652, 9.26667, 1, 0.405081, 0.00526658, -0.0438667, 0.913213, 9.3, 1, 0.419617, 0.00522812, -0.0454409, 0.906548, 9.33333, 1, 0.429639, 0.00520065, -0.0465262, 0.901786, 9.36667, 1, 0.435483, 0.00518425, -0.0471591, 0.898946, 9.4, 1, 0.437723, 0.0051779, -0.0474017, 0.897844, 9.43333, 1, 0.436525, 0.0051813, -0.0472719, 0.898434, 9.46667, 1, 0.43258, 0.00519243, -0.0468447, 0.900363, 9.5, 1, 0.426096, 0.00521045, -0.0461426, 0.903485, 9.53333, 1, 0.416717, 0.00523593, -0.0451268, 0.907901, 9.56667, 1, 0.404236, 0.00526877, -0.0437752, 0.913591, 9.6, 1, 0.38893, 0.00530742, -0.0421178, 0.920289, 9.63333, 1, 0.370929, 0.00535063, -0.0401684, 0.927777, 9.66667, 1, 0.35041, 0.00539701, -0.0379463, 0.935812, 9.7, 1, 0.327352, 0.00544554, -0.0354494, 0.944221, 9.73333, 1, 0.301903, 0.00549484, -0.0326934, 0.952762, 9.76667, 1, 0.273997, 0.00554386, -0.0296715, 0.961257, 9.8, 1, 0.243748, 0.00559123, -0.0263957, 0.969463, 9.83333, 1, 0.211275, 0.00563555, -0.0228792, 0.977143, 9.86667, 1, 0.176841, 0.00567535, -0.0191503, 0.984037, 9.93333, 1, 0.104811, 0.00573522, -0.0113501, 0.994411, 9.96667, 1, 0.0723985, 0.00575205, -0.00784016, 0.997328, 10, 1, 0.0566088, 0.005758, -0.00613028, 0.998361, 11.0833, 1, 0.0566088, 0.005758, -0.00613028, 0.998361)
+tracks/21/type = "scale_3d"
+tracks/21/imported = true
+tracks/21/enabled = true
+tracks/21/path = NodePath("Armature/Skeleton3D:Leg 2 R")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/keys = PackedFloat32Array(0, 1, 0.999999, 0.999997, 1.00001)
+tracks/22/type = "rotation_3d"
+tracks/22/imported = true
+tracks/22/enabled = true
+tracks/22/path = NodePath("Armature/Skeleton3D:Foot R")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/keys = PackedFloat32Array(0, 1, -0.918774, -0.0632657, -0.0209121, 0.38912, 6.9, 1, -0.918199, -0.0633136, -0.0210967, 0.390458, 6.93333, 1, -0.917755, -0.0633703, -0.0212551, 0.391481, 6.96667, 1, -0.917261, -0.0634553, -0.0214495, 0.392614, 7, 1, -0.916724, -0.0635681, -0.0216772, 0.393835, 7.03333, 1, -0.916144, -0.0637075, -0.0219374, 0.395145, 7.06667, 1, -0.915521, -0.0638719, -0.0222289, 0.396545, 7.1, 1, -0.914852, -0.0640601, -0.0225506, 0.398037, 7.13333, 1, -0.914138, -0.0642704, -0.0229014, 0.39962, 7.16667, 1, -0.913378, -0.0645014, -0.0232802, 0.401296, 7.2, 1, -0.91257, -0.0647518, -0.023686, 0.403066, 7.23333, 1, -0.911714, -0.06502, -0.0241176, 0.40493, 7.26667, 1, -0.910809, -0.0653047, -0.0245739, 0.40689, 7.3, 1, -0.909853, -0.0656044, -0.0250539, 0.408945, 7.33333, 1, -0.908846, -0.0659176, -0.0255564, 0.411098, 7.36667, 1, -0.907786, -0.0662428, -0.0260804, 0.413348, 7.4, 1, -0.906672, -0.0665787, -0.0266247, 0.415697, 7.43333, 1, -0.905504, -0.0669237, -0.0271884, 0.418144, 7.46667, 1, -0.904279, -0.0672765, -0.0277702, 0.420692, 7.5, 1, -0.902997, -0.0676355, -0.0283693, 0.423341, 7.53333, 1, -0.901655, -0.0679994, -0.0289843, 0.426091, 7.56667, 1, -0.900254, -0.0683667, -0.0296144, 0.428943, 7.6, 1, -0.89879, -0.0687359, -0.0302584, 0.431899, 7.63333, 1, -0.897263, -0.0691056, -0.0309153, 0.434958, 7.66667, 1, -0.89567, -0.0694743, -0.0315841, 0.438122, 7.7, 1, -0.894011, -0.0698406, -0.0322636, 0.441391, 7.73333, 1, -0.892283, -0.0702031, -0.0329528, 0.444766, 7.76667, 1, -0.890484, -0.0705603, -0.0336508, 0.448248, 7.8, 1, -0.888614, -0.0709108, -0.0343564, 0.451838, 7.83333, 1, -0.886668, -0.071253, -0.0350687, 0.455536, 7.86667, 1, -0.884646, -0.0715856, -0.0357865, 0.459343, 7.9, 1, -0.882546, -0.0719071, -0.036509, 0.46326, 7.93333, 1, -0.880364, -0.0722161, -0.037235, 0.467287, 7.96667, 1, -0.878099, -0.072511, -0.0379635, 0.471426, 8, 1, -0.875749, -0.0727905, -0.0386935, 0.475677, 8.03333, 1, -0.87331, -0.0730529, -0.039424, 0.48004, 8.06667, 1, -0.87078, -0.0732969, -0.040154, 0.484517, 8.1, 1, -0.868157, -0.073521, -0.0408825, 0.489109, 8.13333, 1, -0.865437, -0.0737235, -0.0416083, 0.493815, 8.16667, 1, -0.862617, -0.0739032, -0.0423306, 0.498637, 8.2, 1, -0.859695, -0.0740582, -0.0430482, 0.503575, 8.23333, 1, -0.856667, -0.0741874, -0.0437602, 0.508629, 8.26667, 1, -0.853529, -0.0742889, -0.0444655, 0.513801, 8.3, 1, -0.850279, -0.0743612, -0.045163, 0.519091, 8.33333, 1, -0.846913, -0.0744028, -0.0458517, 0.5245, 8.36667, 1, -0.843427, -0.0744121, -0.0465306, 0.530027, 8.4, 1, -0.839817, -0.0743875, -0.0471985, 0.535674, 8.43333, 1, -0.836079, -0.0743273, -0.0478544, 0.54144, 8.46667, 1, -0.832209, -0.0742299, -0.0484973, 0.547326, 8.5, 1, -0.828203, -0.0740936, -0.0491259, 0.553332, 8.53333, 1, -0.824056, -0.0739167, -0.0497392, 0.559458, 8.56667, 1, -0.819764, -0.0736976, -0.0503361, 0.565705, 8.6, 1, -0.815322, -0.0734344, -0.0509154, 0.572071, 8.63333, 1, -0.810724, -0.0731256, -0.0514759, 0.578558, 8.66667, 1, -0.805967, -0.0727692, -0.0520165, 0.585164, 8.7, 1, -0.801044, -0.0723634, -0.052536, 0.591888, 8.73333, 1, -0.795951, -0.0719066, -0.0530331, 0.598732, 8.76667, 1, -0.790681, -0.0713968, -0.0535067, 0.605692, 8.8, 1, -0.785242, -0.0707377, -0.0538308, 0.612775, 8.83333, 1, -0.779652, -0.0698429, -0.0538894, 0.619968, 8.86667, 1, -0.773918, -0.0687255, -0.0536961, 0.627251, 8.9, 1, -0.768051, -0.0673989, -0.0532645, 0.634601, 8.93333, 1, -0.762059, -0.0658763, -0.0526082, 0.641996, 8.96667, 1, -0.755953, -0.0641714, -0.0517411, 0.649415, 9.03333, 1, -0.743451, -0.0602692, -0.0494297, 0.664233, 9.23333, 1, -0.704628, -0.0456441, -0.0389068, 0.707038, 9.26667, 1, -0.698139, -0.0429338, -0.0367833, 0.713726, 9.3, 1, -0.691696, -0.0401853, -0.0345941, 0.72024, 9.33333, 1, -0.685318, -0.0374136, -0.0323542, 0.726563, 9.36667, 1, -0.679026, -0.0346339, -0.0300789, 0.732679, 9.4, 1, -0.672844, -0.0318612, -0.0277832, 0.738576, 9.43333, 1, -0.666792, -0.0291107, -0.0254825, 0.744239, 9.46667, 1, -0.660894, -0.0263974, -0.0231919, 0.749657, 9.5, 1, -0.655172, -0.0237363, -0.0209264, 0.754816, 9.53333, 1, -0.649651, -0.0211423, -0.0187012, 0.759708, 9.56667, 1, -0.644354, -0.0186302, -0.0165312, 0.764321, 9.6, 1, -0.639305, -0.0162148, -0.0144312, 0.768647, 9.63333, 1, -0.634527, -0.0139107, -0.0124161, 0.772676, 9.66667, 1, -0.630045, -0.0117323, -0.0105006, 0.776399, 9.7, 1, -0.625881, -0.00969406, -0.00869915, 0.77981, 9.73333, 1, -0.622061, -0.00781033, -0.00702642, 0.782898, 9.76667, 1, -0.618606, -0.00609529, -0.00549678, 0.785658, 9.8, 1, -0.615541, -0.00456309, -0.00412457, 0.788081, 9.83333, 1, -0.612888, -0.00322786, -0.00292417, 0.790158, 9.86667, 1, -0.610669, -0.00210369, -0.00190984, 0.791881, 9.9, 1, -0.608907, -0.00120466, -0.00109591, 0.79324, 9.93333, 1, -0.607623, -0.000544895, -0.000496694, 0.794226, 9.96667, 1, -0.606837, -0.000138566, -0.000126557, 0.794826, 11.0833, 1, -0.606571, 5.69493e-08, 4.38833e-08, 0.795029)
+tracks/23/type = "position_3d"
+tracks/23/imported = true
+tracks/23/enabled = true
+tracks/23/path = NodePath("Armature/Skeleton3D:Leg IK Target L")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/keys = PackedFloat32Array(0, 1, 0.0871909, 0.0745727, 2.6917, 6.8, 1, 0.0871909, 0.0745727, 2.6917, 6.83333, 1, 0.0871909, 0.0746379, 2.69055, 6.86667, 1, 0.0871909, 0.0751275, 2.68162, 6.9, 1, 0.0871909, 0.0760245, 2.66454, 6.93333, 1, 0.0871909, 0.077243, 2.64014, 6.96667, 1, 0.0871909, 0.0786975, 2.60923, 7, 1, 0.0871909, 0.080302, 2.57261, 7.03333, 1, 0.0871909, 0.0819709, 2.53109, 7.06667, 1, 0.0871909, 0.0836183, 2.48547, 7.1, 1, 0.0871909, 0.0851585, 2.43655, 7.13333, 1, 0.0871909, 0.0865057, 2.38514, 7.16667, 1, 0.0871909, 0.0875742, 2.33203, 7.23333, 1, 0.0871909, 0.0885319, 2.22394, 7.26667, 1, 0.0871256, 0.0884753, 2.17043, 7.3, 1, 0.0869337, 0.0883087, 2.11769, 7.33333, 1, 0.0866209, 0.0880372, 2.06576, 7.36667, 1, 0.0861929, 0.0876657, 2.01467, 7.4, 1, 0.0856555, 0.0871993, 1.9645, 7.43333, 1, 0.0850145, 0.0866429, 1.91527, 7.46667, 1, 0.0842756, 0.0860016, 1.86704, 7.5, 1, 0.0834447, 0.0852804, 1.81985, 7.53333, 1, 0.0825273, 0.0844841, 1.77376, 7.56667, 1, 0.0815293, 0.083618, 1.72878, 7.6, 1, 0.0804565, 0.0826868, 1.68491, 7.63333, 1, 0.0793146, 0.0816957, 1.64216, 7.66667, 1, 0.0781094, 0.0806496, 1.60053, 7.7, 1, 0.0768466, 0.0795535, 1.56001, 7.73333, 1, 0.0755319, 0.0784125, 1.52059, 7.76667, 1, 0.0741713, 0.0772315, 1.4823, 7.8, 1, 0.0727703, 0.0760155, 1.44511, 7.83333, 1, 0.0713347, 0.0747695, 1.40903, 7.86667, 1, 0.0698704, 0.0734986, 1.37406, 7.9, 1, 0.0683831, 0.0722076, 1.3402, 7.93333, 1, 0.0668784, 0.0709017, 1.30745, 7.96667, 1, 0.0653623, 0.0695857, 1.2758, 8, 1, 0.0638404, 0.0682648, 1.24526, 8.03333, 1, 0.0623185, 0.0669439, 1.21582, 8.06667, 1, 0.0608024, 0.0656279, 1.18749, 8.1, 1, 0.0592977, 0.064322, 1.16027, 8.13333, 1, 0.0578104, 0.063031, 1.13415, 8.16667, 1, 0.0563461, 0.0617601, 1.10913, 8.2, 1, 0.0549105, 0.0605141, 1.08521, 8.23333, 1, 0.0535095, 0.0592981, 1.06239, 8.26667, 1, 0.0521489, 0.0581171, 1.04067, 8.3, 1, 0.0508342, 0.0569761, 1.02005, 8.33333, 1, 0.0495714, 0.05588, 1.00053, 8.36667, 1, 0.0483662, 0.0548339, 0.982113, 8.4, 1, 0.0472243, 0.0538428, 0.964789, 8.43333, 1, 0.0461515, 0.0529117, 0.948561, 8.46667, 1, 0.0451535, 0.0520455, 0.933429, 8.5, 1, 0.0442361, 0.0512492, 0.919392, 8.53333, 1, 0.0434051, 0.050528, 0.906449, 8.56667, 1, 0.0426663, 0.0498867, 0.894599, 8.6, 1, 0.0420253, 0.0493303, 0.883842, 8.63333, 1, 0.0414879, 0.0488639, 0.874177, 8.66667, 1, 0.0410599, 0.0484924, 0.865603, 8.7, 1, 0.0407471, 0.0482209, 0.858119, 8.73333, 1, 0.0405552, 0.0480543, 0.851726, 8.76667, 1, 0.0404899, 0.0479977, 0.846421, 8.8, 1, 0.0409902, 0.0492823, 0.842161, 8.83333, 1, 0.0424119, 0.0529328, 0.838729, 8.86667, 1, 0.044636, 0.0586437, 0.835864, 8.9, 1, 0.0475437, 0.0661099, 0.833308, 8.93333, 1, 0.0510161, 0.075026, 0.830799, 8.96667, 1, 0.0549343, 0.0850869, 0.828077, 9, 1, 0.0591794, 0.0959873, 0.824883, 9.03333, 1, 0.0636326, 0.107422, 0.820955, 9.06667, 1, 0.0681749, 0.119085, 0.816034, 9.1, 1, 0.0726875, 0.130673, 0.80986, 9.13333, 1, 0.0770515, 0.141878, 0.802172, 9.16667, 1, 0.0811481, 0.152397, 0.79271, 9.2, 1, 0.0848582, 0.161924, 0.781215, 9.23333, 1, 0.0880631, 0.170153, 0.767426, 9.26667, 1, 0.0906439, 0.17678, 0.751082, 9.3, 1, 0.0924816, 0.181499, 0.731924, 9.33333, 1, 0.0934574, 0.184004, 0.709691, 9.36667, 1, 0.093585, 0.183864, 0.681159, 9.4, 1, 0.093585, 0.180355, 0.630673, 9.43333, 1, 0.093585, 0.173946, 0.561137, 9.46667, 1, 0.093585, 0.165271, 0.478685, 9.53333, 1, 0.093585, 0.143659, 0.299568, 9.56667, 1, 0.093585, 0.131991, 0.215172, 9.6, 1, 0.093585, 0.120593, 0.142396, 9.63333, 1, 0.093585, 0.110101, 0.0873748, 9.66667, 1, 0.093585, 0.101147, 0.0562423, 9.7, 1, 0.0934059, 0.0939456, 0.0407559, 9.73333, 1, 0.09292, 0.0881789, 0.0283554, 9.76667, 1, 0.0922038, 0.0836878, 0.0186979, 9.8, 1, 0.0913342, 0.0803128, 0.0114404, 9.83333, 1, 0.0903879, 0.0778945, 0.00624023, 9.86667, 1, 0.0894416, 0.0762735, 0.00275437, 9.9, 1, 0.088572, 0.0752902, 0.000639997, 9.93333, 1, 0.0878558, 0.0747853, -0.000445761, 11.0833, 1, 0.0871909, 0.0745727, -0.000902917)
+tracks/24/type = "position_3d"
+tracks/24/imported = true
+tracks/24/enabled = true
+tracks/24/path = NodePath("Armature/Skeleton3D:Leg IK Poll Target L")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/keys = PackedFloat32Array(0, 1, 0.0871909, 0.147994, 3.25201)
+tracks/25/type = "position_3d"
+tracks/25/imported = true
+tracks/25/enabled = true
+tracks/25/path = NodePath("Armature/Skeleton3D:Leg IK Target R")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/keys = PackedFloat32Array(0, 1, -0.0871909, 0.0745727, 2.6917, 6.83333, 1, -0.0871564, 0.0747244, 2.69168, 6.86667, 1, -0.0868882, 0.0759066, 2.69155, 6.9, 1, -0.0863702, 0.0781897, 2.69134, 6.93333, 1, -0.0856216, 0.0814891, 2.6911, 6.96667, 1, -0.0846615, 0.08572, 2.69087, 7, 1, -0.0835094, 0.0907979, 2.69055, 7.03333, 1, -0.0821843, 0.096638, 2.69001, 7.06667, 1, -0.0807054, 0.103156, 2.68913, 7.1, 1, -0.0790921, 0.110266, 2.68778, 7.13333, 1, -0.0773634, 0.117885, 2.68583, 7.16667, 1, -0.0755387, 0.125927, 2.68316, 7.2, 1, -0.0736371, 0.134307, 2.67965, 7.23333, 1, -0.0716779, 0.142942, 2.67515, 7.26667, 1, -0.0696802, 0.151746, 2.66956, 7.3, 1, -0.0676633, 0.160635, 2.66275, 7.33333, 1, -0.0656464, 0.169524, 2.65457, 7.36667, 1, -0.0636488, 0.178329, 2.64492, 7.4, 1, -0.0616895, 0.186963, 2.63367, 7.43333, 1, -0.0597879, 0.195344, 2.62068, 7.46667, 1, -0.0579632, 0.203386, 2.60583, 7.5, 1, -0.0562346, 0.211005, 2.589, 7.53333, 1, -0.0546212, 0.218115, 2.57006, 7.56667, 1, -0.0531424, 0.224633, 2.54888, 7.6, 1, -0.0518173, 0.230473, 2.52533, 7.63333, 1, -0.0506651, 0.235551, 2.4993, 7.66667, 1, -0.0497051, 0.239782, 2.47065, 7.7, 1, -0.0489565, 0.243081, 2.43926, 7.73333, 1, -0.0484384, 0.245364, 2.40501, 7.76667, 1, -0.0481702, 0.246546, 2.36775, 7.8, 1, -0.0483523, 0.246249, 2.32724, 7.83333, 1, -0.0500014, 0.242828, 2.28273, 7.86667, 1, -0.0530877, 0.236425, 2.23444, 7.9, 1, -0.05739, 0.227499, 2.18278, 7.93333, 1, -0.0626874, 0.216509, 2.12813, 7.96667, 1, -0.0687586, 0.203913, 2.07088, 8, 1, -0.0753825, 0.190171, 2.01143, 8.03333, 1, -0.0823382, 0.17574, 1.95016, 8.06667, 1, -0.0894044, 0.16108, 1.88746, 8.2, 1, -0.114353, 0.109322, 1.63027, 8.23333, 1, -0.118655, 0.100396, 1.56633, 8.26667, 1, -0.121741, 0.0939928, 1.5033, 8.3, 1, -0.12339, 0.0905715, 1.44159, 8.33333, 1, -0.123607, 0.0901223, 1.38157, 8.36667, 1, -0.123607, 0.0901223, 1.32343, 8.4, 1, -0.123607, 0.0901223, 1.26712, 8.43333, 1, -0.123607, 0.0901223, 1.21261, 8.46667, 1, -0.123607, 0.0901223, 1.15985, 8.5, 1, -0.123607, 0.0901223, 1.10881, 8.53333, 1, -0.123607, 0.0901223, 1.05944, 8.56667, 1, -0.123607, 0.0901223, 1.0117, 8.6, 1, -0.123607, 0.0901223, 0.96555, 8.63333, 1, -0.123607, 0.0901223, 0.920949, 8.66667, 1, -0.123607, 0.0901223, 0.877855, 8.7, 1, -0.123607, 0.0901223, 0.836227, 8.73333, 1, -0.123607, 0.0901223, 0.796023, 8.76667, 1, -0.123607, 0.0901223, 0.757203, 8.8, 1, -0.123607, 0.0901223, 0.719723, 8.83333, 1, -0.123607, 0.0901223, 0.683544, 8.86667, 1, -0.123607, 0.0901223, 0.648624, 8.9, 1, -0.123607, 0.0901223, 0.614921, 8.93333, 1, -0.123607, 0.0901223, 0.582394, 8.96667, 1, -0.123607, 0.0901223, 0.551002, 9, 1, -0.123607, 0.0901223, 0.520703, 9.03333, 1, -0.123607, 0.0901223, 0.491456, 9.06667, 1, -0.123607, 0.0901223, 0.46322, 9.1, 1, -0.123607, 0.0901223, 0.435954, 9.13333, 1, -0.123607, 0.0901223, 0.409615, 9.16667, 1, -0.123607, 0.0901223, 0.384163, 9.2, 1, -0.123607, 0.0901223, 0.359556, 9.23333, 1, -0.123607, 0.0901223, 0.335753, 9.26667, 1, -0.123607, 0.0901223, 0.312712, 9.3, 1, -0.123607, 0.0901223, 0.290392, 9.33333, 1, -0.123607, 0.0901223, 0.268753, 9.36667, 1, -0.123607, 0.0901223, 0.247751, 9.4, 1, -0.123607, 0.0901223, 0.227347, 9.43333, 1, -0.123607, 0.0901223, 0.207498, 9.46667, 1, -0.123607, 0.0901223, 0.188163, 9.5, 1, -0.123607, 0.0901223, 0.169302, 9.53333, 1, -0.123143, 0.0899242, 0.150897, 9.56667, 1, -0.121837, 0.0893667, 0.133032, 9.6, 1, -0.11982, 0.0885052, 0.115814, 9.63333, 1, -0.117219, 0.0873948, 0.0993525, 9.66667, 1, -0.114166, 0.086091, 0.083755, 9.7, 1, -0.110788, 0.0846489, 0.0691299, 9.73333, 1, -0.107217, 0.0831239, 0.0555851, 9.76667, 1, -0.103581, 0.0815712, 0.0432288, 9.8, 1, -0.100009, 0.0800462, 0.0321692, 9.83333, 1, -0.096632, 0.0786041, 0.0225144, 9.86667, 1, -0.0935785, 0.0773002, 0.0143725, 9.9, 1, -0.0909781, 0.0761899, 0.00785173, 9.93333, 1, -0.0889604, 0.0753283, 0.00306013, 9.96667, 1, -0.0876548, 0.0747708, 0.000105865, 10, 1, -0.0871909, 0.0745727, -0.000902917, 11.0833, 1, -0.0871909, 0.0745727, -0.000902917)
+tracks/26/type = "position_3d"
+tracks/26/imported = true
+tracks/26/enabled = true
+tracks/26/path = NodePath("Armature/Skeleton3D:Leg IK Poll Target R")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/keys = PackedFloat32Array(0, 1, -0.0871909, 0.147994, 3.25201)
+tracks/27/type = "position_3d"
+tracks/27/imported = true
+tracks/27/enabled = true
+tracks/27/path = NodePath("Armature/Skeleton3D:Arm IK Target L")
+tracks/27/interp = 1
+tracks/27/loop_wrap = true
+tracks/27/keys = PackedFloat32Array(0, 1, 0.272844, 0.362602, 2.90738, 6.83333, 1, 0.272622, 0.362965, 2.90714, 6.86667, 1, 0.270936, 0.365788, 2.90524, 6.9, 1, 0.267787, 0.371223, 2.90155, 6.93333, 1, 0.263408, 0.37905, 2.89618, 6.96667, 1, 0.258032, 0.389047, 2.88924, 7, 1, 0.25189, 0.400996, 2.88087, 7.03333, 1, 0.245214, 0.414676, 2.87121, 7.06667, 1, 0.238236, 0.429867, 2.86041, 7.1, 1, 0.231186, 0.446348, 2.84861, 7.13333, 1, 0.224296, 0.463899, 2.83595, 7.16667, 1, 0.217797, 0.4823, 2.82258, 7.2, 1, 0.211921, 0.501331, 2.80864, 7.3, 1, 0.200343, 0.559999, 2.76485, 7.33333, 1, 0.199272, 0.579346, 2.75008, 7.36667, 1, 0.199742, 0.598226, 2.73543, 7.4, 1, 0.200479, 0.616536, 2.72091, 7.43333, 1, 0.201266, 0.634282, 2.70647, 7.46667, 1, 0.202116, 0.651478, 2.69206, 7.5, 1, 0.203043, 0.668136, 2.67766, 7.53333, 1, 0.20406, 0.684269, 2.66321, 7.56667, 1, 0.205178, 0.699888, 2.64869, 7.6, 1, 0.206412, 0.715006, 2.63406, 7.66667, 1, 0.209275, 0.743791, 2.60431, 7.86667, 1, 0.221967, 0.819426, 2.50844, 7.9, 1, 0.224816, 0.830599, 2.49109, 7.93333, 1, 0.227908, 0.841396, 2.47326, 7.96667, 1, 0.231258, 0.85183, 2.4549, 8, 1, 0.234877, 0.861913, 2.43598, 8.03333, 1, 0.238778, 0.871657, 2.41645, 8.06667, 1, 0.242975, 0.881075, 2.39628, 8.1, 1, 0.24748, 0.890179, 2.37543, 8.13333, 1, 0.252307, 0.898982, 2.35387, 8.16667, 1, 0.257467, 0.907496, 2.33156, 8.2, 1, 0.262974, 0.915734, 2.30845, 8.23333, 1, 0.268842, 0.923708, 2.28451, 8.26667, 1, 0.275082, 0.931431, 2.25971, 8.3, 1, 0.281707, 0.938915, 2.234, 8.33333, 1, 0.288731, 0.946173, 2.20735, 8.36667, 1, 0.296167, 0.953216, 2.17972, 8.4, 1, 0.304027, 0.960058, 2.15107, 8.43333, 1, 0.312324, 0.966711, 2.12136, 8.46667, 1, 0.321071, 0.973188, 2.09056, 8.5, 1, 0.33028, 0.9795, 2.05864, 8.53333, 1, 0.339966, 0.98566, 2.02554, 8.56667, 1, 0.350141, 0.991682, 1.99123, 8.6, 1, 0.360816, 0.997577, 1.95569, 8.63333, 1, 0.372007, 1.00336, 1.91886, 8.66667, 1, 0.383725, 1.00904, 1.88071, 8.7, 1, 0.395983, 1.01463, 1.8412, 8.73333, 1, 0.408794, 1.02014, 1.8003, 8.76667, 1, 0.422168, 1.02559, 1.75797, 8.8, 1, 0.436061, 1.03097, 1.71428, 8.83333, 1, 0.450371, 1.03626, 1.66938, 8.86667, 1, 0.464993, 1.04145, 1.62343, 8.9, 1, 0.479825, 1.04652, 1.57662, 8.93333, 1, 0.494762, 1.05145, 1.52908, 9.1, 1, 0.567399, 1.07336, 1.28647, 9.13333, 1, 0.58079, 1.07707, 1.2381, 9.16667, 1, 0.59356, 1.08051, 1.19017, 9.2, 1, 0.605605, 1.08367, 1.14284, 9.23333, 1, 0.616822, 1.08652, 1.09627, 9.26667, 1, 0.627106, 1.08906, 1.05063, 9.3, 1, 0.636355, 1.09125, 1.00608, 9.33333, 1, 0.644463, 1.09308, 0.962788, 9.36667, 1, 0.651329, 1.09454, 0.920914, 9.4, 1, 0.656846, 1.0956, 0.880624, 9.43333, 1, 0.660913, 1.09626, 0.842082, 9.46667, 1, 0.663425, 1.09648, 0.805451, 9.5, 1, 0.661813, 1.09636, 0.770709, 9.56667, 1, 0.641584, 1.09552, 0.705886, 9.6, 1, 0.624877, 1.09487, 0.6754, 9.63333, 1, 0.605048, 1.09411, 0.645927, 9.73333, 1, 0.536388, 1.09151, 0.561562, 9.76667, 1, 0.513626, 1.09064, 0.534117, 9.8, 1, 0.492519, 1.08984, 0.506671, 9.83333, 1, 0.474022, 1.08913, 0.479023, 9.86667, 1, 0.45909, 1.08855, 0.450971, 9.9, 1, 0.448679, 1.08812, 0.42231, 9.93333, 1, 0.443742, 1.0879, 0.39284, 9.96667, 1, 0.444777, 1.08877, 0.362349, 10, 1, 0.449456, 1.09563, 0.330823, 10.0333, 1, 0.456917, 1.10845, 0.298647, 10.0667, 1, 0.466702, 1.12626, 0.26624, 10.1, 1, 0.478349, 1.14812, 0.234019, 10.1333, 1, 0.491398, 1.17308, 0.202404, 10.2, 1, 0.519862, 1.22846, 0.142666, 10.2333, 1, 0.534356, 1.25699, 0.11538, 10.2667, 1, 0.548411, 1.2848, 0.0903736, 10.3, 1, 0.561566, 1.31094, 0.068066, 10.3333, 1, 0.573362, 1.33447, 0.0488758, 10.3667, 1, 0.583338, 1.35443, 0.0332213, 10.4, 1, 0.591033, 1.36986, 0.0215213, 10.4333, 1, 0.595988, 1.37982, 0.0141943, 10.4667, 1, 0.597742, 1.38335, 0.011659, 11.0833, 1, 0.597742, 1.38335, 0.011659)
+tracks/28/type = "position_3d"
+tracks/28/imported = true
+tracks/28/enabled = true
+tracks/28/path = NodePath("Armature/Skeleton3D:Arm IK Poll Target L")
+tracks/28/interp = 1
+tracks/28/loop_wrap = true
+tracks/28/keys = PackedFloat32Array(0, 1, 0.375559, 0.437912, 2.71355, 6.83333, 1, 0.375577, 0.438137, 2.7134, 6.86667, 1, 0.37572, 0.439914, 2.7122, 6.9, 1, 0.376002, 0.44341, 2.7098, 6.93333, 1, 0.376416, 0.448562, 2.70621, 6.96667, 1, 0.37696, 0.455306, 2.70144, 7, 1, 0.377626, 0.463581, 2.69547, 7.03333, 1, 0.378411, 0.473324, 2.68832, 7.06667, 1, 0.379309, 0.484472, 2.68, 7.1, 1, 0.380315, 0.496964, 2.6705, 7.13333, 1, 0.381424, 0.510737, 2.65982, 7.16667, 1, 0.382632, 0.525727, 2.64798, 7.2, 1, 0.383932, 0.541874, 2.63496, 7.23333, 1, 0.385321, 0.559113, 2.62079, 7.26667, 1, 0.386792, 0.577384, 2.60546, 7.3, 1, 0.388342, 0.596622, 2.58897, 7.33333, 1, 0.389965, 0.616767, 2.57133, 7.36667, 1, 0.391655, 0.637755, 2.55253, 7.4, 1, 0.393409, 0.659523, 2.5326, 7.43333, 1, 0.39522, 0.682011, 2.51152, 7.46667, 1, 0.397084, 0.705154, 2.4893, 7.5, 1, 0.398996, 0.72889, 2.46594, 7.53333, 1, 0.40095, 0.753158, 2.44145, 7.56667, 1, 0.402943, 0.777894, 2.41583, 7.6, 1, 0.404968, 0.803037, 2.38909, 7.63333, 1, 0.407021, 0.828522, 2.36122, 7.66667, 1, 0.409096, 0.854289, 2.33224, 7.7, 1, 0.411189, 0.880275, 2.30213, 7.73333, 1, 0.413295, 0.906417, 2.27092, 7.76667, 1, 0.415408, 0.932652, 2.2386, 7.8, 1, 0.417524, 0.958919, 2.20517, 7.83333, 1, 0.419637, 0.985155, 2.17063, 7.86667, 1, 0.421742, 1.0113, 2.135, 7.9, 1, 0.423835, 1.03728, 2.09828, 7.93333, 1, 0.425911, 1.06305, 2.06045, 7.96667, 1, 0.427964, 1.08854, 2.02155, 8, 1, 0.429989, 1.11368, 1.98155, 8.03333, 1, 0.431981, 1.13841, 1.94047, 8.06667, 1, 0.433936, 1.16268, 1.89832, 8.1, 1, 0.435848, 1.18642, 1.85508, 8.13333, 1, 0.437712, 1.20956, 1.81078, 8.16667, 1, 0.439523, 1.23205, 1.7654, 8.2, 1, 0.441276, 1.25382, 1.71896, 8.23333, 1, 0.442967, 1.2748, 1.67146, 8.26667, 1, 0.444589, 1.29495, 1.6229, 8.3, 1, 0.446139, 1.31419, 1.57328, 8.33333, 1, 0.447611, 1.33246, 1.52261, 8.36667, 1, 0.448999, 1.3497, 1.47089, 8.4, 1, 0.4503, 1.36584, 1.41812, 8.43333, 1, 0.451507, 1.38084, 1.36432, 8.46667, 1, 0.452617, 1.39461, 1.30947, 8.5, 1, 0.453623, 1.4071, 1.25359, 8.53333, 1, 0.454521, 1.41825, 1.19667, 8.56667, 1, 0.455305, 1.42799, 1.13873, 8.6, 1, 0.455972, 1.43627, 1.07976, 8.63333, 1, 0.456515, 1.44301, 1.01977, 8.66667, 1, 0.45693, 1.44816, 0.958755, 8.7, 1, 0.457212, 1.45166, 0.896729, 8.73333, 1, 0.457355, 1.45343, 0.833689, 8.76667, 1, 0.457188, 1.45343, 0.769644, 8.8, 1, 0.455741, 1.45166, 0.704673, 8.83333, 1, 0.452925, 1.4482, 0.638926, 8.86667, 1, 0.448824, 1.44317, 0.572558, 8.93333, 1, 0.437099, 1.42878, 0.438582, 9.13333, 1, 0.379703, 1.35834, 0.0378645, 9.16667, 1, 0.367767, 1.3437, -0.0271196, 9.2, 1, 0.355375, 1.32849, -0.0911761, 9.23333, 1, 0.34261, 1.31282, -0.15415, 9.26667, 1, 0.329555, 1.2968, -0.215887, 9.3, 1, 0.316292, 1.28053, -0.276231, 9.33333, 1, 0.302905, 1.2641, -0.335029, 9.36667, 1, 0.289477, 1.24762, -0.392124, 9.4, 1, 0.27609, 1.23119, -0.447364, 9.43333, 1, 0.262827, 1.21492, -0.500592, 9.46667, 1, 0.249772, 1.1989, -0.551654, 9.5, 1, 0.237007, 1.18323, -0.600394, 9.53333, 1, 0.224615, 1.16802, -0.64666, 9.56667, 1, 0.212679, 1.15338, -0.690294, 9.6, 1, 0.201282, 1.13939, -0.731144, 9.63333, 1, 0.190507, 1.12617, -0.769053, 9.66667, 1, 0.180436, 1.11381, -0.803867, 9.7, 1, 0.171154, 1.10242, -0.835431, 9.73333, 1, 0.162741, 1.09209, -0.863591, 9.76667, 1, 0.155283, 1.08294, -0.888192, 9.8, 1, 0.14886, 1.07506, -0.909078, 9.83333, 1, 0.143557, 1.06855, -0.926096, 9.86667, 1, 0.139457, 1.06352, -0.93909, 9.9, 1, 0.136641, 1.06006, -0.947904, 9.93333, 1, 0.135194, 1.05829, -0.952386, 9.96667, 1, 0.135808, 1.05905, -0.950014, 10, 1, 0.141885, 1.06661, -0.927655, 10.0333, 1, 0.153232, 1.08072, -0.885912, 10.0667, 1, 0.169005, 1.10033, -0.827884, 10.1, 1, 0.188361, 1.12439, -0.756674, 10.1333, 1, 0.210457, 1.15187, -0.675384, 10.1667, 1, 0.23445, 1.1817, -0.587115, 10.2333, 1, 0.284754, 1.24424, -0.402047, 10.2667, 1, 0.30938, 1.27486, -0.311452, 10.3, 1, 0.332529, 1.30364, -0.226284, 10.3333, 1, 0.353361, 1.32954, -0.149646, 10.3667, 1, 0.371031, 1.35151, -0.0846399, 10.4, 1, 0.384696, 1.3685, -0.0343665, 10.4333, 1, 0.393513, 1.37946, -0.001928, 10.4667, 1, 0.39664, 1.38335, 0.00957427, 11.0833, 1, 0.39664, 1.38335, 0.00957427)
+tracks/29/type = "position_3d"
+tracks/29/imported = true
+tracks/29/enabled = true
+tracks/29/path = NodePath("Armature/Skeleton3D:Arm IK Target R")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/keys = PackedFloat32Array(0, 1, -0.157064, 0.289126, 2.98829, 6.83333, 1, -0.157212, 0.289742, 2.98828, 6.86667, 1, -0.158337, 0.294476, 2.98817, 6.9, 1, -0.160447, 0.303466, 2.98789, 6.93333, 1, -0.163393, 0.316212, 2.98738, 6.96667, 1, -0.167031, 0.332214, 2.98655, 7, 1, -0.171221, 0.350972, 2.98517, 7.03333, 1, -0.175823, 0.371988, 2.983, 7.06667, 1, -0.180701, 0.394761, 2.97979, 7.1, 1, -0.185716, 0.418791, 2.97528, 7.13333, 1, -0.190729, 0.44358, 2.96922, 7.16667, 1, -0.195603, 0.468628, 2.96137, 7.26667, 1, -0.208006, 0.540324, 2.92451, 7.3, 1, -0.21094, 0.561409, 2.90695, 7.33333, 1, -0.213044, 0.580255, 2.88633, 7.36667, 1, -0.214331, 0.59641, 2.86243, 7.4, 1, -0.215607, 0.609952, 2.83533, 7.43333, 1, -0.216972, 0.62115, 2.80534, 7.46667, 1, -0.218378, 0.630255, 2.77279, 7.5, 1, -0.219776, 0.637516, 2.738, 7.53333, 1, -0.221119, 0.643187, 2.70132, 7.56667, 1, -0.222359, 0.647516, 2.66305, 7.6, 1, -0.223447, 0.650756, 2.62352, 7.63333, 1, -0.224335, 0.653156, 2.58307, 7.76667, 1, -0.224933, 0.659386, 2.41852, 7.8, 1, -0.224102, 0.661354, 2.37833, 7.83333, 1, -0.222784, 0.663989, 2.33916, 7.86667, 1, -0.220929, 0.667542, 2.30135, 7.9, 1, -0.218491, 0.672262, 2.26523, 7.93333, 1, -0.21542, 0.678401, 2.23111, 7.96667, 1, -0.211668, 0.68621, 2.19933, 8, 1, -0.207113, 0.69593, 2.17019, 8.03333, 1, -0.201325, 0.707579, 2.14373, 8.06667, 1, -0.194362, 0.720952, 2.11976, 8.1, 1, -0.186366, 0.735835, 2.09806, 8.13333, 1, -0.177476, 0.752012, 2.07843, 8.2, 1, -0.157582, 0.787393, 2.04455, 8.26667, 1, -0.13581, 0.825377, 2.01644, 8.3, 1, -0.124572, 0.844808, 2.00404, 8.33333, 1, -0.113288, 0.864246, 1.99246, 8.36667, 1, -0.102098, 0.883476, 1.98149, 8.4, 1, -0.0911438, 0.902284, 1.97094, 8.43333, 1, -0.0805665, 0.920455, 1.96058, 8.46667, 1, -0.0705068, 0.937773, 1.95022, 8.5, 1, -0.0611059, 0.954025, 1.93964, 8.53333, 1, -0.0525051, 0.968996, 1.92864, 8.56667, 1, -0.0448452, 0.98247, 1.91701, 8.6, 1, -0.0382674, 0.994234, 1.90455, 8.63333, 1, -0.0329126, 1.00407, 1.89104, 8.7, 1, -0.0264368, 1.01712, 1.86006, 8.73333, 1, -0.0255977, 1.01989, 1.84218, 8.76667, 1, -0.0264196, 1.02013, 1.82242, 8.8, 1, -0.0282063, 1.01922, 1.80069, 8.83333, 1, -0.0307722, 1.01749, 1.77706, 8.86667, 1, -0.0340502, 1.01502, 1.7516, 8.9, 1, -0.0379723, 1.01191, 1.7244, 8.93333, 1, -0.042471, 1.00824, 1.69554, 8.96667, 1, -0.0474787, 1.0041, 1.66509, 9, 1, -0.0529279, 0.999585, 1.63315, 9.03333, 1, -0.058751, 0.99478, 1.59978, 9.06667, 1, -0.0648804, 0.989775, 1.56508, 9.1, 1, -0.0712485, 0.984658, 1.52911, 9.13333, 1, -0.0777877, 0.979519, 1.49196, 9.16667, 1, -0.0844304, 0.974447, 1.45372, 9.2, 1, -0.0911091, 0.96953, 1.41446, 9.23333, 1, -0.0977561, 0.964859, 1.37425, 9.26667, 1, -0.104304, 0.960521, 1.33319, 9.3, 1, -0.110685, 0.956606, 1.29135, 9.33333, 1, -0.116831, 0.953204, 1.24882, 9.36667, 1, -0.122676, 0.950402, 1.20566, 9.43333, 1, -0.133189, 0.946959, 1.11783, 9.93333, 1, -0.2164, 0.97591, 0.445563, 9.96667, 1, -0.230137, 0.983576, 0.402776, 10, 1, -0.248845, 0.998072, 0.360849, 10.0333, 1, -0.272185, 1.01922, 0.320061, 10.0667, 1, -0.299279, 1.04588, 0.280672, 10.1, 1, -0.329249, 1.07692, 0.242942, 10.1333, 1, -0.361218, 1.11121, 0.20713, 10.2, 1, -0.427642, 1.185, 0.142301, 10.2333, 1, -0.460341, 1.22223, 0.113802, 10.2667, 1, -0.491528, 1.25817, 0.0882614, 10.3, 1, -0.520325, 1.2917, 0.0659372, 10.3333, 1, -0.545855, 1.32167, 0.0470896, 10.3667, 1, -0.567239, 1.34695, 0.0319782, 10.4, 1, -0.5836, 1.36642, 0.0208629, 10.4333, 1, -0.59406, 1.37893, 0.0140032, 10.4667, 1, -0.597742, 1.38335, 0.011659, 11.0833, 1, -0.597742, 1.38335, 0.011659)
+tracks/30/type = "position_3d"
+tracks/30/imported = true
+tracks/30/enabled = true
+tracks/30/path = NodePath("Armature/Skeleton3D:Arm IK Poll Target R")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/keys = PackedFloat32Array(0, 1, -0.350852, 0.545129, 2.70336, 6.83333, 1, -0.350824, 0.545283, 2.70292, 6.86667, 1, -0.350605, 0.546495, 2.69945, 6.9, 1, -0.35018, 0.548869, 2.69268, 6.93333, 1, -0.349559, 0.552351, 2.68277, 6.96667, 1, -0.348755, 0.55689, 2.66989, 7, 1, -0.347779, 0.562433, 2.65423, 7.03333, 1, -0.346643, 0.568926, 2.63594, 7.06667, 1, -0.345359, 0.576318, 2.6152, 7.1, 1, -0.343939, 0.584556, 2.59218, 7.13333, 1, -0.342394, 0.593587, 2.56705, 7.16667, 1, -0.340737, 0.603358, 2.53998, 7.2, 1, -0.338979, 0.613817, 2.51113, 7.23333, 1, -0.337131, 0.624911, 2.4807, 7.26667, 1, -0.335207, 0.636587, 2.44883, 7.3, 1, -0.333217, 0.648793, 2.4157, 7.33333, 1, -0.331173, 0.661476, 2.38149, 7.36667, 1, -0.329088, 0.674584, 2.34636, 7.4, 1, -0.326973, 0.688063, 2.31049, 7.43333, 1, -0.324839, 0.701862, 2.27405, 7.6, 1, -0.314311, 0.773799, 2.08916, 7.63333, 1, -0.312316, 0.788407, 2.05285, 7.66667, 1, -0.310385, 0.802965, 2.01716, 7.7, 1, -0.308531, 0.817421, 1.98226, 7.73333, 1, -0.306765, 0.831723, 1.94833, 7.76667, 1, -0.305098, 0.845817, 1.91552, 7.8, 1, -0.303543, 0.859651, 1.88402, 7.83333, 1, -0.302112, 0.873172, 1.85399, 7.86667, 1, -0.300816, 0.886328, 1.8256, 7.9, 1, -0.299667, 0.899066, 1.79903, 7.93333, 1, -0.298676, 0.911334, 1.77444, 7.96667, 1, -0.297857, 0.923078, 1.75201, 8, 1, -0.297457, 0.934261, 1.7319, 8.03333, 1, -0.298869, 0.944941, 1.71405, 8.06667, 1, -0.30222, 0.955135, 1.6982, 8.1, 1, -0.307394, 0.964848, 1.68408, 8.13333, 1, -0.314277, 0.974083, 1.67139, 8.2, 1, -0.332708, 0.99114, 1.64926, 8.23333, 1, -0.344026, 0.998969, 1.63926, 8.26667, 1, -0.356592, 1.00634, 1.6296, 8.3, 1, -0.37029, 1.01325, 1.62, 8.33333, 1, -0.385006, 1.01972, 1.61019, 8.36667, 1, -0.400625, 1.02574, 1.5999, 8.4, 1, -0.417031, 1.03131, 1.58884, 8.43333, 1, -0.434109, 1.03645, 1.57674, 8.46667, 1, -0.451744, 1.04115, 1.56333, 8.5, 1, -0.46982, 1.04542, 1.54833, 8.53333, 1, -0.488223, 1.04927, 1.53146, 8.56667, 1, -0.506838, 1.0527, 1.51244, 8.6, 1, -0.525549, 1.05571, 1.491, 8.63333, 1, -0.544241, 1.05831, 1.46687, 8.66667, 1, -0.562799, 1.06051, 1.43977, 8.7, 1, -0.581108, 1.0623, 1.40941, 8.73333, 1, -0.599053, 1.06369, 1.37554, 8.76667, 1, -0.616531, 1.0645, 1.33787, 8.8, 1, -0.633551, 1.06361, 1.29642, 8.83333, 1, -0.650119, 1.06094, 1.25144, 8.86667, 1, -0.666233, 1.05659, 1.20321, 8.9, 1, -0.681892, 1.05067, 1.15202, 8.93333, 1, -0.697093, 1.04329, 1.09813, 8.96667, 1, -0.711834, 1.03456, 1.04183, 9, 1, -0.726113, 1.02457, 0.983391, 9.03333, 1, -0.739929, 1.01344, 0.923089, 9.06667, 1, -0.753278, 1.00126, 0.861202, 9.1, 1, -0.766159, 0.988162, 0.798008, 9.13333, 1, -0.778571, 0.974233, 0.733782, 9.3, 1, -0.833506, 0.895933, 0.406888, 9.33333, 1, -0.843055, 0.879285, 0.342294, 9.36667, 1, -0.852119, 0.862557, 0.278608, 9.4, 1, -0.860697, 0.845855, 0.216106, 9.43333, 1, -0.868787, 0.829284, 0.155066, 9.46667, 1, -0.876386, 0.812951, 0.0957652, 9.5, 1, -0.883493, 0.796963, 0.0384795, 9.53333, 1, -0.890106, 0.781426, -0.0165135, 9.56667, 1, -0.896222, 0.766446, -0.068937, 9.6, 1, -0.90184, 0.75213, -0.118514, 9.63333, 1, -0.906957, 0.738584, -0.164968, 9.66667, 1, -0.911571, 0.725914, -0.208022, 9.7, 1, -0.915681, 0.714227, -0.247398, 9.73333, 1, -0.919285, 0.703629, -0.28282, 9.76667, 1, -0.922379, 0.694227, -0.314011, 9.8, 1, -0.924963, 0.686127, -0.340694, 9.83333, 1, -0.927034, 0.679435, -0.362592, 9.86667, 1, -0.928591, 0.674257, -0.379428, 9.9, 1, -0.92963, 0.6707, -0.390925, 9.93333, 1, -0.930151, 0.668871, -0.396806, 9.96667, 1, -0.928586, 0.670821, -0.39631, 10, 1, -0.916192, 0.687422, -0.386853, 10.0333, 1, -0.893052, 0.718419, -0.369197, 10.0667, 1, -0.860884, 0.761506, -0.344652, 10.1, 1, -0.821409, 0.814382, -0.314532, 10.1333, 1, -0.776346, 0.874743, -0.280148, 10.1667, 1, -0.727414, 0.940286, -0.242812, 10.2333, 1, -0.624822, 1.07771, -0.164533, 10.2667, 1, -0.5746, 1.14498, -0.126213, 10.3, 1, -0.527388, 1.20822, -0.0901887, 10.3333, 1, -0.484904, 1.26512, -0.0577726, 10.3667, 1, -0.448867, 1.31339, -0.0302763, 10.4, 1, -0.420998, 1.35072, -0.00901171, 10.4333, 1, -0.403016, 1.37481, 0.00470916, 10.4667, 1, -0.39664, 1.38335, 0.00957427, 11.0833, 1, -0.39664, 1.38335, 0.00957427)
+
+[sub_resource type="Animation" id="Animation_wg5dd"]
+resource_name = "Key_003Action"
+length = 5.66667
+tracks/0/type = "blend_shape"
+tracks/0/imported = true
+tracks/0/enabled = true
+tracks/0/path = NodePath("Armature/Skeleton3D/Body:Jaw Open")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(3.16667, 1, 0)
+tracks/1/type = "blend_shape"
+tracks/1/imported = true
+tracks/1/enabled = true
+tracks/1/path = NodePath("Armature/Skeleton3D/Body:Smile Left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(3.16667, 1, 1)
+tracks/2/type = "blend_shape"
+tracks/2/imported = true
+tracks/2/enabled = true
+tracks/2/path = NodePath("Armature/Skeleton3D/Body:Smile Right")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(3.16667, 1, 1)
+tracks/3/type = "blend_shape"
+tracks/3/imported = true
+tracks/3/enabled = true
+tracks/3/path = NodePath("Armature/Skeleton3D/Body:sad Left")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(3.16667, 1, 0)
+tracks/4/type = "blend_shape"
+tracks/4/imported = true
+tracks/4/enabled = true
+tracks/4/path = NodePath("Armature/Skeleton3D/Body:sad Right")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(3.16667, 1, 0)
+tracks/5/type = "blend_shape"
+tracks/5/imported = true
+tracks/5/enabled = true
+tracks/5/path = NodePath("Armature/Skeleton3D/Body:Eye Close Left")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = PackedFloat32Array(3.16667, 1, 0, 3.18333, 1, 1, 3.26667, 1, 1, 3.28333, 1, 0, 3.81667, 1, 0, 3.83333, 1, 1, 3.95, 1, 1, 3.96667, 1, 0, 5.53333, 1, 0, 5.55, 1, 1, 5.65, 1, 1, 5.66667, 1, 0)
+tracks/6/type = "blend_shape"
+tracks/6/imported = true
+tracks/6/enabled = true
+tracks/6/path = NodePath("Armature/Skeleton3D/Body:Eye Close Right")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = PackedFloat32Array(3.16667, 1, 0, 3.18333, 1, 1, 3.26667, 1, 1, 3.28333, 1, 0, 3.81667, 1, 0, 3.83333, 1, 1, 3.95, 1, 1, 3.96667, 1, 0, 5.53333, 1, 0, 5.55, 1, 1, 5.65, 1, 1, 5.66667, 1, 0)
+tracks/7/type = "position_3d"
+tracks/7/imported = true
+tracks/7/enabled = true
+tracks/7/path = NodePath("Armature/Skeleton3D:Hip")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = PackedFloat32Array(0, 1, 1.47989e-17, 0.980627, 0)
+tracks/8/type = "position_3d"
+tracks/8/imported = true
+tracks/8/enabled = true
+tracks/8/path = NodePath("Armature/Skeleton3D:Leg IK Target L")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = PackedFloat32Array(0, 1, 0.0871909, 0.0745727, -0.000902917)
+tracks/9/type = "position_3d"
+tracks/9/imported = true
+tracks/9/enabled = true
+tracks/9/path = NodePath("Armature/Skeleton3D:Leg IK Poll Target L")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = PackedFloat32Array(0, 1, 0.0871909, 0.48784, 0.218312)
+tracks/10/type = "position_3d"
+tracks/10/imported = true
+tracks/10/enabled = true
+tracks/10/path = NodePath("Armature/Skeleton3D:Leg IK Target R")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = PackedFloat32Array(0, 1, -0.0871909, 0.0745727, -0.000902917)
+tracks/11/type = "position_3d"
+tracks/11/imported = true
+tracks/11/enabled = true
+tracks/11/path = NodePath("Armature/Skeleton3D:Leg IK Poll Target R")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = PackedFloat32Array(0, 1, -0.0871909, 0.48784, 0.218312)
+tracks/12/type = "position_3d"
+tracks/12/imported = true
+tracks/12/enabled = true
+tracks/12/path = NodePath("Armature/Skeleton3D:Arm IK Target L")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = PackedFloat32Array(0, 1, 0.597742, 1.38335, 0.011659)
+tracks/13/type = "position_3d"
+tracks/13/imported = true
+tracks/13/enabled = true
+tracks/13/path = NodePath("Armature/Skeleton3D:Arm IK Poll Target L")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = PackedFloat32Array(0, 1, 0.39664, 1.38335, 0.00957427)
+tracks/14/type = "position_3d"
+tracks/14/imported = true
+tracks/14/enabled = true
+tracks/14/path = NodePath("Armature/Skeleton3D:Arm IK Target R")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = PackedFloat32Array(0, 1, -0.597742, 1.38335, 0.011659)
+tracks/15/type = "position_3d"
+tracks/15/imported = true
+tracks/15/enabled = true
+tracks/15/path = NodePath("Armature/Skeleton3D:Arm IK Poll Target R")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = PackedFloat32Array(0, 1, -0.39664, 1.38335, 0.00957427)
+tracks/16/type = "rotation_3d"
+tracks/16/imported = true
+tracks/16/enabled = true
+tracks/16/path = NodePath("Armature/Skeleton3D:Spine Lower")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = PackedFloat32Array(0, 1, -0.0526639, -3.92453e-14, -1.2556e-08, 0.998612)
+tracks/17/type = "rotation_3d"
+tracks/17/imported = true
+tracks/17/enabled = true
+tracks/17/path = NodePath("Armature/Skeleton3D:Spine Upper")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = PackedFloat32Array(0, 1, -0.0169518, -7.12033e-15, -4.04162e-09, 0.999856)
+tracks/18/type = "rotation_3d"
+tracks/18/imported = true
+tracks/18/enabled = true
+tracks/18/path = NodePath("Armature/Skeleton3D:Shoulder L")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = PackedFloat32Array(0, 1, 0.0185402, -0.0259669, -0.773709, 0.632737)
+tracks/19/type = "rotation_3d"
+tracks/19/imported = true
+tracks/19/enabled = true
+tracks/19/path = NodePath("Armature/Skeleton3D:Arm 1 L")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = PackedFloat32Array(0, 1, -0.0449652, 0.00224398, 0.110089, 0.992902)
+tracks/20/type = "rotation_3d"
+tracks/20/imported = true
+tracks/20/enabled = true
+tracks/20/path = NodePath("Armature/Skeleton3D:Arm 2 L")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = PackedFloat32Array(0, 1, 0.0189845, 9.15537e-05, -0.010563, 0.999764)
+tracks/21/type = "rotation_3d"
+tracks/21/imported = true
+tracks/21/enabled = true
+tracks/21/path = NodePath("Armature/Skeleton3D:Neck")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/keys = PackedFloat32Array(0, 1, 0.0168356, 3.12295e-17, 4.01391e-09, 0.999858)
+tracks/22/type = "rotation_3d"
+tracks/22/imported = true
+tracks/22/enabled = true
+tracks/22/path = NodePath("Armature/Skeleton3D:Head")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/keys = PackedFloat32Array(0, 1, -2.1424e-22, -3.55271e-15, -5.29396e-23, 1)
+tracks/23/type = "rotation_3d"
+tracks/23/imported = true
+tracks/23/enabled = true
+tracks/23/path = NodePath("Armature/Skeleton3D:Eye L")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/keys = PackedFloat32Array(0, 1, -0.137463, -0.693617, -0.693617, 0.137463)
+tracks/24/type = "rotation_3d"
+tracks/24/imported = true
+tracks/24/enabled = true
+tracks/24/path = NodePath("Armature/Skeleton3D:Eye R")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/keys = PackedFloat32Array(0, 1, -0.137463, 0.693617, 0.693617, 0.137463)
+tracks/25/type = "rotation_3d"
+tracks/25/imported = true
+tracks/25/enabled = true
+tracks/25/path = NodePath("Armature/Skeleton3D:Shoulder R")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/keys = PackedFloat32Array(0, 1, 0.01854, 0.0259667, 0.773709, 0.632737)
+tracks/26/type = "rotation_3d"
+tracks/26/imported = true
+tracks/26/enabled = true
+tracks/26/path = NodePath("Armature/Skeleton3D:Arm 1 R")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/keys = PackedFloat32Array(0, 1, -0.0449652, -0.00224399, -0.110089, 0.992902)
+tracks/27/type = "rotation_3d"
+tracks/27/imported = true
+tracks/27/enabled = true
+tracks/27/path = NodePath("Armature/Skeleton3D:Arm 2 R")
+tracks/27/interp = 1
+tracks/27/loop_wrap = true
+tracks/27/keys = PackedFloat32Array(0, 1, 0.0189845, -9.15517e-05, 0.010563, 0.999764)
+tracks/28/type = "rotation_3d"
+tracks/28/imported = true
+tracks/28/enabled = true
+tracks/28/path = NodePath("Armature/Skeleton3D:Leg 1 L")
+tracks/28/interp = 1
+tracks/28/loop_wrap = true
+tracks/28/keys = PackedFloat32Array(0, 1, 0.996914, 0.00625269, 0.00562461, 0.0780471)
+tracks/29/type = "scale_3d"
+tracks/29/imported = true
+tracks/29/enabled = true
+tracks/29/path = NodePath("Armature/Skeleton3D:Leg 1 L")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/keys = PackedFloat32Array(0, 1, 1, 1, 1.00001)
+tracks/30/type = "rotation_3d"
+tracks/30/imported = true
+tracks/30/enabled = true
+tracks/30/path = NodePath("Armature/Skeleton3D:Leg 2 L")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/keys = PackedFloat32Array(0, 1, 0.0566102, -0.00575799, 0.00613044, 0.998361)
+tracks/31/type = "scale_3d"
+tracks/31/imported = true
+tracks/31/enabled = true
+tracks/31/path = NodePath("Armature/Skeleton3D:Leg 2 L")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/keys = PackedFloat32Array(0, 1, 1, 1, 1)
+tracks/32/type = "rotation_3d"
+tracks/32/imported = true
+tracks/32/enabled = true
+tracks/32/path = NodePath("Armature/Skeleton3D:Foot L")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/keys = PackedFloat32Array(0, 1, -0.606571, -5.61484e-08, -4.38638e-08, 0.795029)
+tracks/33/type = "rotation_3d"
+tracks/33/imported = true
+tracks/33/enabled = true
+tracks/33/path = NodePath("Armature/Skeleton3D:Leg 1 R")
+tracks/33/interp = 1
+tracks/33/loop_wrap = true
+tracks/33/keys = PackedFloat32Array(0, 1, 0.996914, -0.0062527, -0.00562437, 0.0780471)
+tracks/34/type = "scale_3d"
+tracks/34/imported = true
+tracks/34/enabled = true
+tracks/34/path = NodePath("Armature/Skeleton3D:Leg 1 R")
+tracks/34/interp = 1
+tracks/34/loop_wrap = true
+tracks/34/keys = PackedFloat32Array(0, 1, 1, 1, 1.00001)
+tracks/35/type = "rotation_3d"
+tracks/35/imported = true
+tracks/35/enabled = true
+tracks/35/path = NodePath("Armature/Skeleton3D:Leg 2 R")
+tracks/35/interp = 1
+tracks/35/loop_wrap = true
+tracks/35/keys = PackedFloat32Array(0, 1, 0.0566102, 0.005758, -0.00613043, 0.998361)
+tracks/36/type = "scale_3d"
+tracks/36/imported = true
+tracks/36/enabled = true
+tracks/36/path = NodePath("Armature/Skeleton3D:Leg 2 R")
+tracks/36/interp = 1
+tracks/36/loop_wrap = true
+tracks/36/keys = PackedFloat32Array(0, 1, 1, 1, 1)
+tracks/37/type = "rotation_3d"
+tracks/37/imported = true
+tracks/37/enabled = true
+tracks/37/path = NodePath("Armature/Skeleton3D:Foot R")
+tracks/37/interp = 1
+tracks/37/loop_wrap = true
+tracks/37/keys = PackedFloat32Array(0, 1, -0.606571, 5.68364e-08, 4.37298e-08, 0.795029)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qfwrf"]
+_data = {
+"ArmatureAction": SubResource("Animation_mdo8g"),
+"Key_003Action": SubResource("Animation_wg5dd")
+}
+
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_gex8e"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6uhft"]
+animation = &"Key_003Action"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p4qqm"]
+animation = &"ArmatureAction"
+
+[sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_jjwdp"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3prc6"]
+graph_offset = Vector2(-153.247, 126.527)
+nodes/Add2/node = SubResource("AnimationNodeAdd2_gex8e")
+nodes/Add2/position = Vector2(140, 200)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_p4qqm")
+nodes/Animation/position = Vector2(-140, 160)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_6uhft")
+"nodes/Animation 2/position" = Vector2(-120, 300)
+nodes/RTHISONE/node = SubResource("AnimationNodeTimeSeek_jjwdp")
+nodes/RTHISONE/position = Vector2(377.028, 244.779)
+nodes/output/position = Vector2(560, 180)
+node_connections = [&"Add2", 0, &"Animation", &"Add2", 1, &"Animation 2", &"RTHISONE", 0, &"Add2", &"output", 0, &"RTHISONE"]
+
+[sub_resource type="Environment" id="Environment_h02jo"]
+ambient_light_source = 1
+
+[node name="elfmodlthing" type="Node3D" node_paths=PackedStringArray("elf_anim_hting", "camination_thing")]
+script = ExtResource("1_fpa83")
+elf_anim_hting = NodePath("RIGGINGUGH/AnimationTree")
+camination_thing = NodePath("cameragagin/AnimationPlayer")
+
+[node name="RIGGINGUGH" parent="." instance=ExtResource("1_mgsyr")]
+
+[node name="Skeleton3D" parent="RIGGINGUGH/Armature" index="0"]
+bones/1/position = Vector3(2.95978e-17, 0.980627, -3.50867e-24)
+bones/2/rotation = Quaternion(-0.0526638, -3.94136e-14, -1.2556e-08, 0.998612)
+bones/3/rotation = Quaternion(0.0847911, -1.03251e-14, 2.02158e-08, 0.996399)
+bones/4/rotation = Quaternion(-0.149855, -0.173224, -0.741033, 0.631195)
+bones/5/rotation = Quaternion(-0.0576865, 0.159771, 0.0934598, 0.981025)
+bones/6/rotation = Quaternion(0.0289832, 9.15239e-05, -0.0161263, 0.99945)
+bones/23/rotation = Quaternion(0.16926, 7.35556e-15, 4.03548e-08, 0.985571)
+bones/24/rotation = Quaternion(-0.330272, -3.76392e-15, -7.87429e-08, 0.943886)
+bones/25/rotation = Quaternion(-0.00409894, 0.571407, 0.820647, 0.00398443)
+bones/26/rotation = Quaternion(0.0040987, 0.571406, 0.820647, -0.00398421)
+bones/31/rotation = Quaternion(-0.149856, 0.173223, 0.741033, 0.631195)
+bones/32/rotation = Quaternion(-0.0576884, -0.159768, -0.0934615, 0.981026)
+bones/33/rotation = Quaternion(0.0289889, -9.15078e-05, 0.0161294, 0.99945)
+bones/50/rotation = Quaternion(0.996931, 0.00609338, -0.000389431, 0.0780481)
+bones/50/scale = Vector3(1, 1.00001, 1.00003)
+bones/51/rotation = Quaternion(0.0566075, -0.00575799, 0.00613014, 0.998361)
+bones/51/scale = Vector3(0.999999, 0.999997, 1.00001)
+bones/52/rotation = Quaternion(-0.606571, -5.59589e-08, -4.3756e-08, 0.795029)
+bones/53/rotation = Quaternion(0.996931, -0.00609347, 0.000389665, 0.0780487)
+bones/53/scale = Vector3(1, 1.00001, 1.00003)
+bones/54/rotation = Quaternion(0.0566088, 0.005758, -0.00613028, 0.998361)
+bones/54/scale = Vector3(0.999999, 0.999997, 1.00001)
+bones/55/rotation = Quaternion(-0.606571, 5.69493e-08, 4.38833e-08, 0.795029)
+bones/57/position = Vector3(0.0871909, 0.147994, 3.25201)
+bones/59/position = Vector3(-0.0871909, 0.147994, 3.25201)
+bones/60/position = Vector3(0.597742, 1.38335, 0.011659)
+bones/61/position = Vector3(0.39664, 1.38335, 0.00957427)
+bones/62/position = Vector3(-0.597742, 1.38335, 0.011659)
+bones/63/position = Vector3(-0.39664, 1.38335, 0.00957427)
+
+[node name="Hat Rim_001" parent="RIGGINGUGH/Armature/Skeleton3D" index="0"]
+visible = false
+
+[node name="Body" parent="RIGGINGUGH/Armature/Skeleton3D" index="1"]
+"blend_shapes/Smile Left" = 1.0
+"blend_shapes/Smile Right" = 1.0
+surface_material_override/0 = SubResource("ShaderMaterial_0mxmj")
+surface_material_override/1 = SubResource("ShaderMaterial_arhmt")
+surface_material_override/2 = SubResource("ShaderMaterial_skj36")
+surface_material_override/3 = SubResource("ShaderMaterial_udnby")
+surface_material_override/4 = SubResource("ShaderMaterial_x5hbh")
+surface_material_override/5 = SubResource("ShaderMaterial_oa32x")
+surface_material_override/6 = SubResource("ShaderMaterial_i8yb7")
+surface_material_override/7 = SubResource("ShaderMaterial_b85ex")
+surface_material_override/8 = SubResource("ShaderMaterial_da5rv")
+surface_material_override/9 = SubResource("ShaderMaterial_2y3pk")
+surface_material_override/10 = SubResource("ShaderMaterial_i8yb7")
+surface_material_override/11 = SubResource("ShaderMaterial_2y3pk")
+surface_material_override/12 = SubResource("ShaderMaterial_4upvv")
+surface_material_override/13 = SubResource("ShaderMaterial_hfmmx")
+surface_material_override/14 = SubResource("ShaderMaterial_p4ggm")
+surface_material_override/15 = SubResource("ShaderMaterial_ri703")
+surface_material_override/16 = SubResource("ShaderMaterial_5udxu")
+surface_material_override/17 = SubResource("ShaderMaterial_hjpo0")
+surface_material_override/18 = SubResource("ShaderMaterial_h3ueg")
+surface_material_override/19 = SubResource("ShaderMaterial_0mbkm")
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="RIGGINGUGH/Armature/Skeleton3D" index="2"]
+transform = Transform3D(1, 1.42109e-14, 2.38418e-07, -3.86918e-08, 0.986744, 0.162285, -2.35258e-07, -0.162285, 0.986744, -2.2449e-15, 1.46895, 0.0759069)
+bone_name = "Head"
+bone_idx = 24
+
+[node name="hat2ihope" parent="RIGGINGUGH/Armature/Skeleton3D/BoneAttachment3D" instance=ExtResource("2_s7dtr")]
+transform = Transform3D(1, -1.0126e-07, -2.15847e-07, 3.58027e-14, 0.905326, -0.424716, 2.38418e-07, 0.424716, 0.905326, 0, 0.159, -0.009)
+
+[node name="Hat Armature" parent="RIGGINGUGH/Armature/Skeleton3D/BoneAttachment3D/hat2ihope" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Hat Rim_001" parent="RIGGINGUGH/Armature/Skeleton3D/BoneAttachment3D/hat2ihope/Hat Armature/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_yshuu")
+surface_material_override/1 = SubResource("ShaderMaterial_usap1")
+surface_material_override/2 = SubResource("ShaderMaterial_ueuli")
+
+[node name="AnimationTree" type="AnimationTree" parent="RIGGINGUGH"]
+libraries = {
+"": SubResource("AnimationLibrary_qfwrf")
+}
+tree_root = SubResource("AnimationNodeBlendTree_3prc6")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Add2/add_amount = 1.0
+parameters/RTHISONE/seek_request = -1.0
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 3.19)
+keep_aspect = 0
+fov = 60.0
+
+[node name="the hat" parent="." instance=ExtResource("2_skmy4")]
+visible = false
+
+[node name="Hat Rim_001" parent="the hat/Hat Armature/Skeleton3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.236434, 0.457934)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_h02jo")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 0.595917, 0.803046, 0, -0.803046, 0.595917, 0, 0, 0)
+
+[node name="cameragagin" parent="." instance=ExtResource("9_r10ef")]
+
+[node name="Camera" parent="cameragagin" index="0"]
+transform = Transform3D(1, 0, 0, 0, 0.832515, -0.554003, 0, 0.554003, 0.832515, 0, 0.95, 3.19)
+current = true
+
+[editable path="RIGGINGUGH"]
+[editable path="RIGGINGUGH/Armature/Skeleton3D/BoneAttachment3D/hat2ihope"]
+[editable path="the hat"]
+[editable path="cameragagin"]
