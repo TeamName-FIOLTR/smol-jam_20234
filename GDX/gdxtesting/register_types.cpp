@@ -1,5 +1,7 @@
 #include "register_types.h"
 #include "gdx_testing.h"
+#include "audio_effect_bit_crush.h"
+#include "audio_effect_bit_crush_instance.h"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/defs.hpp>
@@ -14,6 +16,8 @@ void initialize_gdx_testing_module(ModuleInitializationLevel p_level) {
     }
 
     ClassDB::register_class<GdxTesting>();
+    ClassDB::register_class<AudioEffectBitCrush>();
+    ClassDB::register_class<AudioEffectBitCrushInstance>();
 }
 
 void uninitialize_gdx_testing_module(ModuleInitializationLevel p_level) {

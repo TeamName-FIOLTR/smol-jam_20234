@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://7a4u6kiv8jqj"]
+[gd_scene load_steps=3 format=3 uid="uid://7a4u6kiv8jqj"]
 
 [ext_resource type="Script" path="res://gdxtesting.gd" id="1_l0hvn"]
+[ext_resource type="AudioStream" uid="uid://bj8rir7ynomn1" path="res://psytrancething loop.wav" id="2_jnng0"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_l0hvn")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_jnng0")

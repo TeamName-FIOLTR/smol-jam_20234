@@ -1,0 +1,9 @@
+[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://6fiqjaqe30vk"]
+
+[sub_resource type="AudioEffectBitCrush" id="AudioEffectBitCrush_t6smx"]
+bit_depth = 3.2
+resource_name = "BitCrush"
+
+[resource]
+bus/0/effect/0/effect = SubResource("AudioEffectBitCrush_t6smx")
+bus/0/effect/0/enabled = false
