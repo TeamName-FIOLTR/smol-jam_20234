@@ -1,9 +1,16 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://6fiqjaqe30vk"]
+[gd_resource type="AudioBusLayout" load_steps=3 format=3 uid="uid://6fiqjaqe30vk"]
 
 [sub_resource type="AudioEffectBitCrush" id="AudioEffectBitCrush_t6smx"]
-bit_depth = 3.2
+bit_depth = 2.56
 resource_name = "BitCrush"
 
+[sub_resource type="AudioEffectLufsMeter" id="AudioEffectLufsMeter_qjf14"]
+bit_depth = 3.3
+resource_name = "LufsMeter"
+
 [resource]
+bus/0/volume_db = -0.128275
 bus/0/effect/0/effect = SubResource("AudioEffectBitCrush_t6smx")
 bus/0/effect/0/enabled = false
+bus/0/effect/1/effect = SubResource("AudioEffectLufsMeter_qjf14")
+bus/0/effect/1/enabled = false
