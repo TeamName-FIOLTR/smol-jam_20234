@@ -1,15 +1,15 @@
 [remap]
 
-importer="scene"
+importer="animation_library"
 importer_version=1
-type="PackedScene"
+type="AnimationLibrary"
 uid="uid://n4x46ptabe8o"
-path="res://.godot/imported/elf_anims.glb-9c7bbef2291d40a179950b44221ea9a7.scn"
+path="res://.godot/imported/elf_anims.glb-9c7bbef2291d40a179950b44221ea9a7.res"
 
 [deps]
 
 source_file="res://project_files/blender/chracter anim/elf_anims.glb"
-dest_files=["res://.godot/imported/elf_anims.glb-9c7bbef2291d40a179950b44221ea9a7.scn"]
+dest_files=["res://.godot/imported/elf_anims.glb-9c7bbef2291d40a179950b44221ea9a7.res"]
 
 [params]
 
@@ -25,7 +25,7 @@ meshes/lightmap_texel_size=0.2
 meshes/force_disable_compression=false
 skins/use_named_skins=true
 animation/import=true
-animation/fps=30
+animation/fps=60.0
 animation/trimming=false
 animation/remove_immutable_tracks=true
 import_script/path=""
